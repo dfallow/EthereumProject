@@ -3,7 +3,7 @@ Make sure you are in /EhtereumProject directory
 
 Run this command in linux terminal
 
-sh InitailSetup.sh
+sh InitialSetup.sh
 
 Then run
 
