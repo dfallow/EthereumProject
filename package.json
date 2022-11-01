@@ -1,0 +1,22 @@
+{
+  "name": "ethereumproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfallow/EthereumProject.git"
+  },
+  "author": "Gintare Saali",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/dfallow/EthereumProject/issues"
+  },
+  "homepage": "https://github.com/dfallow/EthereumProject#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.3"
+  }
+}
