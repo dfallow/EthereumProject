@@ -19,6 +19,7 @@ try:
             new_file = api.add(file_name)
             try:
                 ## Save the information about the added file in own text file for reference
+                ## TODO don't overide file contents
                 file = open("save_data_address.txt", 'w')
                 file.write(str(new_file) + "\n")
                 file.write(str(new_file['Hash']))
