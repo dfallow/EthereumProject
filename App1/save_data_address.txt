@@ -1,0 +1,2 @@
+{'Name': 'metaData.json', 'Hash': 'QmUqwqpXZXWJHW1bvHVUVpygEzFesUp2qxtryVve8Awwnc', 'Size': '128'}
+QmUqwqpXZXWJHW1bvHVUVpygEzFesUp2qxtryVve8Awwnc
