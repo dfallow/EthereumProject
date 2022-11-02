@@ -7,6 +7,8 @@ sh InitialSetup.sh
 
 Then run
 
+npm install
+
 ipfs init
 
 ipfs daemon
