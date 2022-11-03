@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract dataNFT is ERC721, Ownable {
+contract DataNFT is ERC721, Ownable {
 
 	constructor() ERC721("DataNFT", "DATANFT"){}
 
@@ -27,10 +27,11 @@ contract dataNFT is ERC721, Ownable {
 
 	}
 
-	function addDataItem(string memory _ipfsHash, string memory _ipfsUrl) public {
+	function addDataItem(string memory _ipfsHash, string memory _ipfsUrl) public returns (string memory) {
 		require(bytes(_ipfsHash).length > 0, "missing IPFS hash for the data item");
 		require(bytes(_ipfsUrl).length > 0, "missing IPFS url for the data item");
 		_saveDataItem(_ipfsHash, _ipfsUrl);
+		return "Data item saved";
 	}
 
 
