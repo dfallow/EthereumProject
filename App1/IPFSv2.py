@@ -7,10 +7,12 @@ api = ipfsApi.Client('127.0.0.1', 5001)
 ##used with filenames
 counter = 1
 
-def store_ipfs_file():
+def store_ipfs_file(file_name):
+    print()
+    print(file_name)
+    print()
     global counter
     counter_ = counter
-    ipfsFile = "./App1/fileForIPFS.json"
 
     name = "My new file" + str(counter_)
 
@@ -20,14 +22,14 @@ def store_ipfs_file():
     print(new_dir)
 
     ##new_file = new_dir + "/fileForIPFS.json"
-    new_file = new_dir + "/connection/tempFiles/test.json"
+    new_file = new_dir + "/tempFiles/" + file_name + ".json"
 
     ##override information that is currently in the json file
     def write_json():
         with open(new_file, 'r+') as file:
             file_data = json.load(file)
             file_data["name"] = name
-            file_data["description"] = "This is a very descriptive description."
+            file_data["description"] = "This is a very descriptive description. woeigfg ewif"
             ## "rewind" to the beginning of the document
             file.seek(0)
             json.dump(file_data, file, indent = 1)

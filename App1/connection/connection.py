@@ -23,11 +23,11 @@ def ProcessInfo(inputInfo):
 
   ##with open(app_one_dir + "/tempFiles/test.json", "x") as file:
   ##  file.write(info_object)
-  deployNFT.deploy_nft()
+  deployNFT.deploy_nft(inputInfo['name'])
 
   print(info_object)
   print()
-  print(inputInfo)
+  print(inputInfo['name'])
   print()
   
   return('/')
