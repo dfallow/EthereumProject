@@ -3,7 +3,7 @@ from web3 import EthereumTesterProvider
 import contractDetails
 import IPFSv2
 
-def deploy_nft(file_name):
+def deploy_nft(file_name, info_object):
     ## test environment
     w3 = Web3(EthereumTesterProvider())
 
@@ -15,7 +15,7 @@ def deploy_nft(file_name):
 
     ## store file on IPFS and return it's hash and url
     ##ipfs daemon has to be running in the terminal
-    file_hash = IPFSv2.store_ipfs_file(file_name)
+    file_hash = IPFSv2.store_ipfs_file(file_name, info_object)
     ##second value is a url that displayes the file. Currently, it's just a json file.
     print("FILE1 on IPFS", file_hash)
     transaction_hash = contract.constructor().transact()

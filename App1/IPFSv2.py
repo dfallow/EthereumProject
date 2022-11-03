@@ -7,7 +7,7 @@ api = ipfsApi.Client('127.0.0.1', 5001)
 ##used with filenames
 counter = 1
 
-def store_ipfs_file(file_name):
+def store_ipfs_file(file_name, info_object):
     print()
     print(file_name)
     print()
@@ -26,13 +26,15 @@ def store_ipfs_file(file_name):
 
     ##override information that is currently in the json file
     def write_json():
-        with open(new_file, 'r+') as file:
-            file_data = json.load(file)
-            file_data["name"] = name
-            file_data["description"] = "This is a very descriptive description. woeigfg ewif"
-            ## "rewind" to the beginning of the document
-            file.seek(0)
-            json.dump(file_data, file, indent = 1)
+        with open(new_file, "x") as file:
+            file.write(info_object)
+        ##with open(new_file, 'x+') as file:
+        ##    file_data = json.load(file)
+        ##    file_data["name"] = name
+        ##    file_data["description"] = "This is a very descriptive description. woeigfg ewif"
+        ##    ## "rewind" to the beginning of the document
+        ##    file.seek(0)
+        ##    json.dump(file_data, file, indent = 1)
             
     write_json()
 
