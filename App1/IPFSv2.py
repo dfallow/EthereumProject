@@ -19,7 +19,8 @@ def store_ipfs_file():
     ##new_ipfs_file = new_dir + "/fileForIPFS.json"
     print(new_dir)
 
-    new_file = new_dir + "/fileForIPFS.json"
+    ##new_file = new_dir + "/fileForIPFS.json"
+    new_file = new_dir + "/connection/tempFiles/test.json"
 
     ##override information that is currently in the json file
     def write_json():
