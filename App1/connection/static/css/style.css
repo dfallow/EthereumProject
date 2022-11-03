@@ -37,6 +37,13 @@ body {
   font-size: 18px;
 }
 
+.input-text {
+  font-family: "Rubik";
+  padding: 10px;
+  margin-bottom: 24px;
+  resize: none;
+}
+
 .btn,
 .btn:link,
 .btn:visited {
