@@ -8,24 +8,30 @@ contract dataNFT is ERC721, Ownable {
 
 	constructor() ERC721("DataNFT", "DATANFT"){}
 
-	mapping(address => DataItem[]) public dataItems;
-	
+	event DataItemAdded(uint256 itemId, string ipfsHash, string ipfsUrl);
+
 	struct DataItem {
 		string ipfsHash;
 		string ipfsUrl;
 	}
 
-	event dataItemAdded(address user, string ipfsHash, string ipfsUrl);
+	DataItem[] public dataItems;
+	
+	mapping(uint256 => address) public dataItemToOwner;
 
-	function getDataItems() public view returns (DataItem [] memory) {
-		return dataItems[msg.sender];
+	function _saveDataItem(string memory _ipfsHash, string memory _ipfsUrl) private {
+		dataItems.push(DataItem(_ipfsHash, _ipfsUrl));
+		uint _id = dataItems.length - 1;
+		dataItemToOwner[_id] = msg.sender;
+		emit DataItemAdded(_id, _ipfsHash, _ipfsUrl);
+
 	}
 
 	function addDataItem(string memory _ipfsHash, string memory _ipfsUrl) public {
 		require(bytes(_ipfsHash).length > 0, "missing IPFS hash for the data item");
 		require(bytes(_ipfsUrl).length > 0, "missing IPFS url for the data item");
-
-		dataItems[msg.sender].push(DataItem(_ipfsHash, _ipfsUrl));
-		emit dataItemAdded(msg.sender, _ipfsHash, _ipfsUrl);
+		_saveDataItem(_ipfsHash, _ipfsUrl);
 	}
+
+
 }
