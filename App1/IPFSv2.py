@@ -14,9 +14,16 @@ def store_ipfs_file():
 
     name = "My new file" + str(counter_)
 
+    print(__file__)
+    new_dir = os.path.dirname(os.path.realpath(__file__))
+    ##new_ipfs_file = new_dir + "/fileForIPFS.json"
+    print(new_dir)
+
+    new_file = new_dir + "/fileForIPFS.json"
+
     ##override information that is currently in the json file
     def write_json():
-        with open(ipfsFile, 'r+') as file:
+        with open(new_file, 'r+') as file:
             file_data = json.load(file)
             file_data["name"] = name
             file_data["description"] = "This is a very descriptive description."
@@ -27,7 +34,7 @@ def store_ipfs_file():
     write_json()
 
     ## adds file to ipfs
-    res = api.add(ipfsFile)
+    res = api.add(new_file)
     print(res)
     ##hash of the file on ipfs
     hash = str(res[0]['Hash'])
