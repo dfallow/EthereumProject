@@ -2,6 +2,7 @@ const image = document.querySelector(".image");
 const inputFile = document.querySelector(".input-file");
 const inputText = document.querySelector(".input-text");
 const button = document.querySelector(".btn");
+const fileName = document.querySelector("#name")
 
 inputFile.onchange = function (evt) {
   var tgt = evt.target || window.event.srcElement,
@@ -22,8 +23,13 @@ inputFile.onchange = function (evt) {
 };
 
 button.addEventListener("click", () => {
-  const inputInfo = inputText.value;
+  const allData = {
+    "name": fileName.value,
+    "description": inputText.value
+  }
+  console.log("test", allData)
+  //const inputInfo = inputText.value;
   const request = new XMLHttpRequest();
-  request.open("POST", `/ProcessInfo/${JSON.stringify(inputInfo)}`);
+  request.open("POST", `/ProcessInfo/${JSON.stringify(allData)}`);
   request.send();
 });

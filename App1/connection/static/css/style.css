@@ -37,7 +37,7 @@ body {
   font-size: 18px;
 }
 
-.input-text {
+.input-text, .input-text2 {
   font-family: "Rubik";
   padding: 10px;
   margin-bottom: 24px;
