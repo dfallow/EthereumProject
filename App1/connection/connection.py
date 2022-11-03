@@ -22,11 +22,6 @@ def ProcessInfo(inputInfo):
   info_object = json.dumps(inputInfo, indent=2)
 
   deployNFT.deploy_nft(inputInfo['name'], info_object)
-
-  print(info_object)
-  print()
-  print(inputInfo['name'])
-  print()
   
   return('/')
 
