@@ -1,11 +1,14 @@
 from flask import Flask, render_template, url_for
 import json
 import os
+import sys
+sys.path.append('..')
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+import deployNFT
 
-## Returns /home/dfallow/Documents/EthereumProject
-app_one_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
-print(app_one_dir)
-print("test")
+##from App1.IPFSv2 import store_ipfs_file
+
+##from App1.IPFSv2 import store_ipfs_file
 
 app = Flask(__name__)
 
@@ -21,6 +24,7 @@ def ProcessInfo(inputInfo):
 
   with open(app_one_dir + "/tempFiles/test.json", "x") as file:
     file.write(info_object)
+    deployNFT.deploy_nft()
 
   print(info_object)
   print()
