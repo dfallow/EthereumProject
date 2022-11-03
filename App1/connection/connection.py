@@ -21,8 +21,6 @@ def ProcessInfo(inputInfo):
 
   info_object = json.dumps(inputInfo, indent=2)
 
-  ##with open(app_one_dir + "/tempFiles/test.json", "x") as file:
-  ##  file.write(info_object)
   deployNFT.deploy_nft(inputInfo['name'], info_object)
 
   print(info_object)
