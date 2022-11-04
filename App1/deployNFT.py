@@ -1,47 +1,43 @@
 from web3 import Web3
 from web3 import EthereumTesterProvider
-import contractDetails
+import dataNFTdetails
 import IPFSv2
+import time
+from threading import Thread
 
-## test environment
+# test environment
 w3 = Web3(EthereumTesterProvider())
 
-## check if connected successfully
+# check if connected successfully
 print(w3.isConnected())
 
-## pass abi and bytecode from data generated through Remix
-contract = w3.eth.contract(abi=contractDetails.abi, bytecode=contractDetails.bytecode)
+# pass abi and bytecode from data generated through Remix
+contract_compiled = w3.eth.contract(
+    abi=dataNFTdetails.abi, bytecode=dataNFTdetails.bytecode)
 
-## store file on IPFS and return it's hash and url
-##ipfs daemon has to be running in the terminal
-file_hash = IPFSv2.store_ipfs_file()
-##second value is a url that displayes the file. Currently, it's just a json file.
-print("FILE1 on IPFS", file_hash)
-transaction_hash = contract.constructor().transact()
+# compile contract
+transaction_hash = contract_compiled.constructor().transact()
 print("TRANSACTION HASH", transaction_hash)
 transaction_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash)
 print("TRANSACTION RECEIPT", transaction_receipt)
 
-## repeats this two more times
-## files are stored with different names, thus also have different hashes
-file_hash2 = IPFSv2.store_ipfs_file()
-print("FILE2 on IPFS", file_hash2)
-transaction_hash = contract.constructor().transact()
-print("TRANSACTION HASH", transaction_hash)
-transaction_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash)
-print("TRANSACTION RECEIPT", transaction_receipt)
+# get contract's address
+contract_address = transaction_receipt["contractAddress"]
+# deploy contract
+# this creates a new block
+contract_deployed = w3.eth.contract(
+    address=contract_address, abi=dataNFTdetails.abi)
 
-file_hash3 = IPFSv2.store_ipfs_file()
-print("FILE3 on IPFS", file_hash3)
-transaction_hash = contract.constructor().transact()
-print("TRANSACTION HASH", transaction_hash)
-transaction_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash)
-print("TRANSACTION RECEIPT", transaction_receipt)
 
-##wasn't able to pass the file hash or url to the smart contract mint() function. 
-##perhaps it should be a setTokenUri function instead
-""" first_nft_contract = w3.eth.contract(address=transaction_receipt["contractAddress"], abi=contractDetails.abi)
-file_hash = IPFS_v2.store_ipfs_file()
-print("FILEHASH1", file_hash)
-nft = first_nft_contract.functions.mint().call()
-print("NFT tokenId", nft) """
+def addData():
+    print("START")
+    # add file to ipfs and retrieve file's hash and url
+    file_hash, file_url = IPFSv2.store_ipfs_file()
+    # add hash and url of the ipfs file to DataItem in the contract
+    print(contract_deployed.functions.addDataItem(file_hash, file_url).call())
+    # mint?
+    print(contract_deployed.functions.mint().call())
+    print("END")
+
+
+addData()

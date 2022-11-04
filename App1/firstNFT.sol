@@ -12,7 +12,6 @@ contract FirstNFT is ERC721URIStorage, Ownable {
 
 	constructor() ERC721("FirstNFT", "NFT") {}
 
-	// atm can't pass tokenUri from anywhere. Maybe should be a separe function?
 	function mint(string memory tokenURI) public returns (uint256) {
 		_tokenIds.increment();
 		uint256 newItemId = _tokenIds.current();
