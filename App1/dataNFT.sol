@@ -1,14 +1,40 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
 
-contract DataNFT is ERC721 {
-    uint256 private _tokenCounter;
+contract DataNFT is ERC721, Ownable {
+    uint256 public mintPrice = 0.05 ether;
+    uint256 public totalSupply;
+    uint256 public maxSupply;
+    bool public isMintEnabled; //Defaults to false if not defined
+    mapping(address => uint256) public mintedWallets;
+    mapping(uint256 => string) public tokenIdToURI;
 
-    constructor() ERC721("DataNFT", "DATANFT") {
-        _tokenCounter = 0;
+    constructor() payable ERC721('Data NFT', 'DataNFT') {
+        maxSupply = 10;
+    }
+
+    function toggleIsMintEnabled() external onlyOwner {
+        isMintEnabled = !isMintEnabled;
+    }
+
+    function setMaxSupply(uint256 maxSupply_) external onlyOwner {
+        maxSupply = maxSupply_;
+    }
+
+    function mint() external payable {
+        require(isMintEnabled, 'minting not enabled');
+        require(mintedWallets[msg.sender] < 1, 'exceeds max per wallet');
+        require(msg.value == mintPrice, 'wrong value');
+        require(maxSupply > totalSupply, 'sold out');
+
+        mintedWallets[msg.sender]++;
+        totalSupply++;
+        uint256 tokenId = totalSupply;
+        _safeMint(msg.sender, tokenId);
     }
 
     event DataItemAdded(uint256 itemId, string ipfsHash, string ipfsUrl);
@@ -21,17 +47,13 @@ contract DataNFT is ERC721 {
 
     DataItem[] public dataItems;
 
-    mapping(uint256 => address) public dataItemToOwner;
-    mapping(uint256 => string) public tokenIdToURI;
-
     function _saveDataItem(string memory _ipfsHash, string memory _ipfsUrl)
         private
+        onlyOwner
         returns (DataItem[] memory)
     {
         dataItems.push(DataItem(_ipfsHash, _ipfsUrl));
-        uint256 _id = dataItems.length - 1;
-        dataItemToOwner[_id] = msg.sender;
-        emit DataItemAdded(_id, _ipfsHash, _ipfsUrl);
+        emit DataItemAdded(dataItems.length, _ipfsHash, _ipfsUrl);
         return dataItems;
     }
 
@@ -51,10 +73,4 @@ contract DataNFT is ERC721 {
         return "Data item saved";
     }
 
-    function mint() public returns (uint256) {
-        uint256 _id = _tokenCounter;
-        _safeMint(msg.sender, _id);
-        _tokenCounter = _tokenCounter + 1;
-        return _tokenCounter;
-    }
 }
