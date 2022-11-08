@@ -6,8 +6,8 @@ import contractDetails
 ##import IPFSv2
 import time
 from threading import Thread
-from solcx import compile_standard, install_solc
-install_solc("0.8.4")
+##from solcx import compile_standard, install_solc
+# install_solc("0.8.4")
 
 
 # current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -35,7 +35,6 @@ install_solc("0.8.4")
 # print("COMPILED SOLIDITY", compiled_solidity)
 
 
-
 ganache_url = 'http://127.0.0.1:7545'
 #w3 = Web3(Web3.HTTPProvider(ganache_url))
 w3 = Web3(Web3.EthereumTesterProvider())
@@ -48,7 +47,8 @@ gen_block = json.loads(w3.toJSON(w3.eth.get_block(0)))
 
 print(gen_block)
 
-contract_compiled = w3.eth.contract(abi = contractDetails.abi, bytecode = contractDetails.bytecode)
+contract_compiled = w3.eth.contract(
+    abi=contractDetails.abi, bytecode=contractDetails.bytecode)
 
 transaction_hash = contract_compiled.constructor().transact()
 print("TRANSACTION HASH", transaction_hash)
@@ -59,14 +59,15 @@ contract_address = transaction_receipt["contractAddress"]
 
 print("BLOCKS BEFORE", w3.eth.get_block('latest'))
 
-contract_deployed = w3.eth.contract(address=contract_address, abi=contractDetails.abi)
+contract_deployed = w3.eth.contract(
+    address=contract_address, abi=contractDetails.abi)
 
 w3.eth.default_account = w3.eth.accounts[0]
 
 cost = w3.toWei(0.5, 'ether')
 gas_price = 1000000
 
-buyer_txn = { 'from': w3.eth.accounts[1], 'value': cost, 'gas': gas_price}
+buyer_txn = {'from': w3.eth.accounts[1], 'value': cost, 'gas': gas_price}
 
 test = contract_deployed.all_functions()
 
@@ -76,10 +77,11 @@ mintable = contract_deployed.functions.isMintEnabled().call()
 
 print("MINTING", mintable)
 
-buyer_txn_hash = contract_deployed.functions.addDataItem("test", "testURL").transact()
+buyer_txn_hash = contract_deployed.functions.addDataItem(
+    "test", "testURL").transact()
 
 receipt = w3.eth.waitForTransactionReceipt(buyer_txn_hash)
-print(receipt)
+print("RECEIPT", receipt)
 
 print("BLOCKS After", w3.eth.get_block('latest'))
 
@@ -89,27 +91,30 @@ print("DEFAULT", w3.eth.default_account)
 
 #owner = contract_deployed.functions.getOwner().call()
 
-#print(owner)
+# print(owner)
 
 contract_deployed.functions.toggleIsMintEnabled().transact()
 
-print("MINT AFTER", contract_deployed.functions.isMintEnabled().call())
+#print("MINT AFTER", contract_deployed.functions.isMintEnabled().call())
 
-contract_deployed.functions.mint().transact()
+mint_tx = contract_deployed.functions.mint().transact()
+print("TOKENID", mint_tx)
+mint_receipt = w3.eth.waitForTransactionReceipt(mint_tx)
+print("mint RECEIPT", mint_receipt)
 
-print(w3.eth.block_number)
+print("ALL FUNCTIONS", contract_deployed.all_functions())
+latestBlock = w3.eth.get_block('latest')
+print("LATEST after minting", latestBlock)
 
 
-print(contract_deployed.all_functions())
-
-owner = contract_deployed.functions.getOwner().call()
+owner = contract_deployed.functions.getOwnerOfToken(1).call()
 
 print("BEFORE", owner)
 
-test = contract_deployed.functions.transferOwnership(w3.eth.accounts[5])
+test = contract_deployed.functions.changeOwner(
+    w3.eth.accounts[5], 1).transact()
 
 print(test)
-owner2 = contract_deployed.functions.getOwner().call()
+owner2 = contract_deployed.functions.getOwnerOfToken(1).call()
 
 print("AFTER", owner2)
-
