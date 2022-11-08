@@ -41,91 +41,47 @@ w3 = Web3(Web3.EthereumTesterProvider())
 
 print(w3.isConnected())
 
-print(w3.eth.accounts)
+#set default account
+w3.eth.default_account = w3.eth.accounts[0]
 
-gen_block = json.loads(w3.toJSON(w3.eth.get_block(0)))
-
-print(gen_block)
-
+#compile contract
 contract_compiled = w3.eth.contract(
     abi=contractDetails.abi, bytecode=contractDetails.bytecode)
 
-transaction_hash = contract_compiled.constructor().transact()
+transaction_hash = contract_compiled.constructor("test hash", "test url").transact()
 print("TRANSACTION HASH", transaction_hash)
 transaction_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash)
 print("TRANSACTION RECEIPT", transaction_receipt)
 
+#retrieve contract address
 contract_address = transaction_receipt["contractAddress"]
 
 print("BLOCKS BEFORE", w3.eth.get_block('latest'))
 
+#deploy contract (creates an instance of a contract) with the address above
 contract_deployed = w3.eth.contract(
     address=contract_address, abi=contractDetails.abi)
 
-w3.eth.default_account = w3.eth.accounts[0]
+print("BLOCK number", w3.eth.block_number)
 
-cost = w3.toWei(0.5, 'ether')
-gas_price = 1000000
+print(contract_deployed.functions.dataItems(0).call())
 
-buyer_txn = {'from': w3.eth.accounts[1], 'value': cost, 'gas': gas_price}
+#token owner before
+print("TOKEN OWNER before", contract_deployed.functions.getOwnerOfToken(1).call())
 
-test = contract_deployed.all_functions()
+#change token owner
+contract_deployed.functions.changeOwnerOfToken(w3.eth.accounts[4], 1).transact()
 
-print("FUNCTIONS", test)
+#owner of token after
+print("TOKEN OWNER after", contract_deployed.functions.getOwnerOfToken(1).call())
 
-mintable = contract_deployed.functions.isMintEnabled().call()
+#contract owner
+print(contract_deployed.functions.owner().call())
 
-print("MINTING", mintable)
+#change contract owner
+print(contract_deployed.functions.transferOwnership(w3.eth.accounts[4]).transact())
 
-buyer_txn_hash = contract_deployed.functions.addDataItem(
-    "test", "testURL").transact()
+#contract owner
+print(contract_deployed.functions.owner().call())
 
-receipt = w3.eth.waitForTransactionReceipt(buyer_txn_hash)
-print("RECEIPT", receipt)
-
-print("BLOCKS After", w3.eth.get_block('latest'))
-
-print(w3.eth.accounts)
-
-print("DEFAULT", w3.eth.default_account)
-
-#owner = contract_deployed.functions.getOwner().call()
-
-# print(owner)
-
-contract_deployed.functions.toggleIsMintEnabled().transact()
-
-#print("MINT AFTER", contract_deployed.functions.isMintEnabled().call())
-
-mint_tx = contract_deployed.functions.mint().transact()
-print("TOKENID", mint_tx)
-mint_receipt = w3.eth.waitForTransactionReceipt(mint_tx)
-print("mint RECEIPT", mint_receipt)
-
-print("ALL FUNCTIONS", contract_deployed.all_functions())
-latestBlock = w3.eth.get_block('latest')
-print("LATEST after minting", latestBlock)
-
-
-owner = contract_deployed.functions.getOwnerOfToken(1).call()
-
-print("BEFORE", owner)
-
-test = contract_deployed.functions.changeOwnerOfToken(
-    w3.eth.accounts[5], 1).transact()
-
-print(test)
-owner2 = contract_deployed.functions.getOwnerOfToken(1).call()
-
-print("AFTER", owner2)
-
-contract_owner = contract_deployed.functions.getOwner().call()
-print("CONTRACT OWNER BEFORE", contract_owner)
-
-contract_deployed.functions.changeOwnerOfContract(
-    w3.eth.accounts[3]).transact()
-
-contract_owner2 = contract_deployed.functions.getOwner().call()
-print("CONTRACT OWNER AFTER", contract_owner2)
-
-print("FINAL BLOCK NUMBER", w3.eth.block_number)
+print("BLOCK number", w3.eth.block_number)
