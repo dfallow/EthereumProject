@@ -1,4 +1,3 @@
-
 Make sure you are in /EhtereumProject directory
 
 Run this command in linux terminal
@@ -18,6 +17,14 @@ npm install
 
 ipfs init
 
+### Run IPFS
+
 ipfs daemon
 
 Open Browser and vistit localhost:5001/webui
+
+### Run the website
+
+python3 App1/connection/connection.py
+
+go to http://127.0.0.1:3000
