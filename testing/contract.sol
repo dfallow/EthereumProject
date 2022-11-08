@@ -80,12 +80,19 @@ contract DataNFT is ERC721, Ownable {
         return "Data item saved";
     }
 
-    function changeOwner(address to, uint256 _tokenId) public onlyOwner {
-        _transfer(_owner, to, _tokenId);
+    function changeOwnerOfToken(address _to, uint256 _tokenId)
+        public
+        onlyOwner
+    {
+        _transfer(_owner, _to, _tokenId);
     }
 
     function getOwnerOfToken(uint256 tokenId) public view returns (address) {
         address tokenOwner = ownerOf(tokenId);
         return tokenOwner;
+    }
+
+    function changeOwnerOfContract(address _newOwner) public onlyOwner {
+        _owner = _newOwner;
     }
 }

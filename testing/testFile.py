@@ -111,10 +111,21 @@ owner = contract_deployed.functions.getOwnerOfToken(1).call()
 
 print("BEFORE", owner)
 
-test = contract_deployed.functions.changeOwner(
+test = contract_deployed.functions.changeOwnerOfToken(
     w3.eth.accounts[5], 1).transact()
 
 print(test)
 owner2 = contract_deployed.functions.getOwnerOfToken(1).call()
 
 print("AFTER", owner2)
+
+contract_owner = contract_deployed.functions.getOwner().call()
+print("CONTRACT OWNER BEFORE", contract_owner)
+
+contract_deployed.functions.changeOwnerOfContract(
+    w3.eth.accounts[3]).transact()
+
+contract_owner2 = contract_deployed.functions.getOwner().call()
+print("CONTRACT OWNER AFTER", contract_owner2)
+
+print("FINAL BLOCK NUMBER", w3.eth.block_number)
