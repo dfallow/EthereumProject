@@ -17,6 +17,11 @@ npm install
 
 ipfs init
 
+### Install Flask
+
+source env/bin/activate
+pip install flask
+
 ### Run IPFS
 
 ipfs daemon
