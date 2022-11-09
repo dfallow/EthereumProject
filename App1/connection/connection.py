@@ -13,7 +13,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-  return render_template('index.html')
+  #return render_template('index.html')
+  return render_template('addMachine.html')
 
 @app.route('/ProcessInfo/<string:inputInfo>', methods=['POST'])
 def ProcessInfo(inputInfo):
