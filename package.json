@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/dfallow/EthereumProject#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.7.3"
+    "@openzeppelin/contracts": "^4.7.3",
+    "flask": "^0.2.10",
+    "pytest": "^1.0.0"
   }
 }
