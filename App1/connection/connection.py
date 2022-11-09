@@ -11,6 +11,7 @@ os.chdir(app_one_dir)
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
   #return render_template('index.html')
@@ -18,13 +19,10 @@ def index():
 
 @app.route('/ProcessInfo/<string:inputInfo>', methods=['POST'])
 def ProcessInfo(inputInfo):
-  inputInfo = json.loads(inputInfo)
-
-  info_object = json.dumps(inputInfo, indent=2)
-
-  deployNFT.deploy_nft(inputInfo['name'], info_object)
-  
+  # pass file name and the json to deployNFT
+  deployNFT.deploy_nft(json.loads(inputInfo)['name'],json.dumps(json.loads(inputInfo), indent=2))
   return('/')
 
 if __name__ == "__main__":
   app.run(debug=True)
+  app.run("0.0.0.0")
