@@ -1,4 +1,3 @@
-from deployNFT import Web3
 import deployNFT
 
 def test_is_connected():
