@@ -8,14 +8,14 @@ from web3 import Web3
 from web3 import EthereumTesterProvider
 import contractDetails
 
+# test environment
+w3 = Web3(EthereumTesterProvider())
+
+# use this function for test
+def is_connected(w3):
+    return w3.isConnected()
 
 def deploy_nft(file_name, info_object):
-    # test environment
-    w3 = Web3(EthereumTesterProvider())
-
-    # check if connected successfully
-    print("IS CONNECTED", w3.isConnected())
-
     # store file on IPFS and return it's hash and url
     # ipfs daemon has to be running in the terminal
     file_hash, file_url = IPFSv2.store_ipfs_file(file_name, info_object)
