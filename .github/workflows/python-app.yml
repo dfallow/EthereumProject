@@ -38,6 +38,9 @@ jobs:
       run: |
         pip install pytest
         pip install web3
+        pip install "web3[tester]"
         pip install ipfsApi
         pip install ipfs-api
+        pip install eth-tester
+        pip install py-evm
         pytest
