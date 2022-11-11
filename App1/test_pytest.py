@@ -1,7 +1,4 @@
 import deployNFT
-import IPFSv2
-from web3 import Web3
-from web3 import EthereumTesterProvider
 
 def test_is_connected():
     assert deployNFT.is_connected(deployNFT.w3) == True
