@@ -39,4 +39,5 @@ jobs:
         pip install pytest
         pip install web3
         pip install ipfsApi
+        pip install ipfs-api
         pytest
