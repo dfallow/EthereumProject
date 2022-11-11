@@ -5,9 +5,11 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract NewDataNFT is ERC721, Ownable {
+contract NewDataNFT is ERC721, Ownable, ERC721URIStorage {
     uint256 public totalSupply;
     address private _owner;
+
+    mapping(uint256 => string) public tokenIdToURI;
 
     struct DataItem {
         string ipfsHash;
@@ -17,18 +19,47 @@ contract NewDataNFT is ERC721, Ownable {
     DataItem[] public dataItems;
 
     event DataItemAdded(uint256 itemId, string ipfsHash, string ipfsUrl);
-    event Minted(address indexed minter, uint256 nftId);
+    event Minted(address indexed minter, uint256 nftId, string tokenURI);
 
     constructor() payable ERC721("Data NFT", "DataNFT") {
         _transferOwnership(msg.sender);
     }
 
-    function _mint() private onlyOwner returns (uint256) {
+    function _mint(string memory tokenURI)
+        private
+        onlyOwner
+        returns (string memory)
+    {
         totalSupply++;
         uint256 tokenId = totalSupply;
         _safeMint(msg.sender, tokenId);
-        emit Minted(msg.sender, tokenId);
-        return tokenId;
+        _setTokenURI(tokenId, tokenURI);
+        tokenIdToURI[tokenId] = tokenURI;
+        emit Minted(msg.sender, tokenId, tokenURI);
+        return tokenURI;
+    }
+
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        virtual
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        require(
+            _exists(tokenId),
+            "ERC721Metadata: URI query for nonexistent token"
+        );
+
+        string memory _tokenURI = tokenIdToURI[tokenId];
+        return _tokenURI;
+    }
+
+    function _burn(uint256 tokenId)
+        internal
+        override(ERC721, ERC721URIStorage)
+    {
+        super._burn(tokenId);
     }
 
     function saveDataItem(string memory ipfsHash, string memory ipfsUrl)
@@ -46,7 +77,7 @@ contract NewDataNFT is ERC721, Ownable {
         );
         dataItems.push(DataItem(ipfsHash, ipfsUrl));
         emit DataItemAdded(dataItems.length, ipfsHash, ipfsUrl);
-        _mint();
+        _mint(ipfsUrl);
         return dataItems;
     }
 

@@ -4,31 +4,31 @@ const inputText = document.querySelector(".input-text");
 const button = document.querySelector(".btn");
 const machineName = document.querySelector("#name");
 const machineDepartment = document.querySelector("#department");
-const imageUploaded = document.querySelector('#file');
+const imageUploaded = document.querySelector("#file");
 
 function uploadImage() {
-  const fileReader = new FileReader()
+  const fileReader = new FileReader();
   // Read file as ArrayBuffer
-  fileReader.readAsArrayBuffer(imageUploaded.files[0])
+  fileReader.readAsArrayBuffer(imageUploaded.files[0]);
   //  Listen for the onload event
-  fileReader.onload = async () => {            
-      const node = await Ipfs.create()
-      // upload the file content
-      let { path } = await node.add(fileReader.result)
+  fileReader.onload = async () => {
+    const node = await Ipfs.create();
+    // upload the file content
+    let { path } = await node.add(fileReader.result);
 
-      console.log("https://ipfs.io/ipfs/" + path + "?" + path )
+    console.log("https://ipfs.io/ipfs/" + path + "?" + path);
 
-      const allData = {
-        "imageUrl": path,
-        "name": machineName.value,
-        "department": machineDepartment.value
-      }
+    const allData = {
+      image: path,
+      name: machineName.value,
+      attributes: [{ department: machineDepartment.value }],
+    };
 
-      console.log("test", allData)
-      const request = new XMLHttpRequest();
-      request.open("POST", `/ProcessInfo/${JSON.stringify(allData)}`);
-      request.send();
-  }
+    console.log("test", allData);
+    const request = new XMLHttpRequest();
+    request.open("POST", `/ProcessInfo/${JSON.stringify(allData)}`);
+    request.send();
+  };
 }
 
 inputFile.onchange = function (evt) {
@@ -50,5 +50,5 @@ inputFile.onchange = function (evt) {
 };
 
 button.addEventListener("click", async () => {
-  uploadImage()
+  uploadImage();
 });
