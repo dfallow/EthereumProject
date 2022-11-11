@@ -4,14 +4,12 @@ import contractDetails
 import IPFSv2
 import json
 import os
-from web3 import Web3
-from web3 import EthereumTesterProvider
-import contractDetails
 
 
 def deploy_nft(file_name, info_object):
     # test environment
-    w3 = Web3(EthereumTesterProvider())
+    # w3 = Web3(EthereumTesterProvider())
+    w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
     # check if connected successfully
     print("IS CONNECTED", w3.isConnected())
@@ -21,7 +19,11 @@ def deploy_nft(file_name, info_object):
     file_hash, file_url = IPFSv2.store_ipfs_file(file_name, info_object)
 
     # set default account
+    # w3.eth.default_account = w3.eth.accounts[0]
+    
+    # get accounts from ganache
     w3.eth.default_account = w3.eth.accounts[0]
+    acc2 = w3.eth.accounts[1]
 
     # compile contract
     contract_compiled = w3.eth.contract(
@@ -51,8 +53,9 @@ def deploy_nft(file_name, info_object):
     print("NFT OWNER before", contract_deployed.functions.getOwnerOfToken(1).call())
 
     # change NFT owner
-    contract_deployed.functions.changeOwnerOfToken(
-        w3.eth.accounts[4], 1).transact()
+    # contract_deployed.functions.changeOwnerOfToken(
+    #     w3.eth.accounts[4], 1).transact()
+    contract_deployed.functions.changeOwnerOfToken(acc2, 1).transact()
 
     # owner of NFT after
     print("NFT OWNER after", contract_deployed.functions.getOwnerOfToken(1).call())
@@ -61,8 +64,9 @@ def deploy_nft(file_name, info_object):
     print("CONTRACT OWNER", contract_deployed.functions.owner().call())
 
     # change contract owner
-    contract_deployed.functions.transferOwnership(
-        w3.eth.accounts[4]).transact()
+    # contract_deployed.functions.transferOwnership(
+    #     w3.eth.accounts[4]).transact()
+    contract_deployed.functions.transferOwnership(acc2).transact()
 
     # contract owner
     print("CONTRACT OWNER", contract_deployed.functions.owner().call())
