@@ -1,4 +1,3 @@
-import newDeployNFT
 from flask import Flask, render_template, url_for
 import json
 import os
@@ -6,6 +5,9 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir)))
+
+import newDeployNFT
+
 ## Returns /home/dfallow/Documents/EthereumProject
 app_one_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 os.chdir(app_one_dir)

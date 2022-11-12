@@ -25,18 +25,14 @@ contract NewDataNFT is ERC721, Ownable, ERC721URIStorage {
         _transferOwnership(msg.sender);
     }
 
-    function _mint(string memory tokenURI)
-        private
-        onlyOwner
-        returns (string memory)
-    {
+    function mint(string memory tokenURI) public onlyOwner returns (uint256) {
         totalSupply++;
         uint256 tokenId = totalSupply;
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, tokenURI);
         tokenIdToURI[tokenId] = tokenURI;
         emit Minted(msg.sender, tokenId, tokenURI);
-        return tokenURI;
+        return tokenId;
     }
 
     function tokenURI(uint256 tokenId)
@@ -62,7 +58,7 @@ contract NewDataNFT is ERC721, Ownable, ERC721URIStorage {
         super._burn(tokenId);
     }
 
-    function saveDataItem(string memory ipfsHash, string memory ipfsUrl)
+    function saveData(string memory ipfsHash, string memory ipfsUrl)
         public
         onlyOwner
         returns (DataItem[] memory)
@@ -77,7 +73,6 @@ contract NewDataNFT is ERC721, Ownable, ERC721URIStorage {
         );
         dataItems.push(DataItem(ipfsHash, ipfsUrl));
         emit DataItemAdded(dataItems.length, ipfsHash, ipfsUrl);
-        _mint(ipfsUrl);
         return dataItems;
     }
 
