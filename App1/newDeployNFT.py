@@ -22,6 +22,15 @@ transaction_hash = contract_compiled.constructor().transact()
 print("TRANSACTION HASH", transaction_hash)
 transaction_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash)
 print("TRANSACTION RECEIPT", transaction_receipt)
+# set default account
+w3.eth.default_account = w3.eth.accounts[0]
+
+# retrieve contract address
+contract_address = transaction_receipt["contractAddress"]
+
+# deploy contract (creates an instance of a contract) with the address above
+contract_deployed = w3.eth.contract(
+    address=contract_address, abi=newContractDetails.abi)
 
 
 def new_deploy_nft(file_name, info_object):
@@ -29,16 +38,6 @@ def new_deploy_nft(file_name, info_object):
     # store file on IPFS and return it's hash and url
     # ipfs daemon has to be running in the terminal
     file_hash, file_url = IPFSv2.store_ipfs_file(file_name, info_object)
-
-    # set default account
-    w3.eth.default_account = w3.eth.accounts[0]
-
-    # retrieve contract address
-    contract_address = transaction_receipt["contractAddress"]
-
-    # deploy contract (creates an instance of a contract) with the address above
-    contract_deployed = w3.eth.contract(
-        address=contract_address, abi=newContractDetails.abi)
 
     # save data
     print("SAVE", contract_deployed.functions.saveData(
