@@ -32,8 +32,8 @@ Open Browser and vistit localhost:5001/webui
 - python3 App1/connection/connection.py
 - Check terminal for ip address
  
-deployNFT.py is the file which contains the function deploy_nft() which is run when you hit
+newDeployNft.py is the file which contains the function new_deploy_nft() which is run when you hit
  create NFT btn.
  
- The contract being used is mintableNFT.sol in App1/
+ The contract being used is newDataNFT.sol in App1/
  

@@ -1,4 +1,9 @@
 {
- "name": "My new file3",
- "description": "This is a very descriptive description."
+ "image": "https://ipfs.io/ipfs/QmVxXmkY6bX6yuG8ryxwdkeQ8Jm7YYs83ZSrrkTPpWNFQG?QmVxXmkY6bX6yuG8ryxwdkeQ8Jm7YYs83ZSrrkTPpWNFQG",
+ "name": "vnvn",
+ "attributes": [
+  {
+   "department": "vnv"
+  }
+ ]
 }
