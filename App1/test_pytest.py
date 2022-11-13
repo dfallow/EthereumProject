@@ -1,4 +1,5 @@
 import os
+
 import IPFSv2
 import newDeployNFT
 
@@ -31,8 +32,3 @@ def test_save_to_file():
 
     # compare file contents with expected result
     assert open(new_file).read() == expected_content, "File contents don't match"
-
-        
-
-
-        

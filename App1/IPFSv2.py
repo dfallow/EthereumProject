@@ -1,8 +1,9 @@
 import json
 import os
+
 import ipfsApi
 
-api = ipfsApi.Client('127.0.0.1', 5001)
+api = ipfsApi.Client("127.0.0.1", 5001)
 
 # creates new file in /tempFiles
 
@@ -43,7 +44,7 @@ def store_ipfs_file(file_name, info_object):
     # adds file to ipfs
     res = api.add(new_file)
     # hash of the file on ipfs
-    hash = str(res[0]['Hash'])
+    hash = str(res[0]["Hash"])
     # url
     url = "https://ipfs.io/ipfs/" + hash
 
