@@ -42,6 +42,7 @@ jobs:
       - name: Test with pytest
         run: |
           pip install pytest
+          pip install black
           pip install web3
           pip install "web3[tester]"
           pip install ipfsApi
