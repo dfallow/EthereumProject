@@ -24,7 +24,7 @@ def is_connected(w3):
 # compile contract
 contract_compiled = w3.eth.contract(
     abi=newContractDetails.abi, bytecode=newContractDetails.bytecode
-    )
+)
 
 transaction_hash = contract_compiled.constructor().transact()
 print("TRANSACTION HASH", transaction_hash)
@@ -46,7 +46,7 @@ contract_address = transaction_receipt["contractAddress"]
 # deploy contract (creates an instance of a contract) with the address above
 contract_deployed = w3.eth.contract(
     address=contract_address, abi=newContractDetails.abi
-    )
+)
 
 
 def new_deploy_nft(file_name, info_object):
