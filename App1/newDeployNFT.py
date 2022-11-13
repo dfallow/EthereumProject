@@ -50,7 +50,8 @@ def new_deploy_nft(file_name, info_object):
     file_hash, file_url = IPFSv2.store_ipfs_file(file_name, info_object)
 
     # save data
-    print("SAVE", contract_deployed.functions.saveData(file_hash, file_url).transact())
+    print("SAVE", contract_deployed.functions.saveData(
+        file_hash, file_url).transact())
     # mint NFT
     print("MINTED", contract_deployed.functions.mint(file_url).transact())
 
@@ -65,6 +66,14 @@ def new_deploy_nft(file_name, info_object):
     tokenId = event[0]["args"]["nftId"]
     print("NFT ID/TokenId", tokenId)
 
-    print("URL", contract_deployed.functions.tokenIdToURI(tokenId).call())
+    # get totalSupply(NFT count)
+    print("NFT count", contract_deployed.functions.totalSupply().call())
+
+    # get URI of token
+    print("URI", contract_deployed.functions.tokenIdToURI(tokenId).call())
+
+    #to get owner of NFT can use either tokenIdToOwner mapping or function getOwnerOfToken(tokenId)
+    # this uses mapping
+    print("OWNER", contract_deployed.functions.tokenIdToOwner(tokenId).call())
 
     print("BLOCK number", w3.eth.block_number)
