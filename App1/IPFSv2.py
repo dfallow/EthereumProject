@@ -8,7 +8,6 @@ api = ipfsApi.Client("127.0.0.1", 5001)
 # creates new file in /tempFiles
 def write_json(new_file, info_object):
     json_object = json.loads(info_object)
-
     with open(new_file, "x") as file:
         file.write(info_object)
     with open(new_file, "r+") as file:
