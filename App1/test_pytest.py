@@ -27,10 +27,10 @@ def test_save_to_file():
 
     # create the file
     IPFSv2.write_json(new_file, info_object)
-    
+
+
     # compare file contents with expected result
     file = open(new_file).readlines()
 
     # read second line, remove spaces and compare
     assert file[1].strip() == expected_content, "File contents don't match"
-    
