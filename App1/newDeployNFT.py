@@ -14,6 +14,10 @@ w3 = Web3(EthereumTesterProvider())
 # check if connected successfully
 print("IS CONNECTED", w3.isConnected())
 
+# can run when needed to check connection
+def is_connected(w3):
+    return w3.isConnected()
+
 # compile contract
 contract_compiled = w3.eth.contract(
     abi=newContractDetails.abi, bytecode=newContractDetails.bytecode)
@@ -24,6 +28,10 @@ transaction_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash)
 print("TRANSACTION RECEIPT", transaction_receipt)
 # set default account
 w3.eth.default_account = w3.eth.accounts[0]
+
+# function to set default account
+def set_default_account(account):
+    w3.eth.default_account = account
 
 # retrieve contract address
 contract_address = transaction_receipt["contractAddress"]
