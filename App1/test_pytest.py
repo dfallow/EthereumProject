@@ -9,7 +9,7 @@ def test_is_connected():
 
 
 # def test_default_account():
-#    deployNFT.w3.eth.default_account == deployNFT.w3.eth.accounts[0]
+# deployNFT.w3.eth.default_account == deployNFT.w3.eth.accounts[0]
 
 
 # test if file is saved correctly
@@ -22,8 +22,8 @@ def test_save_to_file():
     # this is what is passed to write_json()
     info_object = '{ "image": "12345", "name": "test photo", "attributes": [{"department": "my department name"}]}'
 
-    # this is what is expected to be in the final version of the file after write_json() manipulates it
-    expected_content = '{\n    "image": "https://ipfs.io/ipfs/12345?12345",\n    "name": "test photo",\n    "attributes": [\n        {\n            "department": "my department name"\n        }\n    ]\n}'
+    # this is what is expected to be under image in the final version of the file after write_json() manipulates it
+    expected_content = '"image": "https://ipfs.io/ipfs/12345?12345",'
 
     # create the file. If filename already exists, the test will fail
     assert (
@@ -31,4 +31,7 @@ def test_save_to_file():
     ), "File wasn't saved. Filename already exists or other reason."
 
     # compare file contents with expected result
-    assert open(new_file).read() == expected_content, "File contents don't match"
+    file = open(new_file).readlines()
+
+    # read second line, remove spaces and compare
+    assert file[1].strip() == expected_content, "File contents don't match"
