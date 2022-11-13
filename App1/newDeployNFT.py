@@ -23,7 +23,8 @@ def is_connected(w3):
 
 # compile contract
 contract_compiled = w3.eth.contract(
-    abi=newContractDetails.abi, bytecode=newContractDetails.bytecode)
+    abi=newContractDetails.abi, bytecode=newContractDetails.bytecode
+    )
 
 transaction_hash = contract_compiled.constructor().transact()
 print("TRANSACTION HASH", transaction_hash)
@@ -44,7 +45,8 @@ contract_address = transaction_receipt["contractAddress"]
 
 # deploy contract (creates an instance of a contract) with the address above
 contract_deployed = w3.eth.contract(
-    address=contract_address, abi=newContractDetails.abi)
+    address=contract_address, abi=newContractDetails.abi
+    )
 
 
 def new_deploy_nft(file_name, info_object):
@@ -54,8 +56,7 @@ def new_deploy_nft(file_name, info_object):
     file_hash, file_url = IPFSv2.store_ipfs_file(file_name, info_object)
 
     # save data
-    print("SAVE", contract_deployed.functions.saveData(
-        file_hash, file_url).transact())
+    print("SAVE", contract_deployed.functions.saveData(file_hash, file_url).transact())
     # mint NFT
     print("MINTED", contract_deployed.functions.mint(file_url).transact())
 
