@@ -1,7 +1,6 @@
-from unittest.mock import patch, mock_open
-import newDeployNFT
-import IPFSv2
 import os
+import IPFSv2
+import newDeployNFT
 
 
 def test_is_connected():
@@ -26,7 +25,9 @@ def test_save_to_file():
     expected_content = '{\n    "image": "https://ipfs.io/ipfs/12345?12345",\n    "name": "test photo",\n    "attributes": [\n        {\n            "department": "my department name"\n        }\n    ]\n}'
 
     # create the file. If filename already exists, the test will fail
-    assert IPFSv2.write_json(new_file, info_object) is True, "File wasn't saved. Filename already exists or other reason."
+    assert (
+        IPFSv2.write_json(new_file, info_object) is True
+    ), "File wasn't saved. Filename already exists or other reason."
 
     # compare file contents with expected result
     assert open(new_file).read() == expected_content, "File contents don't match"
