@@ -2,7 +2,7 @@ import newDeployNFT
 
 
 def test_is_connected():
-    assert newDeployNFT.is_connected(newDeployNFT.w3) == True
+    assert newDeployNFT.is_connected(newDeployNFT.w3) is True
 
 
 # def test_default_account():

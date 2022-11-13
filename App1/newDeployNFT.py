@@ -55,10 +55,11 @@ def new_deploy_nft(file_name, info_object):
     print("MINTED", contract_deployed.functions.mint(file_url).transact())
 
     # Minted event log below shows tokenId, and url to metadata file and other things
-    # as long as connection isn't restarted and you keep adding new pictures/creating new NFT, the tokenId number will keep on changing but the contract address should remain the same
+    # as long as connection isn't restarted and you keep adding new pictures/creating new NFT,
+    #  the tokenId number will keep on changing but the contract address should remain the same
     # so all NFTs will be located under the same contract address
-    # on OpenSea for example, our NFT url would basically the same as contract url but it ends with /tokenId
-    # for example, https://someurl.com/contractAddressHash/tokenId
+    # on OpenSea for example, our NFT url would basically the same as contract url but it ends w
+    # ith /tokenId for example, https://someurl.com/contractAddressHash/tokenId
     event = contract_deployed.events.Minted().getLogs()
     print("MINTED EVENT", event)
     tokenId = event[0]["args"]["nftId"]
