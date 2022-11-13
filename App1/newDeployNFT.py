@@ -1,9 +1,6 @@
-from web3 import Web3
-from web3 import EthereumTesterProvider
 import IPFSv2
-from web3 import Web3
-from web3 import EthereumTesterProvider
 import newContractDetails
+from web3 import EthereumTesterProvider, Web3
 
 # test environment
 w3 = Web3(EthereumTesterProvider())
