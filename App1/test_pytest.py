@@ -35,3 +35,4 @@ def test_save_to_file():
 
     # read second line, remove spaces and compare
     assert file[1].strip() == expected_content, "File contents don't match"
+    
