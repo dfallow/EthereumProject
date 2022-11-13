@@ -25,11 +25,9 @@ def test_save_to_file():
     # this is what is expected to be under image in the final version of the file after write_json() manipulates it
     expected_content = '"image": "https://ipfs.io/ipfs/12345?12345",'
 
-    # create the file. If filename already exists, the test will fail
-    assert (
-        IPFSv2.write_json(new_file, info_object) is True
-    ), "File wasn't saved. Filename already exists or other reason."
-
+    # create the file
+    IPFSv2.write_json(new_file, info_object)
+    
     # compare file contents with expected result
     file = open(new_file).readlines()
 
