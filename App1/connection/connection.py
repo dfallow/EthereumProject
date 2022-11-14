@@ -27,13 +27,9 @@ def index():
 
 @app.route('/ProcessInfo/<string:inputInfo>', methods=['POST'])
 def ProcessInfo(inputInfo):
-    inputInfo = json.loads(inputInfo)
-
-    info_object = json.dumps(inputInfo, indent=2)
-
-    newDeployNFT.new_deploy_nft(inputInfo['name'], info_object)
-
-    return ('/')
+    # pass file name and the json to deployNFT
+    newDeployNFT.new_deploy_nft(json.loads(inputInfo)['name'],json.dumps(json.loads(inputInfo), indent=2))
+    return('/')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=True)

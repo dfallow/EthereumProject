@@ -1,19 +1,18 @@
 import IPFSv2
 import newContractDetails
-from web3 import EthereumTesterProvider, Web3
+from web3 import Web3
 
 # test environment
-w3 = Web3(EthereumTesterProvider())
+w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
+
+w3.eth.default_account = w3.eth.accounts[0]
 
 # check if connected successfully
 print("IS CONNECTED", w3.isConnected())
 
 # can run when needed to check connection
-
-
 def is_connected(w3):
     return w3.isConnected()
-
 
 # compile contract
 contract_compiled = w3.eth.contract(
@@ -24,14 +23,14 @@ transaction_hash = contract_compiled.constructor().transact()
 print("TRANSACTION HASH", transaction_hash)
 transaction_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash)
 print("TRANSACTION RECEIPT", transaction_receipt)
-# set default account
-w3.eth.default_account = w3.eth.accounts[0]
+# # set default account
+# w3.eth.default_account = w3.eth.accounts[0]
 
-# function to set default account
+# # function to set default account
 
 
-def set_default_account(account):
-    w3.eth.default_account = account
+# def set_default_account():
+#     w3.eth.default_account = w3.eth.accounts[0]
 
 
 # retrieve contract address

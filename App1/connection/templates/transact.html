@@ -16,10 +16,21 @@
     </div>
 
     <form action="{{ url_for("transact")}}" method = "POST">
-      <p>NFT Address <input type = "text" name = "nft" /></p>
+      <p>NFT token <input type = "text" name = "nft" /></p>
+      <p>Contract address <input type = "text" name = "contract" /></p>
       <p>Recipient Address <input type = "text" name = "recipient" /></p>
       <p>Your private key <input type = "text" name = "key" /></p>
       <button type="submit">Transfer</button>
     </form>
+
+    <!-- show your own nft -->
+    {% if not NFTs or NFTs == [] %}
+      <p>You do not have any NFT</p>
+    {% else %}
+      {% for nft in NFTs %}
+      <img src="{{nft}}" width="100" height="100">
+      {% endfor %}
+    {% endif %}
+    
   </body>
 </html>

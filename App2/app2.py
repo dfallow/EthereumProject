@@ -13,19 +13,23 @@ w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 # #  methods=["GET", "POST"]
 # @app.route('/transact')
 def transact():
-  handleTransaction.main(w3)
+  # handleTransaction.main(w3)
+  
+  my_NFTs = handleTransaction.main(w3)
+  
   if request.method == "POST":
     nft = request.form.get("nft")
     recipient = request.form.get("recipient")
     key = request.form.get("key")
+    contract = request.form.get("contract")
     
-    if not nft or not recipient or not key:
+    if not nft or not recipient or not key or not contract:
       error = "all form fields required..."
       return error
-    print(f"key: {key}, recipient: {recipient}, nft: {nft}")
+    print(f"key: {key}, recipient: {recipient}, nft: {nft}, contract: {contract}")
     return redirect(url_for('transact'))
   
-  return render_template("transact.html")
+  return render_template("transact.html", NFTs=my_NFTs)
 
 # if __name__ == "__main__":
 #   app2.run(debug=True)
