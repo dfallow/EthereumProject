@@ -52,3 +52,5 @@ inputFile.onchange = function (evt) {
 button.addEventListener("click", async () => {
   uploadImage();
 });
+
+exports.allData == allData
