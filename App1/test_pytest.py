@@ -1,5 +1,4 @@
 import os
-
 import IPFSv2
 import newDeployNFT
 
