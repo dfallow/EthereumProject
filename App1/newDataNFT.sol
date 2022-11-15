@@ -10,6 +10,7 @@ contract NewDataNFT is ERC721, Ownable, ERC721URIStorage {
     address private _owner;
 
     mapping(uint256 => string) public tokenIdToURI;
+    mapping(uint256 => address) public tokenIdToOwner;
 
     struct DataItem {
         string ipfsHash;
@@ -31,6 +32,7 @@ contract NewDataNFT is ERC721, Ownable, ERC721URIStorage {
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, tokenURI);
         tokenIdToURI[tokenId] = tokenURI;
+        tokenIdToOwner[tokenId] = msg.sender;
         emit Minted(msg.sender, tokenId, tokenURI);
         return tokenId;
     }
@@ -88,4 +90,5 @@ contract NewDataNFT is ERC721, Ownable, ERC721URIStorage {
         address tokenOwner = ownerOf(tokenId);
         return tokenOwner;
     }
+
 }

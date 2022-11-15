@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, redirect
 import json
 import os
 import sys
@@ -12,8 +12,13 @@ import newDeployNFT
 app_one_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 os.chdir(app_one_dir)
 
-app = Flask(__name__)
+# able to access other route from app2 folder
+sys.path.append(os.path.abspath(os.path.join('..')))
+from App2.app2 import transact, browsingPage
 
+app = Flask(__name__)
+app.add_url_rule('/transact', methods=["GET", "POST"], view_func=transact)
+app.add_url_rule('/browseNFTs', view_func=browsingPage)
 
 @app.route('/')
 def index():
@@ -23,14 +28,9 @@ def index():
 
 @app.route('/ProcessInfo/<string:inputInfo>', methods=['POST'])
 def ProcessInfo(inputInfo):
-    inputInfo = json.loads(inputInfo)
-
-    info_object = json.dumps(inputInfo, indent=2)
-
-    newDeployNFT.new_deploy_nft(inputInfo['name'], info_object)
-
-    return ('/')
-
+    # pass file name and the json to deployNFT
+    newDeployNFT.new_deploy_nft(json.loads(inputInfo)['name'],json.dumps(json.loads(inputInfo), indent=2))
+    return('/')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=True)
