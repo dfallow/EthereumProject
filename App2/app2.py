@@ -5,7 +5,7 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.join('..')))
 
-from App2 import handleTransaction
+from App2 import handleTransaction, browseNFTs
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
@@ -13,10 +13,6 @@ w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 # #  methods=["GET", "POST"]
 # @app.route('/transact')
 def transact():
-  # handleTransaction.main(w3)
-  
-  my_NFTs = handleTransaction.main(w3)
-  
   if request.method == "POST":
     nft = request.form.get("nft")
     recipient = request.form.get("recipient")
@@ -29,7 +25,10 @@ def transact():
     print(f"key: {key}, recipient: {recipient}, nft: {nft}, contract: {contract}")
     return redirect(url_for('transact'))
   
-  return render_template("transact.html", NFTs=my_NFTs)
+  return render_template("transact.html", myNFTs=handleTransaction.getMyNFTs(w3))
+
+def browsingPage():
+  return render_template("BrowseNFTs.html", allNFTs=browseNFTs.getAllNFTs())
 
 # if __name__ == "__main__":
 #   app2.run(debug=True)

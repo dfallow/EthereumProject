@@ -14,10 +14,11 @@ os.chdir(app_one_dir)
 
 # able to access other route from app2 folder
 sys.path.append(os.path.abspath(os.path.join('..')))
-from App2.app2 import transact
+from App2.app2 import transact, browsingPage
 
 app = Flask(__name__)
 app.add_url_rule('/transact', methods=["GET", "POST"], view_func=transact)
+app.add_url_rule('/browseNFTs', view_func=browsingPage)
 
 @app.route('/')
 def index():

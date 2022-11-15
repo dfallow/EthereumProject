@@ -28,6 +28,7 @@ function uploadImage() {
     const request = new XMLHttpRequest();
     request.open("POST", `/ProcessInfo/${JSON.stringify(allData)}`);
     request.send();
+    window.location.reload();
   };
 }
 
