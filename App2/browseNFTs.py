@@ -69,3 +69,4 @@ def getAllNFTs():
             
             
     return NFTs_data
+    

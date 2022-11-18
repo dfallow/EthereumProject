@@ -105,4 +105,3 @@ def getMyNFTs(w3):
     
     # metadata = json.loads(urlopen(c_data[-1]).read())
     # print("https://ipfs.io/ipfs/" + metadata["imageUrl"])
-  

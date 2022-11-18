@@ -1,6 +1,7 @@
 import IPFSv2
 import newContractDetails
 from web3 import Web3
+import transaction_app2
 
 # test environment
 #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
@@ -42,6 +43,9 @@ contract_deployed = w3.eth.contract(
     address=contract_address, abi=newContractDetails.abi
 )
 
+acct1 = w3.eth.account.create()
+acct2 = w3.eth.account.create()
+
 
 def new_deploy_nft(file_name, info_object):
 
@@ -77,3 +81,9 @@ def new_deploy_nft(file_name, info_object):
     print("OWNER", contract_deployed.functions.tokenIdToOwner(tokenId).call())
 
     print("BLOCK number", w3.eth.block_number)
+    print("acct1 address: ", acct1.address)
+    contract_deployed.functions.changeOwnerOfToken(acct1.address, tokenId).transact()
+    print("Owner of NFT(1): ", contract_deployed.functions.getOwnerOfToken(tokenId).call())
+    transaction_app2.sendNFT(acct1, acct2, tokenId)
+    print("acct2 address: ", acct2.address)
+    print("Owner of NFT(2): ", contract_deployed.functions.getOwnerOfToken(tokenId).call())

@@ -7,7 +7,7 @@ sys.path.append(os.path.abspath(os.path.join('..')))
 
 from App2 import handleTransaction, browseNFTs
 
-w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
+w3 = Web3(Web3.EthereumTesterProvider)
 
 
 # #  methods=["GET", "POST"]
