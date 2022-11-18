@@ -28,7 +28,6 @@ class NFTs:
 def getAllNFTs():
     
     w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
-    
     numOfBLK = w3.eth.get_block('latest')["number"]
     # print(numOfBLK)
     
@@ -38,34 +37,22 @@ def getAllNFTs():
         for i in reversed(range(1, numOfBLK+1)) 
         if w3.eth.get_transaction(w3.eth.get_block(i)["transactions"][0].hex())["to"] is not None 
     ]))
-    # print(allContractAddress)
+    print(allContractAddress)
     
     NFTs_data = []
     
     for ca in allContractAddress:
         contract = w3.eth.contract(address=ca, abi=cd.abi)
         numOfNFTs = contract.functions.totalSupply().call()
-    
-        for num in range(numOfNFTs):
             
-            metadata = contract.functions.dataItems(num).call()[-1]
-            # imgIpfs = json.loads(urlopen(metadata).read())["image"]
-            # collection = json.loads(urlopen(metadata).read())["attributes"][0]["department"]
-            # name = json.loads(urlopen(metadata).read())["name"]
-            # tid = num + 1
-            # owner = contract.functions.tokenIdToOwner(tid).call()
-            # print(json.loads(urlopen(metadata).read())["image"])
-
-            NFTs_data.append(
-                NFTs(ca,
-                     metadata,
-                     json.loads(urlopen(metadata).read())["image"],
-                     json.loads(urlopen(metadata).read())["name"],
-                     json.loads(urlopen(metadata).read())["attributes"][0]["department"],
-                     num + 1,
-                     contract.functions.tokenIdToOwner(num+1).call(),
-                )
-            )
+        NFTs_data += [NFTs
+             (ca,
+              contract.functions.dataItems(n).call()[-1],
+              json.loads(urlopen(contract.functions.dataItems(n).call()[-1]).read())["image"],
+              json.loads(urlopen(contract.functions.dataItems(n).call()[-1]).read())["name"],
+              json.loads(urlopen(contract.functions.dataItems(n).call()[-1]).read())["attributes"][0]["department"],
+              n + 1,
+              contract.functions.tokenIdToOwner(n+1).call()
+            )for n in range(numOfNFTs)]
             
-            
-    return NFTs_data
+    return sorted(NFTs_data, key=lambda x: x.collection, reverse=True)

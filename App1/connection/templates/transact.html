@@ -6,20 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"rel="stylesheet"/>
+    <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/transaction.css') }}"
+    />
     <title>Ethereum Transaction</title>
   </head>
 
   <body>
     <div>
-        <h3>This Website will handle the NFT Transaction</h3>
+        <h3 class="transaction_title">This Website will handle the NFT Transaction</h3>
     </div>
 
-    <form action="{{ url_for("transact")}}" method = "POST">
-      <p>NFT token <input type = "text" name = "nft" /></p>
-      <p>Contract address <input type = "text" name = "contract" /></p>
-      <p>Recipient Address <input type = "text" name = "recipient" /></p>
-      <p>Your private key <input type = "text" name = "key" /></p>
+    <form class="form" action="{{ url_for("transact")}}" method = "POST">
+      <input type = "text" name = "nft" placeholder="tokenId"/>
+      <input type = "text" name = "contract" placeholder="contract address"/>
+      <input type = "text" name = "recipient" placeholder="recipient address"/>
       <button type="submit">Transfer</button>
     </form>
 
@@ -29,6 +31,9 @@
     {% else %}
       {% for nft in myNFTs %}
       <img src="{{nft.img_ipfs}}" width="300" height="300">
+      <p>{{nft.contractAddress}}</p>
+      <p>{{nft.owner}}</p>
+      <p>{{nft.tokenId}}</p>
       {% endfor %}
     {% endif %}
     

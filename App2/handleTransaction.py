@@ -27,7 +27,7 @@ class NFTs:
 # get the NFTs a user owns
 def getMyNFTs(w3):
     # w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
-    w3.eth.default_account = w3.eth.accounts[0]
+
     
     numOfBLK = w3.eth.get_block('latest')["number"]
     
@@ -41,20 +41,13 @@ def getMyNFTs(w3):
     
     for ca in allContractAddress:
         contract = w3.eth.contract(address=ca, abi=cd.abi)
-        numOfNFTs = contract.functions.totalSupply().call()
-        print(numOfNFTs)
         
-        # for i in range(numOfNFTs):
-        #     print(contract.functions.tokenIdToOwner(i+1).call())
+        ownedToken = [
+            x for x in range(contract.functions.totalSupply().call())
+            if contract.functions.tokenIdToOwner(x+1).call() == w3.eth.default_account 
+        ]
         
-        # # print(contract.fun)
-        
-        if w3.eth.default_account in list(set([contract.functions.tokenIdToOwner(x+1).call() for x in range(numOfNFTs)])):
-            ownedToken = [
-                x
-                for x in range(numOfNFTs)
-                if contract.functions.tokenIdToOwner(x+1).call() == w3.eth.default_account
-            ]
+        if ownedToken:
             
             for num in ownedToken:
                 metadata = contract.functions.dataItems(num).call()[-1]
@@ -70,39 +63,7 @@ def getMyNFTs(w3):
                         contract.functions.tokenIdToOwner(num+1).call(),
                     )
                 )
-
-    return myNFTs_data
-    
-    # target_block = w3.eth.get_block(6)
-    # print("Block details: ", target_block)
-    
-    # txh = target_block["transactions"][0].hex()
-    # print("Transaction hash: ", txh)
-    
-    # # get transaction
-    # transaction = w3.eth.get_transaction(txh)
-    # print("Transaction details: ", transaction)
-    
-    # c_add = transaction["to"]
-    # contract = w3.eth.contract(address=c_add, abi=cd.abi)
-    
-    # numOfNFTs = contract.functions.totalSupply().call()
-    
-    # print("number of NFTs in this collections", numOfNFTs)
-        
-    
-    # return [json.loads(urlopen(contract.functions.dataItems(i).call()[-1]).read())["image"]
-    #     for i in range(numOfNFTs)]
-        
-    
-    # print(contract.functions.dataItems(0).call())
-    # print(contract.functions.dataItems(1).call())
-    
-    # print("OWNERSHIP", contract.functions.getOwnerOfToken(1).call() )
-    # c_data = 
-    # print(c_data)
-    
-    
-    # metadata = json.loads(urlopen(c_data[-1]).read())
-    # print("https://ipfs.io/ipfs/" + metadata["imageUrl"])
+                
+    return sorted(myNFTs_data, key=lambda x: x.collection, reverse=True)
+# getMyNFTs()
   

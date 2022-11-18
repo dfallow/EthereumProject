@@ -3,12 +3,13 @@ from web3 import Web3
 import json
 import os
 import sys
+import timeit
 sys.path.append(os.path.abspath(os.path.join('..')))
 
-from App2 import handleTransaction, browseNFTs
+from App2 import handleTransaction, browseNFTs, nftTransfer
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
-
+w3.eth.default_account = w3.eth.accounts[1]
 
 # #  methods=["GET", "POST"]
 # @app.route('/transact')
@@ -16,13 +17,15 @@ def transact():
   if request.method == "POST":
     nft = request.form.get("nft")
     recipient = request.form.get("recipient")
-    key = request.form.get("key")
     contract = request.form.get("contract")
     
-    if not nft or not recipient or not key or not contract:
+    if not nft or not recipient or not contract:
       error = "all form fields required..."
       return error
-    print(f"key: {key}, recipient: {recipient}, nft: {nft}, contract: {contract}")
+    print(f"recipient: {recipient}, nft: {nft}, contract: {contract}")
+    
+    # do the transaction here
+    nftTransfer.transferOwnerOfNFT(w3, nft, contract, recipient)
     return redirect(url_for('transact'))
   
   return render_template("transact.html", myNFTs=handleTransaction.getMyNFTs(w3))
