@@ -3,7 +3,8 @@ import newContractDetails
 from web3 import Web3
 
 # test environment
-w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
+#w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
+w3 = Web3(Web3.EthereumTesterProvider())
 
 w3.eth.default_account = w3.eth.accounts[1]
 
@@ -40,6 +41,7 @@ contract_address = transaction_receipt["contractAddress"]
 contract_deployed = w3.eth.contract(
     address=contract_address, abi=newContractDetails.abi
 )
+
 
 
 def new_deploy_nft(file_name, info_object):
