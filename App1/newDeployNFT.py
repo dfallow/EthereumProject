@@ -43,6 +43,7 @@ contract_deployed = w3.eth.contract(
 )
 
 
+
 def new_deploy_nft(file_name, info_object):
 
     # store file on IPFS and return it's hash and url
