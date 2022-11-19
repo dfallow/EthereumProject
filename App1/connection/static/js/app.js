@@ -6,6 +6,34 @@ const machineName = document.querySelector("#name");
 const machineDepartment = document.querySelector("#department");
 const imageUploaded = document.querySelector("#file");
 
+async function uploadFiles() {
+  const node = await Ipfs.create();
+  const resultArr = [];
+  const fileArray = Array.from(imageUploaded.files);
+  const dirResult = [];
+
+  let fileObjectArray = fileArray.map((file) => {
+    return {
+      path: file.name,
+      content: file,
+    };
+  });
+
+  for await (const file of node.addAll(fileObjectArray, {
+    wrapWithDirectory: true,
+  })) {
+    resultArr.push(file);
+  }
+
+  const directoryCID = resultArr[resultArr.length - 1].cid;
+
+  for await (const item of node.ls(directoryCID)) {
+    dirResult.push(item);
+  }
+
+  console.log(dirResult);
+}
+
 function uploadImage() {
   const fileReader = new FileReader();
   // Read file as ArrayBuffer
@@ -51,5 +79,6 @@ inputFile.onchange = function (evt) {
 };
 
 button.addEventListener("click", async () => {
-  uploadImage();
+  //uploadImage();
+  uploadFiles();
 });
