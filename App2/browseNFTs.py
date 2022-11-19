@@ -44,7 +44,7 @@ def getAllNFTs():
     for ca in allContractAddress:
         contract = w3.eth.contract(address=ca, abi=cd.abi)
         numOfNFTs = contract.functions.totalSupply().call()
-            
+        
         NFTs_data += [NFTs
              (ca,
               contract.functions.dataItems(n).call()[-1],
@@ -52,7 +52,7 @@ def getAllNFTs():
               json.loads(urlopen(contract.functions.dataItems(n).call()[-1]).read())["name"],
               json.loads(urlopen(contract.functions.dataItems(n).call()[-1]).read())["attributes"][0]["department"],
               n + 1,
-              contract.functions.tokenIdToOwner(n+1).call()
+              contract.functions.getOwnerOfToken(n+1).call()
             )for n in range(numOfNFTs)]
             
     return sorted(NFTs_data, key=lambda x: x.collection, reverse=True)

@@ -9,11 +9,17 @@ sys.path.append(os.path.abspath(os.path.join('..')))
 from App2 import handleTransaction, browseNFTs, nftTransfer
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
-w3.eth.default_account = w3.eth.accounts[1]
+
+# this default account represent the current user
+# can transfer his NFT
+w3.eth.default_account = w3.eth.accounts[0]
 
 # #  methods=["GET", "POST"]
 # @app.route('/transact')
 def transact():
+  
+  getMyNfts = handleTransaction.getMyNFTs(w3)
+  
   if request.method == "POST":
     nft = request.form.get("nft")
     recipient = request.form.get("recipient")
@@ -28,10 +34,11 @@ def transact():
     nftTransfer.transferOwnerOfNFT(w3, nft, contract, recipient)
     return redirect(url_for('transact'))
   
-  return render_template("transact.html", myNFTs=handleTransaction.getMyNFTs(w3))
+  return render_template("transact.html", myNFTs=getMyNfts)
 
 def browsingPage():
-  return render_template("BrowseNFTs.html", allNFTs=browseNFTs.getAllNFTs())
+  getAllNFTs = browseNFTs.getAllNFTs()
+  return render_template("BrowseNFTs.html", allNFTs=getAllNFTs)
 
 # if __name__ == "__main__":
 #   app2.run(debug=True)
