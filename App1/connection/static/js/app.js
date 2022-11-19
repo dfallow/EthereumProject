@@ -31,7 +31,30 @@ async function uploadFiles() {
     dirResult.push(item);
   }
 
-  console.log(dirResult);
+  console.log("DIRRESULT", dirResult);
+
+  const allData = [];
+
+  const directory = dirResult[0]["path"].split("/")[0];
+  console.log("DIRECTORY", directory);
+
+  for (let i = 0; i < dirResult.length; i++) {
+    const fileData = {
+      directory: directory,
+      name: dirResult[i].name,
+      attributes: [
+        { machineName: machineName.value },
+        { department: machineDepartment.value },
+      ],
+    };
+    allData.push(fileData);
+  }
+
+  console.log("test", allData);
+  const request = new XMLHttpRequest();
+  request.open("POST", `/ProcessInfo/${JSON.stringify(allData)}`);
+  request.send();
+  window.location.reload();
 }
 
 function uploadImage() {
