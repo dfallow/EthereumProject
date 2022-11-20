@@ -31,12 +31,12 @@ async function uploadFiles() {
     dirResult.push(item);
   }
 
-  console.log("DIRRESULT", dirResult);
+  console.log("dirResult", dirResult);
 
   const allData = [];
 
   const directory = dirResult[0]["path"].split("/")[0];
-  console.log("DIRECTORY", directory);
+  console.log("dir", directory);
 
   for (let i = 0; i < dirResult.length; i++) {
     const fileData = {

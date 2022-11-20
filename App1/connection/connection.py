@@ -32,7 +32,7 @@ def index():
 def ProcessInfo(inputInfo):
     # pass file name and the json to deployNFT
     newDeployNFT.new_deploy_nft(json.loads(
-        inputInfo)[0]['attributes'][0], json.dumps(json.loads(inputInfo), indent=2))
+        inputInfo)[0]['directory'], json.dumps(json.loads(inputInfo), indent=2))
     return ('/')
 
 
