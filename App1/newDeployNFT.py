@@ -12,8 +12,11 @@ w3.eth.default_account = w3.eth.accounts[0]
 print("IS CONNECTED", w3.isConnected())
 
 # can run when needed to check connection
+
+
 def is_connected(w3):
     return w3.isConnected()
+
 
 # compile contract
 contract_compiled = w3.eth.contract(
@@ -72,7 +75,7 @@ def new_deploy_nft(file_name, info_object):
     # get URI of token
     print("URI", contract_deployed.functions.tokenIdToURI(tokenId).call())
 
-    #to get owner of NFT can use either tokenIdToOwner mapping or function getOwnerOfToken(tokenId)
+    # to get owner of NFT can use either tokenIdToOwner mapping or function getOwnerOfToken(tokenId)
     # this uses mapping
     print("OWNER", contract_deployed.functions.tokenIdToOwner(tokenId).call())
 

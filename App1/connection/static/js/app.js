@@ -35,7 +35,8 @@ async function uploadFiles() {
 
   const allData = [];
 
-  const directory = dirResult[0]["path"].split("/")[0];
+  const directory =
+    dirResult[0]["path"].split("/")[0];
   console.log("dir", directory);
 
   for (let i = 0; i < dirResult.length; i++) {
