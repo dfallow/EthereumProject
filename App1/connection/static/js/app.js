@@ -12,11 +12,21 @@ async function uploadFiles() {
   const fileArray = Array.from(imageUploaded.files);
   const dirResult = [];
 
-  let fileObjectArray = fileArray.map((file) => {
+  /* let fileObjectArray = fileArray.map((file) => {
     return {
       path: file.name,
       content: file,
     };
+  }); */
+
+  let fileObjectArray = [];
+
+  fileArray.forEach((file) => {
+    let fileObject = {
+      path: file.name,
+      content: file,
+    };
+    fileObjectArray.push(fileObject);
   });
 
   for await (const file of node.addAll(fileObjectArray, {
@@ -25,18 +35,20 @@ async function uploadFiles() {
     resultArr.push(file);
   }
 
+  console.log("resultArr", resultArr);
+
+  
   const directoryCID = resultArr[resultArr.length - 1].cid;
 
   for await (const item of node.ls(directoryCID)) {
     dirResult.push(item);
   }
 
-  console.log("dirResult", dirResult);
+  console.log("dir", dirResult);
 
-  const allData = [];
+  /* const allData = [];
 
-  const directory =
-    dirResult[0]["path"].split("/")[0];
+  const directory = dirResult[0]["path"].split("/")[0];
   console.log("dir", directory);
 
   for (let i = 0; i < dirResult.length; i++) {
@@ -55,7 +67,7 @@ async function uploadFiles() {
   const request = new XMLHttpRequest();
   request.open("POST", `/ProcessInfo/${JSON.stringify(allData)}`);
   request.send();
-  window.location.reload();
+  window.location.reload();*/
 }
 
 function uploadImage() {
