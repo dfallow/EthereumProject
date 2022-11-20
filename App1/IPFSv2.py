@@ -35,11 +35,11 @@ def store_ipfs_file(file_name, info_object):
 
     write_json(new_file, info_object, json_object, keys)
 
-    # adds file to ipfs
-    # res = api.add(new_file)
+    # adds metadata file to ipfs
+    res = api.add(new_file)
     # hash of the file on ipfs
-    # hash = str(res[0]["Hash"])
+    hash = str(res[0]["Hash"])
     # url
-    # url = "https://ipfs.io/ipfs/" + hash
-    # return hash, url
-    return "hash", "url"
+    url = "https://ipfs.io/ipfs/" + hash
+    print("META URL", url)
+    return hash, url
