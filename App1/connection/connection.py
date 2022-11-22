@@ -23,7 +23,7 @@ app.add_url_rule('/browseNFTs', view_func=browsingPage)
 @app.route('/')
 def index():
     # return render_template('index.html')
-    return render_template('addMachine.html')
+    return render_template('index.html')
 
 
 @app.route('/ProcessInfo/<string:inputInfo>', methods=['POST'])
@@ -32,5 +32,15 @@ def ProcessInfo(inputInfo):
     newDeployNFT.new_deploy_nft(json.loads(inputInfo)['name'],json.dumps(json.loads(inputInfo), indent=2))
     return('/')
 
+@app.route('/registerMachine', methods=['GET'])
+def registerMachine():
+    return render_template('registerMachine.html')
+
+@app.route('/manageData', methods=['GET'])
+def manageData():
+    return render_template('manageData.html')
+
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=True)
+    app.run(port=3000,debug=True, use_reloader=True)
+
+

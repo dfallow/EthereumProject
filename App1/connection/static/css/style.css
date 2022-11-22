@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: "Rubik", sans-serif;
+  font-family: 'Rubik', sans-serif;
   color: #333;
   background-color: #dee2e6;
 }
@@ -17,6 +17,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.title {
+  margin-bottom: 64px;
 }
 
 .image-container {
@@ -37,8 +41,9 @@ body {
   font-size: 18px;
 }
 
-.input-text, .input-text2 {
-  font-family: "Rubik";
+.input-text,
+.input-text2 {
+  font-family: 'Rubik';
   padding: 10px;
   margin-bottom: 24px;
   resize: none;
