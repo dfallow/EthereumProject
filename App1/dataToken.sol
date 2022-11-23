@@ -1,20 +1,24 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+/*
+ * This contract is used to save data items as NFTs on the blockchain
+ * The reference to data item on IPFS is stored in NFT token URI
+ */
 contract DataToken is ERC721, ERC721URIStorage, Ownable {
     uint256 private _numberOfDataTokens;
 
-    //set in constructor or in changeDoctor()
+    // address is set in constructor or in changeDoctor()
     address private _doctor;
 
+    // constructor sets contract owner to the patient who deployed it
+    // it also sets _doctor to patient's current doctor (requires doctor's address)
     constructor(address doctorAddress) ERC721("DataToken", "DTK") {
-        //set contract ownership to doctor
         _transferOwnership(msg.sender);
-        //set patient to be the owner of tokens (needed for ownership functions)
         _doctor = doctorAddress;
     }
 
@@ -24,7 +28,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
     event DoctorChanged(bool success);
     event ContractOwnershipChanged(bool success);
 
-    //mint data token and save data to dataItems array
+    // mint data token
     function mintDataToken(string memory ipfsDataURL)
         public
         onlyOwner
@@ -35,16 +39,18 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
             "missing IPFS url for the data item"
         );
 
-        //set NFT tokenID
+        // set NFT tokenID
         _numberOfDataTokens += 1;
         uint256 tokenId = _numberOfDataTokens;
 
-        //mint
+        // mint
         _safeMint(msg.sender, tokenId);
+        // set tokenID to link back to data item on IPFS
         _setTokenURI(tokenId, ipfsDataURL);
+
         emit Minted(msg.sender, tokenId);
 
-        //return token(NFT) ID
+        // return token(NFT) ID
         return tokenId;
     }
 
@@ -67,7 +73,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         returns (string memory)
     {
         address _patient = owner();
-        address _tokenOwner = _ownerOf(tokenId);
+        address _tokenOwner = ownerOf(tokenId);
         //only doctor or the patient or someone who bought the data can see the URI
         require(
             msg.sender == _patient ||
