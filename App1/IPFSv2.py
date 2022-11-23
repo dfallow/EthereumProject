@@ -44,6 +44,8 @@ def store_ipfs_file_only_hash(file_name, file_hash, file_index):
     hash = str(res[0]["Hash"])
 
     url = "https://ipfs.io/ipfs/" + hash
+
+    os.remove(new_file)
     return hash, url
 
 
