@@ -49,6 +49,10 @@ def new_deploy_nft(file_name, info_object):
     # ipfs daemon has to be running in the terminal
     file_hash, file_url = IPFSv2.store_ipfs_file(file_name, info_object)
 
+    print()
+    print(info_object)
+    print()
+
     # save data
     print("SAVE", contract_deployed.functions.saveData(
         file_hash, file_url).transact())
