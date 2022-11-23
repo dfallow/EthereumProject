@@ -21,9 +21,10 @@ def transact():
   getMyNfts = handleTransaction.getMyNFTs(w3)
   
   if request.method == "POST":
-    nft = request.form.get("nft")
-    recipient = request.form.get("recipient")
+    nft = request.form.get("tid")
+    recipient = request.form.get("to_acc")
     contract = request.form.get("contract")
+    privateKey = request.form.get("p_key")
     
     if not nft or not recipient or not contract:
       error = "all form fields required..."
@@ -31,7 +32,7 @@ def transact():
     print(f"recipient: {recipient}, nft: {nft}, contract: {contract}")
     
     # do the transaction here
-    nftTransfer.transferOwnerOfNFT(w3, nft, contract, recipient)
+    nftTransfer.transferOwnerOfNFT(w3, nft, contract, recipient, privateKey)
     return redirect(url_for('transact'))
   
   return render_template("transact.html", myNFTs=getMyNfts)
