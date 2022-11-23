@@ -8,23 +8,20 @@ from newDeployNFT import w3
 def create_files_to_store(name, files):
     files_array = files.split(",")
 
-    print()
-    print("FILE ARRAY", files_array)
-    print("SINGLE FILE", files_array[0])
+    files_hash_array = []
+    files_url_array = []
+
     for file in files_array:
-        print("FILE INDEX", files_array.index(file))
-        IPFSv2.store_ipfs_file_only_hash(name, file, files_array.index(file))
-    return
+        #Store single file in ipfs
+        file_hash, file_url = IPFSv2.store_ipfs_file_only_hash(name, file, files_array.index(file))
+        files_hash_array.append(file_hash)
+        files_url_array.append(file_url)
+    return files_hash_array, files_url_array
 
 def deploy_nfts(files_object):
-    print()
-    print()
-    print("FILES", json.loads(files_object)['image'])
-    print()
-    print("here")
-    print(json.loads(files_object)['name'],json.dumps(json.loads(files_object), indent=2))
-    create_files_to_store(json.loads(files_object)['name'], json.loads(files_object)['image'])
+    #returns two arrays which show the location in IPFS of each file
+    hash_array, url_array = create_files_to_store(json.loads(files_object)['name'], json.loads(files_object)['image'])
 
-    #create_files_to_store(json.loads(files_object['name']), json.loads(files_object['image']))
-    
+    print("HASHES", hash_array)
+    print("URLs", url_array)    
     return
