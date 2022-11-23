@@ -26,11 +26,16 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/ProcessInfo/<string:inputInfo>', methods=['POST'])
-def ProcessInfo(inputInfo):
+@app.route('/ProcessMachineInfo/<string:inputInfo>', methods=['POST'])
+def ProcessMachineInfo(inputInfo):
     # pass file name and the json to deployNFT
     newDeployNFT.new_deploy_nft(json.loads(inputInfo)['name'],json.dumps(json.loads(inputInfo), indent=2))
     return('/')
+
+@app.route('/ProcessFilesInfo/<string:inputInfo>', methods=['POST'])
+def ProcessFilesInfo(inputInfo):
+    # pass the multiple files data and do something with it
+    return('/')    
 
 @app.route('/registerMachine', methods=['GET'])
 def registerMachine():
