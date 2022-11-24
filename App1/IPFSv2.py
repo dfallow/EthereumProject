@@ -1,9 +1,20 @@
 import json
 import os
-
 import ipfsApi
 
 api = ipfsApi.Client("127.0.0.1", 5001)
+
+#creating the files to store in IPFS
+def write_json_only_hash(new_file, file_hash):
+    print("FILE HASH", file_hash)
+
+    file_json = {
+        'image': "https://ipfs.io/ipfs/" + file_hash + "?" + file_hash,
+        'name': "Machine Maybe"
+    }
+
+    with open(new_file, 'x') as file:
+        file.write(json.dumps(file_json))
 
 
 # creates new file in /tempFiles
@@ -18,6 +29,24 @@ def write_json(new_file, info_object):
         )
         file.seek(0)
         json.dump(file_data, file, indent=4)
+
+
+# for storing multiple files
+def store_ipfs_file_only_hash(file_name, file_hash, file_index):
+    new_dir = os.path.dirname(os.path.realpath(__file__))
+
+    new_file = new_dir + "/tempFiles/" + file_name + str(file_index) + ".json"
+
+    write_json_only_hash(new_file, file_hash)
+
+    res = api.add(new_file)
+
+    hash = str(res[0]["Hash"])
+
+    url = "https://ipfs.io/ipfs/" + hash
+
+    os.remove(new_file)
+    return hash, url
 
 
 def store_ipfs_file(file_name, info_object):
