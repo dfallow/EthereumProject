@@ -7,6 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir)))
 
 import newDeployNFT
+import deployMachineData
 
 ## Returns /home/dfallow/Documents/EthereumProject
 app_one_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -29,12 +30,14 @@ def index():
 @app.route('/ProcessMachineInfo/<string:inputInfo>', methods=['POST'])
 def ProcessMachineInfo(inputInfo):
     # pass file name and the json to deployNFT
+    print("NEW DATA", json.loads(inputInfo))
     newDeployNFT.new_deploy_nft(json.loads(inputInfo)['name'],json.dumps(json.loads(inputInfo), indent=2))
     return('/')
 
 @app.route('/ProcessFilesInfo/<string:inputInfo>', methods=['POST'])
 def ProcessFilesInfo(inputInfo):
     # pass the multiple files data and do something with it
+    deployMachineData.deploy_nfts(inputInfo)
     return('/')    
 
 @app.route('/registerMachine', methods=['GET'])

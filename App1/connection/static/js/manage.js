@@ -4,8 +4,53 @@ const createButton = document.querySelector('.btn');
 const filesUploaded = document.querySelector('#file');
 
 createButton.addEventListener('click', async () => {
-  uploadData();
+  // uploadData();
+  uploadMultipleFiles();
 });
+
+async function uploadMultipleFiles() {
+  const node = await Ipfs.create();
+
+    const resultsArray = [];
+    
+    let fileArray = [];
+    for (let i=0; i<imageUploaded.files.length; i++) {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(imageUploaded.files[i]);
+
+      fileReader.onload = async () =>  {
+      
+        let { path } = await node.add(fileReader.result);
+
+        fileArray.push(path);
+
+        console.log("FILE ARRAY", fileArray.toString());
+        console.log("PATH", path);
+
+        if ( fileArray.length == imageUploaded.files.length) {
+          console.log("EOFIHEFOIHEWFI")
+          let allData = {
+            image: fileArray.toString(),
+            name: "FromMachine",
+            attributes: [{machine: machineId}]
+          };
+        
+          console.log("ALL DATA", allData);
+        
+          let request = new XMLHttpRequest();
+          request.open("POST", `/ProcessInfo/${JSON.stringify(allData)}`)
+          request.send();
+        }
+       }
+    }
+
+  
+  console.log("RESULTS ARRAY", resultsArray)
+
+  
+  //window.location.reload();
+
+}
 
 function uploadData() {
   console.log(filesUploaded.files);
