@@ -46,7 +46,12 @@ body {
   font-family: 'Rubik';
   padding: 10px;
   margin-bottom: 24px;
+  width: 400px;
   resize: none;
+}
+
+#account {
+  margin-top: 48px;
 }
 
 .btn,
