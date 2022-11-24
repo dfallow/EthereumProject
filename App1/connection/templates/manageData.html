@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Mint files from the machine</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,24 +18,26 @@
     <script src="https://cdn.jsdelivr.net/npm/ipfs/dist/index.min.js"></script>
   </head>
 
-
   <body>
     <div class="container">
       <div class="input-file-container">
-        <input type="file" accept="*" name="file" id="file" class="input-file" multiple />
+        <input type="file" name="file" id="file" class="input-file" multiple />
         <label for="file">Choose a file</label>
       </div>
+      <h1 class="title">Store machine data into an NFT</h1>
       <div class="image-container">
         <img src="" alt="" class="image" />
       </div>
-
-      <input type="text" name="name" id="name" class="input-text2" placeholder="Enter Machine name"/>
-
-      <input type="text" name="name" id="department" class="input-text2" placeholder="Enter Machine Department"/>
-
+      <input
+        type="text"
+        name="name"
+        id="machine-id"
+        class="input-text2"
+        placeholder="Enter Machine ID"
+      />
       <button class="btn">create NFT</button>
       <h1 class="contract-text"></h1>
     </div>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/manage.js') }}"></script>
   </body>
 </html>
