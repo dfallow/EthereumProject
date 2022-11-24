@@ -3,6 +3,8 @@ const inputFile = document.querySelector('.input-file');
 const createButton = document.querySelector('.btn');
 const filesUploaded = document.querySelector('#file');
 
+const machineId = "This will be replaced"
+
 createButton.addEventListener('click', async () => {
   // uploadData();
   uploadMultipleFiles();
@@ -14,9 +16,9 @@ async function uploadMultipleFiles() {
     const resultsArray = [];
     
     let fileArray = [];
-    for (let i=0; i<imageUploaded.files.length; i++) {
+    for (let i=0; i<filesUploaded.files.length; i++) {
       const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(imageUploaded.files[i]);
+      fileReader.readAsArrayBuffer(filesUploaded.files[i]);
 
       fileReader.onload = async () =>  {
       
@@ -27,7 +29,7 @@ async function uploadMultipleFiles() {
         console.log("FILE ARRAY", fileArray.toString());
         console.log("PATH", path);
 
-        if ( fileArray.length == imageUploaded.files.length) {
+        if ( fileArray.length == filesUploaded.files.length) {
           console.log("EOFIHEFOIHEWFI")
           let allData = {
             image: fileArray.toString(),
@@ -38,7 +40,7 @@ async function uploadMultipleFiles() {
           console.log("ALL DATA", allData);
         
           let request = new XMLHttpRequest();
-          request.open("POST", `/ProcessInfo/${JSON.stringify(allData)}`)
+          request.open("POST", `/ProcessFilesInfo/${JSON.stringify(allData)}`)
           request.send();
         }
        }
