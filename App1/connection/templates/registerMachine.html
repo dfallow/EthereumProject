@@ -34,32 +34,36 @@
       <div class="image-container">
         <img src="" alt="" class="image" />
       </div>
+      <div class="inputs-container">
+        <input
+          type="text"
+          name="name"
+          id="name"
+          class="input-text2"
+          placeholder="Enter Machine name"
+        />
 
-      <input
-        type="text"
-        name="name"
-        id="name"
-        class="input-text2"
-        placeholder="Enter Machine name"
-      />
+        <input
+          type="text"
+          name="name"
+          id="department"
+          class="input-text2"
+          placeholder="Enter Machine Department"
+        />
+        <div class="account-container">
+          <input
+            type="text"
+            name="name"
+            id="account-input"
+            class="input-text2"
+            placeholder="Enter account number of the token owner"
+          />
+          <p>or</p>
+          <button class="connect-button btn">connect to Metamask</button>
+        </div>
+      </div>
 
-      <input
-        type="text"
-        name="name"
-        id="department"
-        class="input-text2"
-        placeholder="Enter Machine Department"
-      />
-
-      <input
-        type="text"
-        name="name"
-        id="account"
-        class="input-text2"
-        placeholder="Enter account number of the token owner"
-      />
-
-      <button class="btn">create NFT</button>
+      <button class="btn create-button">create NFT</button>
       <h1 class="contract-text"></h1>
     </div>
     <script src="{{ url_for('static', filename='js/register.js') }}"></script>

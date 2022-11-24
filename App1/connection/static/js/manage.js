@@ -1,9 +1,9 @@
 const inputMachineID = document.querySelector('#machine-id');
 const inputFile = document.querySelector('.input-file');
-const button = document.querySelector('.btn');
+const createButton = document.querySelector('.btn');
 const filesUploaded = document.querySelector('#file');
 
-button.addEventListener('click', async () => {
+createButton.addEventListener('click', async () => {
   uploadData();
 });
 

@@ -1,7 +1,8 @@
 const image = document.querySelector('.image');
 const inputFile = document.querySelector('.input-file');
 const inputText = document.querySelector('.input-text');
-const button = document.querySelector('.btn');
+const createButton = document.querySelector('.create-button');
+const connectButton = document.querySelector('.connect-button');
 const machineName = document.querySelector('#name');
 const machineDepartment = document.querySelector('#department');
 const filesUploaded = document.querySelector('#file');
@@ -50,6 +51,16 @@ inputFile.onchange = function (evt) {
   }
 };
 
-button.addEventListener('click', async () => {
+async function connectToMetamask() {
+  if (typeof window.ethereum !== 'undefined') {
+    ethereum.request({ method: 'eth_requestAccounts' });
+  }
+}
+
+createButton.addEventListener('click', async () => {
   uploadImage();
+});
+
+connectButton.addEventListener('click', () => {
+  connectToMetamask();
 });
