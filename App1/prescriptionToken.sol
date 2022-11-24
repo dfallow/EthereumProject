@@ -94,7 +94,6 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
         return _patient;
     }
 
-
     // _burn function is an override required by Solidity
     function _burn(uint256 tokenId)
         internal

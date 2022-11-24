@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  */
 contract PatientToken is ERC721, ERC721URIStorage, Ownable {
     uint256 private _numberOfPatientTokens;
+    address private NULL = 0x0000000000000000000000000000000000000000;
 
     // constructor sets contract owner to the doctor who deployed it
     // contract is deployed once per doctor so all doctor's patients are under one contract
@@ -18,26 +19,66 @@ contract PatientToken is ERC721, ERC721URIStorage, Ownable {
     }
 
     struct Patient {
-        address patientAddress;
-        address patientDataContract;
-        address patientPrescriptionContract;
+        address patientAddress; // account address
+        address patientDataContract; // patient's data contract address on the blockchain
+        address patientPrescriptionContract; // patient's prescription contract address on the blockchain
     }
 
     Patient[] private patients;
 
     // events
     event Minted(address indexed minter, uint256 nftId);
+    event ContractOwnershipChanged(bool success);
 
+    function addNewPatient(
+        address patient,
+        address dataContract,
+        address prescriptionContract
+    ) public onlyOwner {
+        patients.push(Patient(patient, dataContract, prescriptionContract));
+    }
+
+    function checkIfPatientExists(address patient)
+        public
+        view
+        onlyOwner
+        returns (bool)
+    {
+        bool _patientExists = false;
+
+        for (uint256 i = 0; i < patients.length; i++) {
+            if (patients[i].patientAddress == patient) {
+                _patientExists = true;
+            }
+        }
+        return _patientExists;
+    }
+
+    function getPatient(address patient)
+        public
+        view
+        onlyOwner
+        returns (address dataContract, address prescriptionContract)
+    {
+        for (uint256 i = 0; i < patients.length; i++) {
+            if (patients[i].patientAddress == patient) {
+                Patient storage _currentPatient = patients[i];
+                return (
+                    _currentPatient.patientDataContract,
+                    _currentPatient.patientPrescriptionContract
+                );
+            }
+        }
+    }
+
+    // TODO: check if minting is needed at all (if we don't store any ipfs data related to a patient, then we don't need this)
     // mint patient token
     function mintPatientToken(string memory ipfsDataURL)
         public
         onlyOwner
         returns (uint256)
     {
-        require(
-            bytes(ipfsDataURL).length > 0,
-            "missing IPFS url for the data item"
-        );
+        require(bytes(ipfsDataURL).length > 0, "missing IPFS url");
 
         // set NFT tokenID
         _numberOfPatientTokens += 1;
@@ -53,6 +94,17 @@ contract PatientToken is ERC721, ERC721URIStorage, Ownable {
         return tokenId;
     }
 
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        onlyOwner
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
+    }
+
+    // transfer contract ownership
     function transferOwnership(address newOwner)
         public
         override(Ownable)
@@ -62,24 +114,6 @@ contract PatientToken is ERC721, ERC721URIStorage, Ownable {
         emit ContractOwnershipChanged(false);
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
-    {
-        address _patient = owner();
-        address _tokenOwner = ownerOf(tokenId);
-        //only doctor or the patient or someone who bought the data can see the URI
-        require(
-            msg.sender == _patient ||
-                msg.sender == _doctor ||
-                msg.sender == _tokenOwner,
-            "Only the owner of data (the patient/someone who bought it) or the doctor of patient can view data"
-        );
-        return super.tokenURI(tokenId);
-    }
-
     // _burn function is an override required by Solidity
     function _burn(uint256 tokenId)
         internal
@@ -87,5 +121,4 @@ contract PatientToken is ERC721, ERC721URIStorage, Ownable {
     {
         super._burn(tokenId);
     }
-
 }

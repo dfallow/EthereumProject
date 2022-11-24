@@ -102,7 +102,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         super._burn(tokenId);
     }
 
-    //functions bellow need to be overriden so the contract works as intended
+    // DON'T USE THIS
     function safeTransferFrom(
         address from,
         address to,
@@ -111,6 +111,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         emit TokenOwnershipChanged(false);
     }
 
+    // DON'T USE THIS
     function safeTransferFrom(
         address from,
         address to,
@@ -120,6 +121,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         emit TokenOwnershipChanged(false);
     }
 
+    // DON'T USE THIS
     function transferFrom(
         address from,
         address to,
@@ -128,6 +130,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         emit TokenOwnershipChanged(false);
     }
 
+    // DON'T USE THIS
     function transferOwnership(address newOwner)
         public
         override(Ownable)
