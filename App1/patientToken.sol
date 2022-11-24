@@ -53,6 +53,15 @@ contract PatientToken is ERC721, ERC721URIStorage, Ownable {
         return tokenId;
     }
 
+    function transferOwnership(address newOwner)
+        public
+        override(Ownable)
+        onlyOwner
+    {
+        _transferOwnership(newOwner);
+        emit ContractOwnershipChanged(false);
+    }
+
     function tokenURI(uint256 tokenId)
         public
         view

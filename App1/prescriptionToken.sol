@@ -24,9 +24,11 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
 
     // events
     event Minted(address indexed minter, uint256 nftId);
+    event TokenOwnershipChanged(bool success);
+    event ContractOwnershipChanged(bool success);
 
     // mint prescription token
-    function mintDataToken(string memory ipfsDataURL)
+    function mintPrescriptionToken(string memory ipfsDataURL)
         public
         onlyOwner
         returns (uint256)
@@ -66,9 +68,32 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
         return super.tokenURI(tokenId);
     }
 
+    // change ownership of prescription tokens passed in an array
+    function transferTokenOwnership(address to, uint256[] memory tokenIdArray)
+        public
+        onlyOwner
+    {
+        for (uint256 i = 0; i < tokenIdArray.length; i++) {
+            safeTransferFrom(msg.sender, to, tokenIdArray[i]);
+        }
+
+        emit TokenOwnershipChanged(true);
+    }
+
+    // transfer contract ownership
+    function transferOwnership(address newOwner)
+        public
+        override(Ownable)
+        onlyOwner
+    {
+        _transferOwnership(newOwner);
+        emit ContractOwnershipChanged(false);
+    }
+
     function getPatient() public view onlyOwner returns (address) {
         return _patient;
     }
+
 
     // _burn function is an override required by Solidity
     function _burn(uint256 tokenId)

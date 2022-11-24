@@ -17,6 +17,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
 
     // constructor sets contract owner to the patient who deployed it
     // it also sets _doctor to patient's current doctor (requires doctor's address)
+    // contract is deployed once per patient
     constructor(address doctorAddress) ERC721("DataToken", "DTK") {
         _transferOwnership(msg.sender);
         _doctor = doctorAddress;
