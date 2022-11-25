@@ -13,22 +13,33 @@
     </head>
 
     <body>
-        <h3 class="browse_title">Browse NFTs</h3>
+        <h3 class="browse_title">Browse all NFT collections</h3>
 
-        <div class="items">
-            {% if not allNFTs or allNFTs == [] %}
-                <p>There is no any NFT on the market</p>
-            {% else %}
-                {% for nft in allNFTs %}
-                <div class="nft_container">
-                    <div class="card">
-                        <img src="{{nft.img_ipfs}}">
-                    </div>
-                    <h5 class="nft_name">{{nft.name[0]}}</h5>
-                </div>
-                {% endfor %}
-            {% endif %}
+        <div class="all_Collections">
+            <div class="items">
+                {% if not collections or collections == [] %}
+                    <p>There is no any NFT on the market</p>
+                {% else %}
+                    {% for c in collections %}
+                    <form action="{{ url_for("browsingPage")}}" method="GET">
+                        <div class="nft_container">
+                            <div class="card">
+                                <input type = "hidden" name = "ca" value="{{c}}"/>
+                                <input type = "hidden" name = "collections" value="{{collections[c][1]}}"/>
+                                <input type="image" src="{{collections[c][0]}}"/>
+                            </div>
+                            <h5 class="nft_name">{{collections[c][1]}}</h5>
+                        </div>
+                    </form>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
-    
+
+        <div class="all_NFTs">
+            <h3 class="browse_title2">Browse all NFTs</h3>
+        </div>
+
+        
     </body>
 </html>

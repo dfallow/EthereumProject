@@ -6,7 +6,7 @@ from web3 import Web3
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 # w3 = Web3(Web3.EthereumTesterProvider())
 
-w3.eth.default_account = w3.eth.accounts[0]
+w3.eth.default_account = w3.eth.accounts[1]
 
 # check if connected successfully
 print("IS CONNECTED", w3.isConnected())
@@ -24,15 +24,6 @@ transaction_hash = contract_compiled.constructor().transact()
 print("TRANSACTION HASH", transaction_hash)
 transaction_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash)
 print("TRANSACTION RECEIPT", transaction_receipt)
-# # set default account
-# w3.eth.default_account = w3.eth.accounts[0]
-
-# # function to set default account
-
-
-# def set_default_account():
-#     w3.eth.default_account = w3.eth.accounts[0]
-
 
 # retrieve contract address
 contract_address = transaction_receipt["contractAddress"]

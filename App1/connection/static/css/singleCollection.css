@@ -1,52 +1,59 @@
+*{
+    margin: 0;
+    padding: 0;
+}
 body {
     font-family: "Rubik", sans-serif;
     color: #333;
     background: #212534;
 }
 
-.browse_title {
-    text-align: center;
-    font-size: 35px;
+.single_collection_title {
     color: #f2f2f2;
+    padding-left: 3%;
 }
 
-.all_Collections {
+.collection_name {
+    font-size: 40px;
+    padding-bottom: -5%;
+    margin-top: 36px;
+    margin-bottom: 10px;
+}
+
+.the_collection {
+    padding-left: 3%;
+    margin-top: 36px;
     min-height: 100vh;
     width: 100%;
 }
 
 .items {
-    padding-left: 5%;
     text-align: center;
-    display:block;
+    display:flex;
+    gap: 36px;
     width:100%;
     margin: auto;
 }
-.items input {
+.items img {
     width: 200px;
     height: 200px;
-    
 }
 
 .nft_container {
     position: relative;
     text-align: center;
     padding: 10px;
-    float: left;
-    display: block;
+    display: flex;
 }
-  
-  /* Bottom left text */
-.nft_name {
-    color: #f2f2f2;
-    position: absolute;
-    bottom: -40px;
-    left: 16px;
-    font-size: 15px;
+.nft_item{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.items h5 {
+.nft_name {
     color: #f2f2f2;
+    font-size: 15px;
 }
 
 @property --rotate {
@@ -64,7 +71,6 @@ body {
     background: #191c29;
     width: var(--card-width);
     height: var(--card-height);
-    margin: auto;
     padding: 3px;
     position: relative;
     border-radius: 6px;
@@ -123,13 +129,12 @@ body {
     }
 }
 
-.all_NFTs{
+.items_activity {
     min-height: 100vh;
-    width: 100%;
 }
 
-.browse_title2 {
-    text-align: center;
-    font-size: 35px;
+.activity_title {
     color: #f2f2f2;
+    padding-left: 3%;
+    font-size: 30px;
 }

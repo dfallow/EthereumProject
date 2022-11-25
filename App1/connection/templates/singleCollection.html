@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/singleCollection.css') }}"
+        />
+    </head>
+<body>
+    <div class="single_collection_title">
+        <h3 class="collection_name">{{c_name}}</h3>
+        <h3>By {{creator}}</h3>
+        <h3>Items {{NFTs[-1].tokenId}}</h3>
+    </div>
+
+    <div class="the_collection">
+        <div class="items">
+            {% for nft in NFTs %}
+            <div class="nft_item">
+                <div class="card">
+                    <div class="nft_container">
+                        <img src="{{nft.img_ipfs}}">
+                    </div>
+                </div>
+                <h5 class="nft_name">{{nft.name[0]}}</h5>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="items_activity">
+        <h3 class="activity_title">Items Activity</h3>
+
+        <div class="activity">
+            
+        </div>
+
+    </div>
+    
+</body>
+</html>
