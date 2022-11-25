@@ -55,6 +55,9 @@ async function connectToMetamask() {
   if (typeof window.ethereum !== 'undefined') {
     ethereum.request({ method: 'eth_requestAccounts' });
   }
+  const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+
+  console.log(accounts);
 }
 
 createButton.addEventListener('click', async () => {
