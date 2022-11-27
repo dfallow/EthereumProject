@@ -18,6 +18,7 @@
   "homepage": "https://github.com/dfallow/EthereumProject#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
-    "ganache": "^7.5.0"
+    "ganache": "^7.5.0",
+    "ganache-cli": "^6.12.2"
   }
 }

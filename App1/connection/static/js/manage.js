@@ -1,11 +1,13 @@
-const inputMachineID = document.querySelector('#machine-id');
-const inputFile = document.querySelector('.input-file');
-const createButton = document.querySelector('.btn');
-const filesUploaded = document.querySelector('#file');
+const inputMachineID = document.querySelector("#machine-id");
+const doctorAddress = document.querySelector("#doctor-address").value;
+const patientAddress = document.querySelector("#patient-address").value;
+const inputFile = document.querySelector(".input-file");
+const createButton = document.querySelector(".btn");
+const filesUploaded = document.querySelector("#file");
 
-const machineId = "This will be replaced"
+const machineId = "This will be replaced";
 
-createButton.addEventListener('click', async () => {
+createButton.addEventListener("click", async () => {
   // uploadData();
   uploadMultipleFiles();
 });
@@ -13,45 +15,46 @@ createButton.addEventListener('click', async () => {
 async function uploadMultipleFiles() {
   const node = await Ipfs.create();
 
-    const resultsArray = [];
-    
-    let fileArray = [];
-    for (let i=0; i<filesUploaded.files.length; i++) {
-      const fileReader = new FileReader();
-      fileReader.readAsArrayBuffer(filesUploaded.files[i]);
+  const resultsArray = [];
 
-      fileReader.onload = async () =>  {
-      
-        let { path } = await node.add(fileReader.result);
+  let fileArray = [];
+  for (let i = 0; i < filesUploaded.files.length; i++) {
+    const fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(filesUploaded.files[i]);
 
-        fileArray.push(path);
+    fileReader.onload = async () => {
+      let { path } = await node.add(fileReader.result);
 
-        console.log("FILE ARRAY", fileArray.toString());
-        console.log("PATH", path);
+      fileArray.push(path);
 
-        if ( fileArray.length == filesUploaded.files.length) {
-          console.log("EOFIHEFOIHEWFI")
-          let allData = {
-            image: fileArray.toString(),
-            name: "FromMachine",
-            attributes: [{machine: machineId}]
-          };
-        
-          console.log("ALL DATA", allData);
-        
-          let request = new XMLHttpRequest();
-          request.open("POST", `/ProcessFilesInfo/${JSON.stringify(allData)}`)
-          request.send();
-        }
-       }
-    }
+      console.log("FILE ARRAY", fileArray.toString());
+      console.log("PATH", path);
 
-  
-  console.log("RESULTS ARRAY", resultsArray)
+      if (fileArray.length == filesUploaded.files.length) {
+        console.log("EOFIHEFOIHEWFI");
+        let allData = {
+          image: fileArray.toString(),
+          name: "FromMachine",
+          attributes: [{ machine: machineId }],
+        };
 
-  
+        console.log("ALL DATA", allData);
+
+        let request = new XMLHttpRequest();
+        request.open(
+          "POST",
+          `/ProcessFilesInfo/${JSON.stringify(
+            allData
+          )}/${doctorAddress.toString()}/${patientAddress.toString()}`
+        );
+        request.send();
+      }
+    };
+  }
+
+  console.log("RESULTS ARRAY", resultsArray);
+
   //window.location.reload();
-
 }
 
 function uploadData() {
@@ -65,7 +68,7 @@ function uploadData() {
     // upload the file content
     let { path } = await node.add(fileReader.result);
 
-    console.log('https://ipfs.io/ipfs/' + path + '?' + path);
+    console.log("https://ipfs.io/ipfs/" + path + "?" + path);
 
     const allData = {
       image: path,
@@ -73,10 +76,10 @@ function uploadData() {
       attributes: [{ department: machineDepartment.value }],
     };
 
-    console.log('test', allData);
+    console.log("test", allData);
 
     const request = new XMLHttpRequest();
-    request.open('POST', `/ProcessInfo/${JSON.stringify(allData)}`);
+    request.open("POST", `/ProcessInfo/${JSON.stringify(allData)}`);
     request.send();
     window.location.reload();
   };
