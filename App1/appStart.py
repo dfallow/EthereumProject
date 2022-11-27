@@ -1,9 +1,11 @@
 import os
+import json
 import numpy as np
 import mne
 import glob
 import ipfsApi
 import deployMachineData
+import newDeployNFT
 
 api = ipfsApi.Client("127.0.0.1", 5001)
 
@@ -59,11 +61,14 @@ def upload_files():
     hash_array, url_array = deployMachineData.deploy_nfts_from_python(str(hashArray))
 
 
-def register_machine():
+def machine_user_input():
     
     machine_file_dir = input("Enter Path to File: ")
 
-    machine_data = {}
+    res = api.add(machine_file_dir)
+    hash = str(res[0]["Hash"])
+
+    machine_data = {'image': hash}
 
     print("Enter details about the machine --> tagName: tag")
     while(True):
@@ -81,7 +86,19 @@ def register_machine():
 
     print("MACHINE DATA", machine_data)
 
-    return
+    return json.dumps(machine_data)
+
+def register_machine():
+
+    machine_data = machine_user_input()
+
+    print("HASH", machine_data)
+
+    newDeployNFT.new_deploy_nft("test", machine_data)
 
 register_machine()
+
+# TODO Register machine should return token or id that we can
+# register with files
+
 #upload_files()
