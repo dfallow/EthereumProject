@@ -22,6 +22,8 @@ dapps/registerMachine/registerMachine.py
 library/__init__.py
 library/deployContracts.py
 library/ipfs.py
+library/mintNFTs.py
+library/newContractDetails.py
 library.egg-info/PKG-INFO
 library.egg-info/SOURCES.txt
 library.egg-info/dependency_links.txt

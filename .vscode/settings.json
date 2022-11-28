@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./App3/python"
+        "./App3/python",
+        "./library"
     ]
 }

@@ -1,5 +1,6 @@
 import json
-from library import ipfs
+from library import ipfs, deployContracts, newContractDetails
+
 
 #from library import ipfs
 
@@ -39,14 +40,20 @@ def register_machine():
     newDeployNFT.new_deploy_nft("test", machine_data)
 
 
-def register_machine_v1():
+def register_machine_v1(machine_file_path):
 
-    file = input("Enter Path to File: ")
-
-    machine_hash = ipfs.store_file(file)
+    machine_hash = ipfs.store_file(machine_file_path)
 
     return machine_hash
 
+## TODO Function to mint machine file (machine_hash)
+
+deployContracts.compile_and_deploy_contract(
+    newContractDetails.abi, 
+    newContractDetails.bytecode
+    )
+
 # machine_file -> path to file
-machine_hash = register_machine_v1()
+machine_hash = register_machine_v1("/home/dfallow/app.js")
+
 

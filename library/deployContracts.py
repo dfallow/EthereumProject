@@ -1,5 +1,5 @@
 from web3 import Web3
-import contracts.contractDetails.newContractDetails as contract
+#import newContractDetails
 
 # test environment
 #w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
@@ -26,6 +26,5 @@ def compile_and_deploy_contract(contract_abi, contract_bytecode):
 
     return deployed_contract, contract_address
 
-dep_contract, address = compile_and_deploy_contract(contract.abi, contract.bytecode)
-
-print("CONTRACT", address)
+#dep_contract, address = compile_and_deploy_contract(newContractDetails.#abi, newContractDetails.bytecode)
+#print("CONTRACT", address)
