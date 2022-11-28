@@ -17,9 +17,7 @@ App2/app2.py
 App2/browseNFTs.py
 App2/handleTransaction.py
 dapps/__init__.py
-dapps/registerMachine/__init__.py
 dapps/registerMachine/registerMachine.py
-library/__init__.py
 library/deployContracts.py
 library/ipfs.py
 library/mintNFTs.py

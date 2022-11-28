@@ -1,4 +1,3 @@
-import json
 from library import ipfs, deployContracts, newContractDetails, mintNFTs
 
 
@@ -32,5 +31,4 @@ machine_hash, contract, address = register_machine_v1(
 print("HASH", machine_hash)
 print("HASH", contract)
 print("HASH", address)
-
 
