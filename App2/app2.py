@@ -12,7 +12,7 @@ w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
 # this default account represent the current user
 # can transfer his NFT
-w3.eth.default_account = w3.eth.accounts[0]
+w3.eth.default_account = w3.eth.accounts[1]
 
 # #  methods=["GET", "POST"]
 # @app.route('/transact')

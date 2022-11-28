@@ -15,8 +15,10 @@ w3.eth.default_account = w3.eth.accounts[0]
 numOfBLK = w3.eth.block_number
 # print("number of block here: ", numOfBLK)
 
-ca = "0x3b9DEf69BF3cd6346f6b9D70f5c70E068795A790"
+ca = "0x9aEa64E24096665d5223B809FFBcE5eb01Aa948d"
 contract = w3.eth.contract(address=ca, abi=cd.abi)
+
+print(contract.functions.dataItems(0).call())
 
 # print all the blocks
 # for i in range(2, numOfBLK+1):
@@ -27,19 +29,19 @@ contract = w3.eth.contract(address=ca, abi=cd.abi)
 
 
 
-mint_txh = w3.eth.get_block(4)["transactions"][0].hex()
-mint_receipt =  w3.eth.get_transaction_receipt(mint_txh)
-print(contract.events.Minted().processReceipt(mint_receipt))
-print("\n")
+# mint_txh = w3.eth.get_block(4)["transactions"][0].hex()
+# mint_receipt =  w3.eth.get_transaction_receipt(mint_txh)
+# print(contract.events.Minted().processReceipt(mint_receipt))
+# print("\n")
 
-transfer_txh = w3.eth.get_block(8)["transactions"][0].hex()
-transfer_transaction = w3.eth.getTransaction(transfer_txh)
-# print(transfer_transaction.input)
-print(contract.decode_function_input(transfer_transaction.input)[0])
-print(contract.decode_function_input(transfer_transaction.input)[1])
-print(contract.decode_function_input(transfer_transaction.input)[1]["_from"])
-print(contract.decode_function_input(transfer_transaction.input)[1]["_to"])
-print(contract.decode_function_input(transfer_transaction.input)[1]["_tokenId"])
+# transfer_txh = w3.eth.get_block(8)["transactions"][0].hex()
+# transfer_transaction = w3.eth.getTransaction(transfer_txh)
+# # print(transfer_transaction.input)
+# print(contract.decode_function_input(transfer_transaction.input)[0])
+# print(contract.decode_function_input(transfer_transaction.input)[1])
+# print(contract.decode_function_input(transfer_transaction.input)[1]["_from"])
+# print(contract.decode_function_input(transfer_transaction.input)[1]["_to"])
+# print(contract.decode_function_input(transfer_transaction.input)[1]["_tokenId"])
 # print(type(contract.decode_function_input(transaction.input)[1]))
 
 
