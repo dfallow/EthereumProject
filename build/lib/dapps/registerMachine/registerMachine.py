@@ -1,5 +1,5 @@
 import json
-from ...library.ipfs import store_file
+from library import ipfs
 
 #from library import ipfs
 
@@ -43,13 +43,10 @@ def register_machine_v1():
 
     file = input("Enter Path to File: ")
 
-    machine_hash = store_file(file) #ipfs in library
+    machine_hash = ipfs.store_file(file)
 
     return machine_hash
 
-# machine_file of type file
-# machine_info of type json
-register_machine_v1()
+# machine_file -> path to file
+machine_hash = register_machine_v1()
 
-# all_machine_info of type json, containing all information on machine
-#register_machine_v2(all_machine_info)

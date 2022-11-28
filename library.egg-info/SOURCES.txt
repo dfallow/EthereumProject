@@ -20,6 +20,7 @@ dapps/__init__.py
 dapps/registerMachine/__init__.py
 dapps/registerMachine/registerMachine.py
 library/__init__.py
+library/deployContracts.py
 library/ipfs.py
 library.egg-info/PKG-INFO
 library.egg-info/SOURCES.txt

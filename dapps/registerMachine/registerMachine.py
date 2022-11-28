@@ -1,5 +1,6 @@
 import json
 from library import ipfs
+import library.contracts.contractDetails.newContractDetails as contract
 
 #from library import ipfs
 
