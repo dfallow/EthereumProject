@@ -66,4 +66,6 @@ def store_ipfs_file(file_name, info_object):
     hash = str(res[0]["Hash"])
     # url
     url = "https://ipfs.io/ipfs/" + hash
+
+    os.remove(new_file)
     return hash, url

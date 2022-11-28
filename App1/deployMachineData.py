@@ -13,7 +13,7 @@ def create_files_to_store(name, files):
 
     for file in files_array:
         #Store single file in ipfs
-        file_hash, file_url = IPFSv2.store_ipfs_file_only_hash(name, file, files_array.index(file))
+        file_hash, file_url = IPFSv2.store_ipfs_file_only_hash(name, file[1:-1], files_array.index(file))
         files_hash_array.append(file_hash)
         files_url_array.append(file_url)
     return files_hash_array, files_url_array
@@ -25,3 +25,10 @@ def deploy_nfts(files_object):
     print("HASHES", hash_array)
     print("URLs", url_array)    
     return
+
+def deploy_nfts_from_python(hashArray):
+
+    hash_array, url_array = create_files_to_store("Test", hashArray[1:-1])
+    print("HASH ARRAY", hash_array)
+    print("URL ARRAY", url_array)
+    return hash_array, url_array
