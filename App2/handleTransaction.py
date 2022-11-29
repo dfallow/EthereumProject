@@ -92,6 +92,16 @@ async def recur(w3, ca, tokens, res=None):
                         md["attributes"][0]["department"],
                         num + 1,
                         contract.functions.getOwnerOfToken(num+1).call()))
+    else:
+        # https://ipfs.io/ipfs/QmPSmDUWoT2DXbCjqnmgaQquNfTT1Kf9Lcwy2XvW9kveAZ
+        res.append(NFTs(ca,
+                        "currenly not available",
+                        "https://ipfs.io/ipfs/QmPSmDUWoT2DXbCjqnmgaQquNfTT1Kf9Lcwy2XvW9kveAZ",
+                        "currenly not available",
+                        "currenly not available",
+                        num + 1,
+                        contract.functions.getOwnerOfToken(num+1).call()))
+    
     if md:
         await recur(w3, ca, cur_token, res)
     
