@@ -1,11 +1,10 @@
-const inputMachineID = document.querySelector("#machine-id");
-const doctorAddress = document.querySelector("#doctor-address").value;
-const patientAddress = document.querySelector("#patient-address").value;
+const inputMachineID = document.querySelector("#machine-id").value;
+const inputPrescriptionID = document.querySelector("#prescription-id").value;
+const inputDoctorAddress = document.querySelector("#doctor-address").value;
+const inputPatientAddress = document.querySelector("#patient-address").value;
 const inputFile = document.querySelector(".input-file");
 const createButton = document.querySelector(".btn");
 const filesUploaded = document.querySelector("#file");
-
-const machineId = "This will be replaced";
 
 createButton.addEventListener("click", async () => {
   // uploadData();
@@ -35,7 +34,7 @@ async function uploadMultipleFiles() {
         let allData = {
           image: fileArray.toString(),
           name: "FromMachine",
-          attributes: [{ machine: machineId }],
+          attributes: [{ machine: inputMachineID }],
         };
 
         console.log("ALL DATA", allData);
@@ -45,7 +44,7 @@ async function uploadMultipleFiles() {
           "POST",
           `/ProcessFilesInfo/${JSON.stringify(
             allData
-          )}/${doctorAddress.toString()}/${patientAddress.toString()}`
+          )}/${inputMachineID}/${inputPrescriptionID}/${inputDoctorAddress}/${inputPatientAddress}`
         );
         request.send();
       }

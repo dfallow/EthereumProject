@@ -1,6 +1,7 @@
 import IPFSv2
 import dataTokenABI
 import patientTokenABI
+import prescriptionTokenABI
 from web3 import Web3
 import json
 
@@ -9,7 +10,7 @@ from newDeployNFT import w3
 doctor_patient_dict = {}
 
 
-def deploy_nfts(files_object, doctor_address, patient_address):
+def deploy_nfts(files_object, machine_id, prescription_id, doctor_address, patient_address):
 
     global patient_contract
     global data_contract
@@ -26,8 +27,8 @@ def deploy_nfts(files_object, doctor_address, patient_address):
     check_for_patient_contract(doctor_address)
 
     # check if this particular patient is already in the registry
-    # if not, new patient data contract is deployed and the patient is added to the registry (patient_contract)
-    # data contract is deployed once per doctor's patient atm (ideally this would be done once per patient so all doctors have access to patient's data)
+    # if not, new patient data contract and prescription contract is deployed and the patient is added to the registry (patient_contract)
+    # data contract and prescription contract are deployed once per doctor's patient atm
     print("Check for patient data")
     check_for_patient_data(doctor_address, patient_address)
 
@@ -37,11 +38,18 @@ def deploy_nfts(files_object, doctor_address, patient_address):
     print("Start deploying NFTs")
     for url in url_array:
         data_contract
-        data_contract.functions.mintDataToken(url).transact()
-        event = data_contract.events.Minted().getLogs()
-        print("MINTED EVENT", event)
-        tokenId = event[0]["args"]["nftId"]
+        data_contract.functions.mintDataToken(
+            url, machine_id, prescription_id).transact()
+        mintEvent = data_contract.events.Minted().getLogs()
+        print("MINTED EVENT", mintEvent)
+        tokenId = mintEvent[0]["args"]["nftId"]
         print("NFT ID/TokenId", tokenId)
+        dataSaved = data_contract.functions.getDataItemForToken(tokenId).call()
+        item_machine_id = dataSaved[1]
+        item_prescription_id = dataSaved[2]
+        item_url = dataSaved[3]
+        print("DATA ITEM FOR TOKEN {} SAVED: MachineID {}, prescriptionID {}, IPFS url: {}". format(
+            tokenId, item_machine_id, item_prescription_id, item_url))
     print("End of NFT deployment")
     print("BLOCK number", w3.eth.block_number)
 
@@ -58,7 +66,7 @@ def create_files_to_store(name, files):
         # Store single file in ipfs
         file_hash, file_url = IPFSv2.store_ipfs_file_only_hash(
             name, file, files_array.index(file))
-        #Store single file in ipfs
+        # Store single file in ipfs
         #file_hash, file_url = IPFSv2.store_ipfs_file_only_hash(name, file[1:-1], files_array.index(file))
         files_hash_array.append(file_hash)
         files_url_array.append(file_url)
@@ -80,6 +88,7 @@ def check_for_patient_contract(doctor_address):
 
 def check_for_patient_data(doctor_address, patient_address):
     global patient_contract
+    global prescription_contract
     global data_contract
 
     w3.eth.default_account = doctor_address
@@ -88,15 +97,20 @@ def check_for_patient_data(doctor_address, patient_address):
         # TODO: deploy prescription contract
         data_contract_address, prescription_contract_address = patient_contract.functions.getPatient(
             patient_address).call()
+        prescription_contract = w3.eth.contract(
+            address=prescription_contract_address, abi=prescriptionTokenABI.abi
+        )
         data_contract = w3.eth.contract(
             address=data_contract_address, abi=dataTokenABI.abi
         )
         w3.eth.default_account = doctor_address
     else:
+        prescription_contract = deploy_prescription_contract(
+            doctor_address, patient_address)
         data_contract = deploy_data_contract(patient_address, doctor_address)
         w3.eth.default_account = doctor_address
         patient_contract.functions.addNewPatient(
-            patient_address, data_contract.address, data_contract.address).transact()
+            patient_address, data_contract.address, prescription_contract.address).transact()
     return
 
 
@@ -125,6 +139,28 @@ def deploy_patient_contract(doctor_address):
     return patient_contract_deployed
 
 
+def deploy_prescription_contract(doctor_address, patient_address):
+    w3.eth.default_account = doctor_address
+    prescription_contract_compiled = w3.eth.contract(
+        abi=prescriptionTokenABI.abi, bytecode=prescriptionTokenABI.bytecode)
+    prescription_contract_transaction_hash = prescription_contract_compiled.constructor(
+        patient_address).transact()
+    print("NEW PRESCRIPTION CONTRACT TRANSACTION HASH",
+          prescription_contract_transaction_hash)
+    prescription_contract_transaction_receipt = w3.eth.wait_for_transaction_receipt(
+        prescription_contract_transaction_hash)
+    print("NEW PRESCRIPTION CONTRACT TRANSACTION RECEIPT",
+          prescription_contract_transaction_receipt)
+    # retrieve data contract address
+    prescription_contract_address = prescription_contract_transaction_receipt[
+        "contractAddress"]
+    # deploy data contract (creates an instance of a contract) with the address above
+    prescription_contract_deployed = w3.eth.contract(
+        address=prescription_contract_address, abi=patientTokenABI.abi
+    )
+    return prescription_contract_deployed
+
+
 def deploy_data_contract(patient_address, doctor_address):
     w3.eth.default_account = patient_address
     # compile data contract
@@ -146,7 +182,6 @@ def deploy_data_contract(patient_address, doctor_address):
     )
     return data_contract_deployed
 
-        
 
 # def deploy_nfts_from_python(hashArray):
    # hash_array, url_array = create_files_to_store("Test", hashArray[1:-1])
