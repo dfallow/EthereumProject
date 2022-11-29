@@ -37,8 +37,6 @@ async function uploadMultipleFiles() {
           attributes: [{ machine: inputMachineID }],
         };
 
-        console.log("Metadata", metaData);
-
         let allData = {
           metaData: metaData,
           machineId: inputMachineID,
@@ -47,6 +45,7 @@ async function uploadMultipleFiles() {
           patientAddress: inputPatientAddress,
         };
 
+        console.log("All data in manage.js", allData);
         let request = new XMLHttpRequest();
         request.open("POST", `/ProcessFilesInfo/${JSON.stringify(allData)}`);
         request.send();

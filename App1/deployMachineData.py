@@ -18,8 +18,13 @@ def deploy_nfts(input_info):
     files_object = json.loads(input_info)['metaData']
     machine_id = json.loads(input_info)['machineId']
     prescription_id = json.loads(input_info)['prescriptionId']
-    doctor_address = json.loads(input_info)['doctorAddress']
-    patient_address = json.loads(input_info)['patientAddress']
+    doctor_address_str = json.loads(input_info)['doctorAddress']
+    doctor_address = doctor_address_str.strip()
+    patient_address_str = json.loads(input_info)['patientAddress']
+    patient_address = patient_address_str.strip()
+    print("DOCTOR", doctor_address)
+    print("PATIENT", patient_address)
+    # patient_address = w3.toChecksumAddress(patient_address_str)
 
     # returns two arrays which show the location in IPFS of each file
     hash_array, url_array = create_files_to_store(
