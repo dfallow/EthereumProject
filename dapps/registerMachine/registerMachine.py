@@ -1,15 +1,15 @@
-import easygui
 import tkinter as tk
 from tkinter import *
 from library import ipfs, deployContracts, newContractDetails, mintNFTs
-
+import json
 # root window
 root =  tk.Tk()
 root.geometry("450x250")
-#root.resizable(False, False)
+root.resizable(False, False)
 root.title('Register Machine')
 
 # store user input
+# TODO add account here
 file_dir = tk.StringVar()
 
 def deploy_contract():
@@ -50,7 +50,7 @@ directory_entry.focus()
 
 button = Button(
     resgister_machine, 
-    text='Click me', 
+    text='Register Machine', 
     command=lambda: register_machine_v1(machine_contract, contract_address, file_dir.get())
     )
 button.pack(fill='x', expand=True, pady=10)
