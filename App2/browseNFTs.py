@@ -3,7 +3,6 @@ import json
 import os
 import sys
 from urllib.request import urlopen
-import collections
 
 sys.path.append(os.path.abspath(os.path.join('.')))
 from App1 import newContractDetails as cd
@@ -26,10 +25,11 @@ class NFTs:
         self.tokenId = tokenId
         self.owner = owner
 
-def getAllNFTs(w3):
+def getAllNFTs():
     
-    # get the total number of blocks on the chain
-    numOfBLK = w3.eth.block_number
+    w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
+    
+    numOfBLK = w3.eth.get_block('latest')["number"]
     # print(numOfBLK)
     
     # get all valid contract address in the blockchain
@@ -40,47 +40,32 @@ def getAllNFTs(w3):
     ]))
     # print(allContractAddress)
     
-    # initialise a list
     NFTs_data = []
     
     for ca in allContractAddress:
         contract = w3.eth.contract(address=ca, abi=cd.abi)
         numOfNFTs = contract.functions.totalSupply().call()
-        
-        NFTs_data += [NFTs
-             (ca,
-              contract.functions.dataItems(n).call()[-1],
-              json.loads(urlopen(contract.functions.dataItems(n).call()[-1]).read())["image"],
-              json.loads(urlopen(contract.functions.dataItems(n).call()[-1]).read())["name"],
-              json.loads(urlopen(contract.functions.dataItems(n).call()[-1]).read())["attributes"][0]["department"],
-              n + 1,
-              contract.functions.getOwnerOfToken(n+1).call()
-            )for n in range(numOfNFTs)]
+    
+        for num in range(numOfNFTs):
             
-    return sorted(NFTs_data, key=lambda x: x.collection, reverse=True)
+            metadata = contract.functions.dataItems(num).call()[-1]
+            # imgIpfs = json.loads(urlopen(metadata).read())["image"]
+            # collection = json.loads(urlopen(metadata).read())["attributes"][0]["department"]
+            # name = json.loads(urlopen(metadata).read())["name"]
+            # tid = num + 1
+            # owner = contract.functions.tokenIdToOwner(tid).call()
+            # print(json.loads(urlopen(metadata).read())["image"])
 
-def getAllNFTsCollections(w3):
-    
-    numOfBLK = w3.eth.block_number
-    
-    ca_dict = collections.defaultdict(list)
-    
-    for i in reversed(range(1, numOfBLK+1)):
-        if (w3.eth.get_transaction(w3.eth.get_block(i)["transactions"][0].hex())["to"] not in ca_dict 
-            and w3.eth.get_transaction(w3.eth.get_block(i)["transactions"][0].hex())["to"] is not None):
-            # ca_dict[w3.eth.get_transaction(w3.eth.get_block(i)["transactions"][0].hex())["to"]] = True
-            ca = w3.eth.get_transaction(w3.eth.get_block(i)["transactions"][0].hex())["to"]
-            contract = w3.eth.contract(address=ca, abi=cd.abi)
-            ca_dict[ca].append(json.loads(urlopen(contract.functions.dataItems(0).call()[-1]).read())["image"])
-            ca_dict[ca].append(json.loads(urlopen(contract.functions.dataItems(0).call()[-1]).read())["attributes"][0]["department"])
-            
-    
-    return ca_dict
+            NFTs_data.append(
+                NFTs(ca,
+                     metadata,
+                     json.loads(urlopen(metadata).read())["image"],
+                     json.loads(urlopen(metadata).read())["name"],
+                     json.loads(urlopen(metadata).read())["attributes"][0]["department"],
+                     num + 1,
+                     contract.functions.tokenIdToOwner(num+1).call(),
+                )
+            )
             
             
-            
-    
-        
-    
-    
-    
+    return NFTs_data
