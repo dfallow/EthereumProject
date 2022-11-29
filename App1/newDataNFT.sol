@@ -91,10 +91,4 @@ contract NewDataNFT is ERC721, Ownable, ERC721URIStorage {
         return tokenOwner;
     }
 
-    function transferTokenOwnership(address _from, address _to, uint256 _tokenId)
-    public
-    {
-        transferFrom(_from, _to, _tokenId);
-    }
-
 }
