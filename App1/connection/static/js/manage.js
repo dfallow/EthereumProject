@@ -31,21 +31,24 @@ async function uploadMultipleFiles() {
 
       if (fileArray.length == filesUploaded.files.length) {
         console.log("EOFIHEFOIHEWFI");
-        let allData = {
+        let metaData = {
           image: fileArray.toString(),
           name: "FromMachine",
           attributes: [{ machine: inputMachineID }],
         };
 
-        console.log("ALL DATA", allData);
+        console.log("Metadata", metaData);
+
+        let allData = {
+          metaData: metaData,
+          machineId: inputMachineID,
+          prescriptionId: inputPrescriptionID,
+          doctorAddress: inputDoctorAddress,
+          patientAddress: inputPatientAddress,
+        };
 
         let request = new XMLHttpRequest();
-        request.open(
-          "POST",
-          `/ProcessFilesInfo/${JSON.stringify(
-            allData
-          )}/${inputMachineID}/${inputPrescriptionID}/${inputDoctorAddress}/${inputPatientAddress}`
-        );
+        request.open("POST", `/ProcessFilesInfo/${JSON.stringify(allData)}`);
         request.send();
       }
     };

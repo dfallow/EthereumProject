@@ -10,14 +10,20 @@ from newDeployNFT import w3
 doctor_patient_dict = {}
 
 
-def deploy_nfts(files_object, machine_id, prescription_id, doctor_address, patient_address):
+def deploy_nfts(input_info):
 
     global patient_contract
     global data_contract
 
+    files_object = json.loads(input_info)['metaData']
+    machine_id = int(json.loads(input_info)['machineId'])
+    prescription_id = int(json.loads(input_info)['prescriptionId'])
+    doctor_address = json.loads(input_info)['doctorAddress']
+    patient_address = json.loads(input_info)['patientAddress']
+
     # returns two arrays which show the location in IPFS of each file
-    hash_array, url_array = create_files_to_store(json.loads(
-        files_object)['name'], json.loads(files_object)['image'])
+    hash_array, url_array = create_files_to_store(
+        files_object['name'], files_object['image'])
 
     # check if patient (registry) contract for the doctor is deployed already
     # it should only be deployed once per doctor
@@ -39,7 +45,7 @@ def deploy_nfts(files_object, machine_id, prescription_id, doctor_address, patie
     for url in url_array:
         data_contract
         data_contract.functions.mintDataToken(
-            url, int(machine_id), int(prescription_id)).transact()
+            url, machine_id, prescription_id).transact()
         mintEvent = data_contract.events.Minted().getLogs()
         print("MINTED EVENT", mintEvent)
         tokenId = mintEvent[0]["args"]["nftId"]
@@ -67,7 +73,7 @@ def create_files_to_store(name, files):
         file_hash, file_url = IPFSv2.store_ipfs_file_only_hash(
             name, file, files_array.index(file))
         # Store single file in ipfs
-        #file_hash, file_url = IPFSv2.store_ipfs_file_only_hash(name, file[1:-1], files_array.index(file))
+        # file_hash, file_url = IPFSv2.store_ipfs_file_only_hash(name, file[1:-1], files_array.index(file))
         files_hash_array.append(file_hash)
         files_url_array.append(file_url)
     return files_hash_array, files_url_array
