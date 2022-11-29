@@ -14,9 +14,10 @@ def mint_nft(deployed_contract, file_hash):
     tokenId = event[0]["args"]["nftId"]
     print("NFT ID/TokenId", tokenId)
 
-    token_uri = deployed_contract.functions.tokenIdToURI(tokenId).call()
+    #token_uri = deployed_contract.functions.tokenIdToURI(tokenId).call()
 
-    token_owner = deployed_contract.functions.tokenIdToOwner(tokenId).call()
-
-    return
+    #token_owner = deployed_contract.functions.tokenIdToOwner(tokenId).call()
+    print("FILE", file_url)
+    print("TOKEN", tokenId)
+    return tokenId
 
