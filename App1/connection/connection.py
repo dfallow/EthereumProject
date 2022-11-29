@@ -48,6 +48,10 @@ def registerMachine():
 def manageData():
     return render_template('manageData.html')
 
+@app.route('/issuePrescription', methods=['GET'])
+def issuePrescription():
+    return render_template('issuePrescription.html')
+
 if __name__ == "__main__":
     app.run(port=3000,debug=True, use_reloader=True)
 
