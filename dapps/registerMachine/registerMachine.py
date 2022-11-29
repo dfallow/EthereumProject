@@ -31,8 +31,11 @@ def register_machine_v1(contract, address, machine_file_path=""):
 
     return machine_hash, contract, address
 
+
+# when program is launched
 machine_contract, contract_address = deploy_contract()
 
+## Tkinter ##
 # register machine frame
 resgister_machine = Frame(root)
 resgister_machine.pack(padx=10, pady=10, fill='x', expand=True)
