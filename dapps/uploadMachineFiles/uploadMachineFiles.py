@@ -27,7 +27,7 @@ def upload_files_from_machine(machine, dir):
         file_hash = ipfs.store_file(dir + file_to_add)
         file_hash_array.append(file_hash)
 
-        new_file
+        
 
     print("FILE ARRAY", file_hash_array)    
 
