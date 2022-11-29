@@ -28,9 +28,19 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
     event TokenOwnershipChanged(bool success);
     event DoctorChanged(bool success);
     event ContractOwnershipChanged(bool success);
+    event DataSaved(bool success);
+
+    struct DataItem {
+        uint256 dataTokenId;
+        uint256 machineTokenId;
+        uint256 prescriptionTokenId;
+        string dataIpfsURL;
+    }
+
+    DataItem[] private dataItems;
 
     // mint data token
-    function mintDataToken(string memory ipfsDataURL)
+    function mintDataToken(string memory ipfsDataURL, uint256 machineTokenId, uint256 prescriptionTokenId)
         public
         onlyOwner
         returns (uint256)
@@ -51,8 +61,29 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
 
         emit Minted(msg.sender, tokenId);
 
+        _addData(tokenId, machineTokenId, prescriptionTokenId, ipfsDataURL);
+
         // return token(NFT) ID
         return tokenId;
+    }
+
+    function _addData(uint256 dataTokenId, uint256 machineTokenId, uint256 prescriptionTokenId, string memory dataIpfsURL) private onlyOwner {
+        dataItems.push(DataItem(dataTokenId, machineTokenId, prescriptionTokenId, dataIpfsURL));
+        emit DataSaved(true);
+    }
+
+    function getDataItemForToken(uint256 tokenId) public view onlyOwner returns (DataItem memory) {
+         require(
+            _exists(tokenId),
+            "URI query for nonexistent token"
+        );
+        
+        for (uint256 i = 0; i < dataItems.length; i++) {
+            if (dataItems[i].dataTokenId == tokenId) {
+                DataItem storage _dataItem = dataItems[i];
+                return _dataItem;
+            }
+        }
     }
 
     // change ownership of data tokens passed in an array
@@ -73,6 +104,10 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         override(ERC721, ERC721URIStorage)
         returns (string memory)
     {
+        require(
+            _exists(tokenId),
+            "URI query for nonexistent token"
+        );
         address _patient = owner();
         address _tokenOwner = ownerOf(tokenId);
         //only doctor or the patient or someone who bought the data can see the URI
@@ -83,6 +118,15 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
             "Only the owner of data (the patient/someone who bought it) or the doctor of patient can view data"
         );
         return super.tokenURI(tokenId);
+    }
+
+    // transfer contract ownership (this probably will not be used as this should be owned by the patient)
+    function transferOwnership(address newOwner)
+        public
+        override(Ownable)
+        onlyOwner
+    {
+        emit ContractOwnershipChanged(false);
     }
 
     function changeDoctor(address newDoctor) public onlyOwner {
@@ -128,14 +172,5 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         uint256 tokenId
     ) public override(ERC721) {
         emit TokenOwnershipChanged(false);
-    }
-
-    // DON'T USE THIS
-    function transferOwnership(address newOwner)
-        public
-        override(Ownable)
-        onlyOwner
-    {
-        emit ContractOwnershipChanged(false);
     }
 }
