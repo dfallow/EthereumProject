@@ -75,6 +75,7 @@ body {
   color: #fff;
   font-size: 18px;
   padding: 18px 16px;
+  width: 250px;
   border: none;
   border-radius: 9px;
   cursor: pointer;
@@ -99,4 +100,10 @@ body {
 
 .hidden {
   display: none;
+}
+
+.button-container {
+  display: flex;
+  gap: 48px;
+  margin-bottom: 32px;
 }

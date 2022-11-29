@@ -15,10 +15,6 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/index.css') }}"
-    />
   </head>
   <body>
     <div class="container">
@@ -31,7 +27,9 @@
           <button class="btn manage-button">Manage machine data</button>
         </a>
       </div>
-      <h1 class="contract-text"></h1>
+      <a href="{{ url_for('browsingPage') }}">
+        <button class="btn display-button">Display machine data</button>
+      </a>
     </div>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
   </body>
