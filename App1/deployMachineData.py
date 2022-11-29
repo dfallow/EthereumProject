@@ -16,8 +16,8 @@ def deploy_nfts(input_info):
     global data_contract
 
     files_object = json.loads(input_info)['metaData']
-    machine_id = int(json.loads(input_info)['machineId'])
-    prescription_id = int(json.loads(input_info)['prescriptionId'])
+    machine_id = json.loads(input_info)['machineId']
+    prescription_id = json.loads(input_info)['prescriptionId']
     doctor_address = json.loads(input_info)['doctorAddress']
     patient_address = json.loads(input_info)['patientAddress']
 
@@ -45,7 +45,7 @@ def deploy_nfts(input_info):
     for url in url_array:
         data_contract
         data_contract.functions.mintDataToken(
-            url, machine_id, prescription_id).transact()
+            url, int(machine_id), int(prescription_id)).transact()
         mintEvent = data_contract.events.Minted().getLogs()
         print("MINTED EVENT", mintEvent)
         tokenId = mintEvent[0]["args"]["nftId"]
