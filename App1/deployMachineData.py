@@ -39,7 +39,7 @@ def deploy_nfts(files_object, machine_id, prescription_id, doctor_address, patie
     for url in url_array:
         data_contract
         data_contract.functions.mintDataToken(
-            url, machine_id, prescription_id).transact()
+            url, int(machine_id), int(prescription_id)).transact()
         mintEvent = data_contract.events.Minted().getLogs()
         print("MINTED EVENT", mintEvent)
         tokenId = mintEvent[0]["args"]["nftId"]
