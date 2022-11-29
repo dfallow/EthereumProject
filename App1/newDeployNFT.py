@@ -6,7 +6,7 @@ from web3 import Web3
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 # w3 = Web3(Web3.EthereumTesterProvider())
 
-w3.eth.default_account = w3.eth.accounts[1]
+w3.eth.default_account = w3.eth.accounts[0]
 
 # check if connected successfully
 print("IS CONNECTED", w3.isConnected())
