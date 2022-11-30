@@ -21,3 +21,21 @@ def mint_nft(deployed_contract, file_hash):
     print("TOKEN", tokenId)
     return tokenId
 
+def mint_data_nft(
+    deployed_contract, 
+    file_hash, 
+    patient_account, 
+    machine_token_id,
+    precription_token_id
+    ):
+    
+    file_url = "https://ipfs.io/ipfs/" + file_hash
+
+    data_token_id = deployed_contract.functions.mintDataToken(
+    file_url,
+    machine_token_id,
+    precription_token_id
+    ).transact()
+
+    print("mintNFTs", data_token_id)
+    return data_token_id

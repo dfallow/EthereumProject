@@ -16,7 +16,7 @@ user_account = tk.StringVar()
 contract_address = tk.StringVar()
 
 def deploy_contract():
-    print(deployContracts.w3.eth.accounts)
+    print("test", deployContracts.w3.eth.accounts)
     print(user_account.get())
     contract, address = deployContracts.compile_and_deploy_contract(
         contractDetailsMachine.abi, 

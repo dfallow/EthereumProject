@@ -2,23 +2,42 @@ import os
 import json
 import tkinter as tk
 from tkinter import *
-from library import ipfs, mintNFTs
+from library import ipfs, mintNFTs, deployContracts, contractDetailsMachineData, variables
 
 
 #root window
 root = tk.Tk()
-root.geometry("450x250")
-root.resizable(False, False)
+root.geometry("450x450")
+#root.resizable(False, False)
 root.title('Upload Machine Files')
 
 # store user input
-# TODO add account here
+doctor_account = tk.StringVar()
+patient_account = tk.StringVar()
 directory = tk.StringVar()
 machine_hash = tk.StringVar()
-doctor_account = tk.StringVar()
+machine_token_id = tk.IntVar()
+prescription_token_id = tk.IntVar()
+
 
 def deploy_data_contract():
     print("BTN CLICKED")
+    print(deployContracts.w3.eth.accounts)
+    print(doctor_account.get())
+
+    contract, address = deployContracts.compile_contract_with_account(
+        contractDetailsMachineData.abi,
+        contractDetailsMachineData.bytecode,
+        doctor_account.get()
+    )
+
+    variables.machine_data_contract_var = contract
+
+    print(contract)
+
+    print(address)
+
+    return
 
 
 def upload_files_from_machine(machine, dir):
@@ -59,12 +78,33 @@ def upload_files_from_machine(machine, dir):
 
         # TODO place this at the end
         os.remove(file_path)
+
+
+        print("Patient", patient_account.get())
+        print("machine token", machine_token_id.get())
+        print("prescription toke", prescription_token_id.get())
+
+        data_token_id = mintNFTs.mint_data_nft(
+            variables.machine_data_contract_var,
+            new_file_hash,
+            patient_account.get(),
+            machine_token_id.get(),
+            prescription_token_id.get()
+        )
+
+        print("MINTED TOKEN", data_token_id)
+
+
     print("FILE ARRAY", file_hash_array)    
 
     ## TODO mint the returned hashes 
+
+    
         
     return
 
+# show accounts in terminal when launched
+deployContracts.show_accounts()
 
 ## Tkinter ##
 
@@ -74,7 +114,7 @@ deploy = Frame(root)
 deploy.pack(padx=10, pady=10, fill='x', expand=True)
 
 # user account
-account_label = Label(deploy, text="Enter User Account")
+account_label = Label(deploy, text="Enter Doctor Account")
 account_label.pack(fill='x', expand=True)
 
 account_entry = Entry(deploy, textvariable=doctor_account)
@@ -98,6 +138,27 @@ machine_label.pack(fill='x', expand=True)
 
 machine_input = Entry(file_frame, textvariable=machine_hash)
 machine_input.pack(fill='x', expand=True)
+
+# machine token id
+machine_label = Label(file_frame, text="Enter Machine Token ID")
+machine_label.pack(fill='x', expand=True)
+
+machine_input = Entry(file_frame, textvariable=machine_token_id)
+machine_input.pack(fill='x', expand=True)
+
+# prescription token id
+machine_label = Label(file_frame, text="Enter Prescription Token ID")
+machine_label.pack(fill='x', expand=True)
+
+machine_input = Entry(file_frame, textvariable=prescription_token_id)
+machine_input.pack(fill='x', expand=True)
+
+# patient account
+account_label = Label(file_frame, text="Enter Patient Account")
+account_label.pack(fill='x', expand=True)
+
+account_entry = Entry(file_frame, textvariable=patient_account)
+account_entry.pack(fill='x', expand=True)
 
 # user directory input
 directory_label = Label(file_frame, text="Enter Path to Files Directory")

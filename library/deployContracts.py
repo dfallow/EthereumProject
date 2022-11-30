@@ -31,3 +31,21 @@ def compile_and_deploy_contract(contract_abi, contract_bytecode, account):
 
 #dep_contract, address = compile_and_deploy_contract(newContractDetails.#abi, newContractDetails.bytecode)
 #print("CONTRACT", address)
+
+def compile_contract_with_account(contract_abi, contract_bytecode, account):
+    w3.eth.default_account = account
+    compiled_contract = w3.eth.contract(
+        abi=contract_abi, bytecode=contract_bytecode
+    )
+
+    transaction_hash = compiled_contract.constructor(account).transact()
+
+    transanction_receipt = w3.eth.wait_for_transaction_receipt(transaction_hash)
+
+    contract_address = transanction_receipt["contractAddress"]
+
+    deployed_contract = w3.eth.contract(
+        address=contract_address, abi=contract_abi
+    )
+
+    return deployed_contract, contract_address
