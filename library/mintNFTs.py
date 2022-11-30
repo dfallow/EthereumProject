@@ -37,5 +37,7 @@ def mint_data_nft(
     precription_token_id
     ).transact()
 
+    mint_event = deployed_contract.events.Minted().getLogs()
+
     print("mintNFTs", data_token_id)
-    return data_token_id
+    return mint_event[0]["args"]["nftId"]

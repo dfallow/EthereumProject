@@ -28,6 +28,7 @@ def deploy_data_contract():
     contract, address = deployContracts.compile_contract_with_account(
         contractDetailsMachineData.abi,
         contractDetailsMachineData.bytecode,
+        patient_account.get(),
         doctor_account.get()
     )
 
@@ -82,7 +83,7 @@ def upload_files_from_machine(machine, dir):
 
         print("Patient", patient_account.get())
         print("machine token", machine_token_id.get())
-        print("prescription toke", prescription_token_id.get())
+        print("prescription token", prescription_token_id.get())
 
         data_token_id = mintNFTs.mint_data_nft(
             variables.machine_data_contract_var,
@@ -113,7 +114,14 @@ deployContracts.show_accounts()
 deploy = Frame(root)
 deploy.pack(padx=10, pady=10, fill='x', expand=True)
 
-# user account
+# patient account -> deploys the machine data contract
+account_label = Label(deploy, text="Enter Patient Account")
+account_label.pack(fill='x', expand=True)
+
+account_entry = Entry(deploy, textvariable=patient_account)
+account_entry.pack(fill='x', expand=True)
+
+# doctor account -> is registed with the data contract
 account_label = Label(deploy, text="Enter Doctor Account")
 account_label.pack(fill='x', expand=True)
 
@@ -132,35 +140,28 @@ deploy_btn.pack(fill='x', expand=True, pady=10)
 file_frame = Frame(root)
 file_frame.pack(padx=10, pady=10, fill='x', expand=True)
 
-# registered machine
+# registered machine -> IPFS reference hash retieved earlier
 machine_label = Label(file_frame, text="Enter Hash of Machine")
 machine_label.pack(fill='x', expand=True)
 
 machine_input = Entry(file_frame, textvariable=machine_hash)
 machine_input.pack(fill='x', expand=True)
 
-# machine token id
+# machine token id -> From when the machine NFT was minted
 machine_label = Label(file_frame, text="Enter Machine Token ID")
 machine_label.pack(fill='x', expand=True)
 
 machine_input = Entry(file_frame, textvariable=machine_token_id)
 machine_input.pack(fill='x', expand=True)
 
-# prescription token id
+# prescription token id -> From when the prescription NFT was minted
 machine_label = Label(file_frame, text="Enter Prescription Token ID")
 machine_label.pack(fill='x', expand=True)
 
 machine_input = Entry(file_frame, textvariable=prescription_token_id)
 machine_input.pack(fill='x', expand=True)
 
-# patient account
-account_label = Label(file_frame, text="Enter Patient Account")
-account_label.pack(fill='x', expand=True)
-
-account_entry = Entry(file_frame, textvariable=patient_account)
-account_entry.pack(fill='x', expand=True)
-
-# user directory input
+# user directory input -> Directory where files to upload at located
 directory_label = Label(file_frame, text="Enter Path to Files Directory")
 directory_label.pack(fill='x', expand=True)
 
