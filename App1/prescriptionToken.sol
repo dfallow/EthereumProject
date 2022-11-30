@@ -10,47 +10,59 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * The reference to prescription on IPFS is stored in NFT token URI
  */
 contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
-    uint256 private _numberOfPrescriptionTokens;
-
-    address private _patient;
+    uint256 public numberOfPrescriptionTokens;
 
     // constructor sets contract owner to the doctor who deployed it
-    // it also sets _patient address
-    // contract is deployed once per patient so all prescriptions are under one contract
-    constructor(address patient) ERC721("PrescriptionToken", "PTK") {
+    // contract is deployed once per doctor for all their patients
+    constructor() ERC721("PrescriptionToken", "PTK") {
         _transferOwnership(msg.sender);
-        _patient = patient;
     }
 
     // events
-    event Minted(address indexed minter, uint256 nftId);
+    event Minted(address indexed minter, address patient, uint256 tokenId);
     event TokenOwnershipChanged(bool success);
     event ContractOwnershipChanged(bool success);
+    event DataSaved(bool success);
+
+    struct PrescriptionItem {
+        address patientAddress;
+        uint256 prescriptionTokenId;
+        string prescriptionIpfsURL;
+    }
+
+    PrescriptionItem[] private prescriptionItems;
 
     // mint prescription token
-    function mintPrescriptionToken(string memory ipfsDataURL)
+    function mintPrescriptionToken(string memory prescriptionIpfsURL, address patientAddress)
         public
         onlyOwner
         returns (uint256)
     {
         require(
-            bytes(ipfsDataURL).length > 0,
+            bytes(prescriptionIpfsURL).length > 0,
             "missing IPFS url for the data item"
         );
 
         // set NFT tokenID
-        _numberOfPrescriptionTokens += 1;
-        uint256 tokenId = _numberOfPrescriptionTokens;
+        numberOfPrescriptionTokens += 1;
+        uint256 tokenId = numberOfPrescriptionTokens;
 
         // mint
-        _safeMint(msg.sender, tokenId);
+        _safeMint(patientAddress, tokenId);
         // set tokenID to link back to prescription on IPFS
-        _setTokenURI(tokenId, ipfsDataURL);
+        _setTokenURI(tokenId, prescriptionIpfsURL);
 
-        emit Minted(msg.sender, tokenId);
+        emit Minted(msg.sender, patientAddress, tokenId);
+
+        _addData(patientAddress, tokenId, prescriptionIpfsURL);
 
         // return token(NFT) ID
         return tokenId;
+    }
+
+     function _addData(address patientAddress, uint256 tokenId, string memory prescriptionIpfsURL) private onlyOwner {
+        prescriptionItems.push(PrescriptionItem(patientAddress, tokenId, prescriptionIpfsURL));
+        emit DataSaved(true);
     }
 
     function tokenURI(uint256 tokenId)
@@ -61,23 +73,12 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
     {
         //only doctor or the patient can see the URI
         address _doctor = owner();
+        address _tokenOwner = ownerOf(tokenId);
         require(
-            msg.sender == _patient || msg.sender == _doctor,
-            "Only the doctor or the patient can see the URI"
+            msg.sender == _doctor || msg.sender == _tokenOwner,
+            "Only the doctor or the patient(token owner) can see the URI"
         );
         return super.tokenURI(tokenId);
-    }
-
-    // change ownership of prescription tokens passed in an array
-    function transferTokenOwnership(address to, uint256[] memory tokenIdArray)
-        public
-        onlyOwner
-    {
-        for (uint256 i = 0; i < tokenIdArray.length; i++) {
-            safeTransferFrom(msg.sender, to, tokenIdArray[i]);
-        }
-
-        emit TokenOwnershipChanged(true);
     }
 
     // transfer contract ownership
@@ -87,12 +88,34 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
         onlyOwner
     {
         _transferOwnership(newOwner);
-        emit ContractOwnershipChanged(false);
+        emit ContractOwnershipChanged(true);
     }
 
-    function getPatient() public view onlyOwner returns (address) {
-        return _patient;
+    function getPrescriptionByTokenId(uint256 prescriptionTokenId) public view onlyOwner returns (PrescriptionItem memory) { 
+        require(
+            _exists(prescriptionTokenId),
+            "URI query for nonexistent token"
+        );
+        for (uint256 i = 0; i < prescriptionItems.length; i++) {
+            if (prescriptionItems[i].prescriptionTokenId == prescriptionTokenId) {
+                PrescriptionItem storage _prescriptionItem = prescriptionItems[i];
+                return _prescriptionItem;
+            }
+        }
     }
+
+    function getPrescriptionsByPatient(address patientAddress) public view onlyOwner returns (PrescriptionItem[] memory) {
+        PrescriptionItem[] memory _items = new PrescriptionItem[](prescriptionItems.length);
+
+        for (uint256 i = 0; i < prescriptionItems.length; i++) {
+            if (prescriptionItems[i].patientAddress == patientAddress) {
+                PrescriptionItem memory _prescriptionItem = prescriptionItems[i];
+                _items[i] = _prescriptionItem;
+            }
+        }
+
+        return _items;
+    } 
 
     // _burn function is an override required by Solidity
     function _burn(uint256 tokenId)
@@ -102,5 +125,4 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
         super._burn(tokenId);
     }
 
-    // TODO: token and contract ownership transfer
 }
