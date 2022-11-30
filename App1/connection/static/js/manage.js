@@ -1,7 +1,7 @@
-const inputMachineID = document.querySelector("#machine-id").value;
-const inputPrescriptionID = document.querySelector("#prescription-id").value;
-const inputDoctorAddress = document.querySelector("#doctor-address").value;
-const inputPatientAddress = document.querySelector("#patient-address").value;
+const inputMachineID = document.querySelector("#machine-id");
+const inputPrescriptionID = document.querySelector("#prescription-id");
+const inputDoctorAddress = document.querySelector("#doctor-address");
+const inputPatientAddress = document.querySelector("#patient-address");
 const inputFile = document.querySelector(".input-file");
 const createButton = document.querySelector(".btn");
 const filesUploaded = document.querySelector("#file");
@@ -39,10 +39,10 @@ async function uploadMultipleFiles() {
 
         let allData = {
           metaData: metaData,
-          machineId: inputMachineID,
-          prescriptionId: inputPrescriptionID,
-          doctorAddress: inputDoctorAddress,
-          patientAddress: inputPatientAddress,
+          machineId: inputMachineID.value,
+          prescriptionId: inputPrescriptionID.value,
+          doctorAddress: inputDoctorAddress.value,
+          patientAddress: inputPatientAddress.value,
         };
 
         console.log("All data in manage.js", allData);
