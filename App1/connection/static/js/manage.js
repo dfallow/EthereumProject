@@ -1,7 +1,7 @@
-const inputMachineID = document.querySelector("#machine-id").value;
-const inputPrescriptionID = document.querySelector("#prescription-id").value;
-const inputDoctorAddress = document.querySelector("#doctor-address").value;
-const inputPatientAddress = document.querySelector("#patient-address").value;
+const inputMachineID = document.querySelector("#machine-id");
+const inputPrescriptionID = document.querySelector("#prescription-id");
+const inputDoctorAddress = document.querySelector("#doctor-address");
+const inputPatientAddress = document.querySelector("#patient-address");
 const inputFile = document.querySelector(".input-file");
 const createButton = document.querySelector(".btn");
 const filesUploaded = document.querySelector("#file");
@@ -31,21 +31,23 @@ async function uploadMultipleFiles() {
 
       if (fileArray.length == filesUploaded.files.length) {
         console.log("EOFIHEFOIHEWFI");
-        let allData = {
+        let metaData = {
           image: fileArray.toString(),
           name: "FromMachine",
           attributes: [{ machine: inputMachineID }],
         };
 
-        console.log("ALL DATA", allData);
+        let allData = {
+          metaData: metaData,
+          machineId: inputMachineID.value,
+          prescriptionId: inputPrescriptionID.value,
+          doctorAddress: inputDoctorAddress.value,
+          patientAddress: inputPatientAddress.value,
+        };
 
+        console.log("All data in manage.js", allData);
         let request = new XMLHttpRequest();
-        request.open(
-          "POST",
-          `/ProcessFilesInfo/${JSON.stringify(
-            allData
-          )}/${inputMachineID}/${inputPrescriptionID}/${inputDoctorAddress}/${inputPatientAddress}`
-        );
+        request.open("POST", `/ProcessFilesInfo/${JSON.stringify(allData)}`);
         request.send();
       }
     };
