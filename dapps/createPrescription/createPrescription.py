@@ -79,7 +79,7 @@ prescription = Frame(root)
 prescription.pack(padx=10, pady=10, fill='x', expand=True)
 
 # file directory
-directory_label = Label(prescription, text="Enter Path to Machine File")
+directory_label = Label(prescription, text="Enter Path to Prescription File")
 directory_label.pack(fill='x', expand=True)
 
 directory_entry = Entry(prescription, textvariable=file_dir)
@@ -88,7 +88,7 @@ directory_entry.focus()
 
 button = Button(
     prescription, 
-    text='Register Machine', 
+    text='Create Prescription', 
     command=create_prescription)
 button.pack(fill='x', expand=True, pady=10)
 

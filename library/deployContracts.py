@@ -32,7 +32,12 @@ def compile_and_deploy_contract(contract_abi, contract_bytecode, account):
 #dep_contract, address = compile_and_deploy_contract(newContractDetails.#abi, newContractDetails.bytecode)
 #print("CONTRACT", address)
 
-def compile_contract_with_accounts(contract_abi, contract_bytecode, contract_owner, registered_account):
+def compile_contract_with_accounts(
+    contract_abi, 
+    contract_bytecode, 
+    contract_owner, 
+    registered_account
+    ):
     w3.eth.default_account = contract_owner
     compiled_contract = w3.eth.contract(
         abi=contract_abi, bytecode=contract_bytecode
