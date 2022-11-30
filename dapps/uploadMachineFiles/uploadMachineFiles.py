@@ -25,7 +25,7 @@ def deploy_data_contract():
     print(deployContracts.w3.eth.accounts)
     print(doctor_account.get())
 
-    contract, address = deployContracts.compile_contract_with_account(
+    contract, address = deployContracts.compile_contract_with_accounts(
         contractDetailsMachineData.abi,
         contractDetailsMachineData.bytecode,
         patient_account.get(),
