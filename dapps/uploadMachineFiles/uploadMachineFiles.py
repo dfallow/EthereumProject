@@ -1,4 +1,5 @@
 import os
+import json
 import tkinter as tk
 from tkinter import *
 from library import ipfs
@@ -21,14 +22,35 @@ def upload_files_from_machine(machine, dir):
     file_from_directory = os.listdir(dir)
     file_hash_array = []
 
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+
+    if os.path.exists(dir_path + '/files'):
+        print("Directory Already Exists")
+    else:
+        os.mkdir(dir_path + '/files')
+        print("Directory Created")
+
+    print("DIR PATH", dir_path)
     # store each file in ipfs
     for file_to_add in file_from_directory:
         print("FILE", file_to_add)
         file_hash = ipfs.store_file(dir + file_to_add)
         file_hash_array.append(file_hash)
 
-        
+        json_info = {
+            'fileHash': file_hash,
+            'fileUrl': "https://ipfs.io/ipfs/" + file_hash,
+            'machine_hash': machine.get()
+        }
 
+        json_file = json.dumps(json_info)
+        file_path = dir_path + "/files/dataFile" + str(file_from_directory.index(file_to_add)) + ".json"
+        new_file = open(file_path, "x")
+        new_file.write(json_file)
+        new_file.close()
+
+        # TODO place this at the end
+        os.remove(file_path)
     print("FILE ARRAY", file_hash_array)    
 
 
