@@ -16,7 +16,10 @@ def mint_machine_nft(deployed_contract, file_hash):
     return tokenId
 
 # used when minting prescription NFTs
-def mint_prescription_nft(deployed_contract, file_hash):
+def mint_prescription_nft(
+    deployed_contract, 
+    file_hash
+    ):
 
     file_url = "https://ipfs.io/ipfs/" + file_hash
 
@@ -51,3 +54,18 @@ def mint_data_nft(
 
     print("mintNFTs", data_token_id)
     return mint_event[0]["args"]["nftId"]
+
+
+def add_new_patient(
+    deployed_contract, 
+    patient, 
+    data_contract, 
+    prescription_contract
+    ):
+
+    patient_exists = deployed_contract.functions.checkIfPatientExists(patient).call()
+
+    print("PATIENT EXISTS", patient_exists)
+
+    
+    return

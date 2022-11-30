@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-from library import ipfs, deployContracts, mintNFTs, contractDetailsPrescription, variables
+from library import ipfs, deployContracts, contractDetailsPrescription, variables, contractInteraction
 
 # root window
 root =  tk.Tk()
@@ -37,7 +37,7 @@ def create_prescription():
 
     prescription_hash = ipfs.store_file(file_dir.get())
 
-    prescription_token_id = mintNFTs.mint_prescription_nft(variables.prescription_data_contract_var, prescription_hash)
+    prescription_token_id = contractInteraction.mint_prescription_nft(variables.prescription_data_contract_var, prescription_hash)
 
     print("TOKEN", prescription_token_id)
 

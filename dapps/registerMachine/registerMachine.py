@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import *
-from library import ipfs, deployContracts, mintNFTs, contractDetailsMachine, variables
-#from library.variables import machine_contract_var
+from library import ipfs, deployContracts, contractDetailsMachine, variables, contractInteraction
 
 # root window
 root =  tk.Tk()
@@ -44,7 +43,7 @@ def register_machine_v1():
     machine_hash = ipfs.store_file(file_dir.get())
 
     print("EWNGWEIOGN", variables.machine_contract_var)
-    mintNFTs.mint_machine_nft(variables.machine_contract_var, machine_hash)
+    contractInteraction.mint_machine_nft(variables.machine_contract_var, machine_hash)
 
     set_machine_info(machine_hash)
 

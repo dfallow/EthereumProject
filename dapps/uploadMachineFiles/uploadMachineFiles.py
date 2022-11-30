@@ -2,7 +2,7 @@ import os
 import json
 import tkinter as tk
 from tkinter import *
-from library import ipfs, mintNFTs, deployContracts, contractDetailsMachineData, variables
+from library import ipfs, deployContracts, contractDetailsMachineData, variables, contractInteraction
 
 
 #root window
@@ -84,7 +84,7 @@ def upload_files_from_machine(machine, dir):
         print("machine token", machine_token_id.get())
         print("prescription token", prescription_token_id.get())
 
-        data_token_id = mintNFTs.mint_data_nft(
+        data_token_id = contractInteraction.mint_data_nft(
             variables.machine_data_contract_var,
             new_file_hash,
             machine_token_id.get(),
