@@ -34,10 +34,10 @@ def ProcessMachineInfo(inputInfo):
     newDeployNFT.new_deploy_nft(json.loads(inputInfo)['name'],json.dumps(json.loads(inputInfo), indent=2))
     return('/')
 
-@app.route('/ProcessFilesInfo/<string:inputInfo>', methods=['POST'])
-def ProcessFilesInfo(inputInfo):
+@app.route('/ProcessFilesInfo/<string:inputInfo>/<int:machineId>/<int:prescriptionId>/<string:doctorAddress>/<string:patientAddress>', methods=['POST'])
+def ProcessFilesInfo(inputInfo, machineId, prescriptionId, doctorAddress, patientAddress):
     # pass the multiple files data and do something with it
-    deployMachineData.deploy_nfts(inputInfo)
+    deployMachineData.deploy_nfts(inputInfo, machineId, prescriptionId, doctorAddress, patientAddress)
     return('/')    
 
 @app.route('/registerMachine', methods=['GET'])

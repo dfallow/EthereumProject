@@ -7,9 +7,12 @@ w3 = Web3(Web3.EthereumTesterProvider())
 
 w3.eth.default_account = w3.eth.accounts[0]
 
+def show_accounts():
+    print(w3.eth.accounts)
 
 # compiles and deploys contract, returns contract address
-def compile_and_deploy_contract(contract_abi, contract_bytecode):
+def compile_and_deploy_contract(contract_abi, contract_bytecode, account):
+    w3.eth.default_account = account
     compiled_contract = w3.eth.contract(
         abi=contract_abi, bytecode=contract_bytecode
     )
