@@ -21,7 +21,6 @@ prescription_token_id = tk.IntVar()
 
 
 def deploy_data_contract():
-    print("BTN CLICKED")
     print(deployContracts.w3.eth.accounts)
     print(doctor_account.get())
 
@@ -88,7 +87,6 @@ def upload_files_from_machine(machine, dir):
         data_token_id = mintNFTs.mint_data_nft(
             variables.machine_data_contract_var,
             new_file_hash,
-            patient_account.get(),
             machine_token_id.get(),
             prescription_token_id.get()
         )

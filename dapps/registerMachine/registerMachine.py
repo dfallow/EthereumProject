@@ -40,15 +40,15 @@ def deploy_contract():
 ## 2. mints the returned hash as url
 def register_machine_v1():
     print("CONTRACT", variables.machine_contract_var)
-    #machine_contract.get(), contract_address.get(), file_dir.get()
+
     machine_hash = ipfs.store_file(file_dir.get())
 
     print("EWNGWEIOGN", variables.machine_contract_var)
-    mintNFTs.mint_nft(variables.machine_contract_var, machine_hash)
+    mintNFTs.mint_machine_nft(variables.machine_contract_var, machine_hash)
 
     set_machine_info(machine_hash)
 
-    return machine_hash, contract
+    return machine_hash
 
 
 # show accounts in terminal when launched
