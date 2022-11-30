@@ -42,6 +42,12 @@ def add_new_patient():
 
     print("PATIENT EXISTS", patient_exists)
 
+    #paddress, pcontract = variables.add_new_patient_contract_var.functions.getPatient(patient_address.get())
+
+    
+
+    
+
     return
 
 # show accounts in terminal when launched
