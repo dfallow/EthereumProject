@@ -2,13 +2,10 @@ from web3 import Web3
 import json
 import time
 from urllib.request import urlopen
+from urllib.error import URLError
 import os
 import sys
 # import requests_async as requests
-import requests
-from bs4 import BeautifulSoup
-import collections
-import asyncio
 
 sys.path.append(os.path.abspath(os.path.join('.')))
 from App1 import newContractDetails as cd
@@ -29,7 +26,7 @@ class NFTs:
         self.collection = collection
         self.tokenId = tokenId
         self.owner = owner
-
+        
 async def getUrlResponse(url):
     # time.sleep(3)
     req = urlopen(url)
@@ -45,16 +42,8 @@ async def getUrlResponse(url):
     
 async def getMetaData(url):
     # time.sleep(5)
-    print("URLLLLLL", url)
+    print("now get response to: ", url)
     res = await getUrlResponse(url)
-    
-    # if res is not None:
-        # md_page = res.text
-        # print(md_page)
-        # soup = str(BeautifulSoup(md_page, 'html.parser'))
-        # print(soup)
-        # soup_json = json.loads(soup)
-        # print(soup_json)  
     return res
 
 # return all blocks with a valid smart contract
@@ -67,7 +56,7 @@ def getAllValidContractAddress(w3, nob):
     
 async def recur(w3, ca, tokens, res=None):
     
-    print("TOKENNNNNNNNNN + ca", tokens, ca)
+    print("TOKEN ID and CONTRACT ADDRESS", tokens, ca)
     
     if res == None:
         res = []
@@ -86,7 +75,7 @@ async def recur(w3, ca, tokens, res=None):
     # wait until getMetaData finished
     md = await getMetaData(md_ipfs)
     
-    print("METADATAAAAAAAAAAAA", md)
+    print("GET METADATA: ", md)
     
     res.append(NFTs(ca,
                     md_ipfs,
@@ -96,6 +85,7 @@ async def recur(w3, ca, tokens, res=None):
                     num + 1,
                     contract.functions.getOwnerOfToken(num+1).call()))
     
+    # recursion 
     await recur(w3, ca, cur_token, res)
     
     return res    
@@ -104,46 +94,35 @@ async def recur(w3, ca, tokens, res=None):
 # get the NFTs a user owns
 async def getMyNFTs(w3):
 
+    # get total number of blocks on the chain
     numOfBLK = w3.eth.block_number
     
-    # list of contract address
+    # get list of contact address
     valid_ca = getAllValidContractAddress(w3, numOfBLK)
-    
     print("ALL CONTRACT ADDRESS", valid_ca)
     
+    # initialise a list to be returned
     myNFTs_data = []
+    
+    # if there's not contract address on chain, then early return
+    if valid_ca == []:
+        return []
     
     for ca in valid_ca:
         
+        # access to smart contract
         contract = w3.eth.contract(address=ca, abi=cd.abi)
         
+        # get token id owned by current user from smart contract
         ownedToken = [
             x for x in range(contract.functions.totalSupply().call())
             if contract.functions.getOwnerOfToken(x+1).call() == w3.eth.default_account 
         ]
         
+        # get metadata from url response
         if ownedToken:
-            
             myNFTs_data += await recur(w3, ca, ownedToken)
-            
-            # for num in ownedToken:
                 
-            #     time.sleep(3)
-                
-            #     md_ipfs = contract.functions.dataItems(num).call()[-1]
-                
-            #     md = getMetaData(md_ipfs)
-                
-            #     myNFTs_data.append(
-            #         NFTs(ca,
-            #             md_ipfs,
-            #             md["image"],
-            #             md["name"],
-            #             md["attributes"][0]["department"],
-            #             num + 1,
-            #             contract.functions.getOwnerOfToken(num+1).call(),
-            #         )
-            #     )
-                
+    # return owned NFTs and send them to transact page for displaying them
     return sorted(myNFTs_data, key=lambda x: x.collection, reverse=True)
   

@@ -11,11 +11,9 @@ from App2 import handleTransaction, browseNFTs, nftTransfer, browseCollection, s
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
 # this default account represent the current user
-# can transfer his NFT
+# who can transfer his NFT
 w3.eth.default_account = w3.eth.accounts[0]
 
-# #  methods=["GET", "POST"]
-# @app.route('/transact')
 async def transact():
   
   getMyNfts = await handleTransaction.getMyNFTs(w3)
@@ -52,9 +50,11 @@ async def browsingPage():
   
   return render_template("BrowseNFTs.html", collections=getAllCollections)
 
-def singleCollection(contractAddress, collection):
-  creator = browseCollection.getSmartContractCreator(w3, contractAddress) 
-  nfts = browseCollection.getNFTsBySmartContract(w3, contractAddress) 
+async def singleCollection(contractAddress, collection):
+  creator = await browseCollection.getSmartContractCreator(w3, contractAddress)
+  
+  # async here
+  nfts = await browseCollection.getNFTsBySmartContract(w3, contractAddress) 
   
   
    
@@ -62,11 +62,5 @@ def singleCollection(contractAddress, collection):
                          c_name=collection,
                          creator=creator,
                          NFTs=nfts)
-  
-  
-
-# if __name__ == "__main__":
-#   app2.run(debug=True)
-#   app2.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 4444)))
   
 #  python3.10 -m flask --app app2 --debug run --host 0.0.0.0 --port 4444
