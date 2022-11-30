@@ -2,7 +2,7 @@ import os
 import json
 import tkinter as tk
 from tkinter import *
-from library import ipfs
+from library import ipfs, mintNFTs
 
 
 #root window
@@ -15,6 +15,10 @@ root.title('Upload Machine Files')
 # TODO add account here
 directory = tk.StringVar()
 machine_hash = tk.StringVar()
+doctor_account = tk.StringVar()
+
+def deploy_data_contract():
+    print("BTN CLICKED")
 
 
 def upload_files_from_machine(machine, dir):
@@ -30,12 +34,10 @@ def upload_files_from_machine(machine, dir):
         os.mkdir(dir_path + '/files')
         print("Directory Created")
 
-    print("DIR PATH", dir_path)
     # store each file in ipfs
     for file_to_add in file_from_directory:
         print("FILE", file_to_add)
         file_hash = ipfs.store_file(dir + file_to_add)
-        file_hash_array.append(file_hash)
 
         json_info = {
             'fileHash': file_hash,
@@ -43,21 +45,21 @@ def upload_files_from_machine(machine, dir):
             'machine_hash': machine.get()
         }
 
+        # creatting temporary .json file
         json_file = json.dumps(json_info)
         file_path = dir_path + "/files/dataFile" + str(file_from_directory.index(file_to_add)) + ".json"
         new_file = open(file_path, "x")
         new_file.write(json_file)
         new_file.close()
 
+        # storing the newly created .json file in ipfs
+        new_file_hash = ipfs.store_file(file_path)
+        file_hash_array.append(new_file_hash)
+
+
         # TODO place this at the end
         os.remove(file_path)
     print("FILE ARRAY", file_hash_array)    
-
-
-
-    ## TODO create json files containing file_hash and machine
-
-    ## TODO store json files in ipfs
 
     ## TODO mint the returned hashes 
         
@@ -65,6 +67,26 @@ def upload_files_from_machine(machine, dir):
 
 
 ## Tkinter ##
+
+
+# deploy contract frame
+deploy = Frame(root)
+deploy.pack(padx=10, pady=10, fill='x', expand=True)
+
+# user account
+account_label = Label(deploy, text="Enter User Account")
+account_label.pack(fill='x', expand=True)
+
+account_entry = Entry(deploy, textvariable=doctor_account)
+account_entry.pack(fill='x', expand=True)
+
+# deploy contract button
+deploy_btn = Button(
+    deploy,
+    text="Deploy Contract",
+    command=deploy_data_contract
+)
+deploy_btn.pack(fill='x', expand=True, pady=10)
 
 # frame
 file_frame = Frame(root)
