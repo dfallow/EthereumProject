@@ -37,10 +37,10 @@ async def transact():
   
   return render_template("transact.html", myNFTs=getMyNfts)
 
-def browsingPage():
+async def browsingPage():
   # display the first nft of a collection
   # reduce the loading time
-  getAllCollections = browseNFTs.getAllNFTsCollections(w3)
+  getAllCollections = await browseNFTs.getAllNFTsCollections(w3)
   
   # when the nft is clicked, it redirects to a page 
   # where contains all the nfts of the collection

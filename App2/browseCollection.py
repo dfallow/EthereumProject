@@ -3,6 +3,7 @@ import json
 import os
 import sys
 from urllib.request import urlopen
+import json
 
 sys.path.append(os.path.abspath(os.path.join('.')))
 from App1 import newContractDetails as cd
@@ -34,7 +35,8 @@ class NFTs:
         self.collection = collection
         self.tokenId = tokenId
         self.owner = owner
-        
+
+
         
 def getNFTsBySmartContract(w3, target_ca):
     # initialise a object list

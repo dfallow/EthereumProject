@@ -31,27 +31,31 @@ class NFTs:
         self.owner = owner
 
 async def getUrlResponse(url):
-    time.sleep(4)
-    req = requests.get(url, headers = {'User-agent': 'Super Bot Power Level Over 9000'})
-    if req.status_code not in [429, 504]:
-        return req
+    # time.sleep(3)
+    req = urlopen(url)
+    # req = requests.get(url, headers = {'User-agent': 'Super Bot Power Level Over 9000'})
+    
+    if int(req.status) != 504 or int(req.status) != 429:
+        print("request status", req.status)
+        md_json = json.loads(req.read())
+        req.close()
+        return md_json
     else:
         return None
-
+    
 async def getMetaData(url):
     # time.sleep(5)
     print("URLLLLLL", url)
     res = await getUrlResponse(url)
     
-    if res is not None:
-        md_page = res.text
-        print(md_page)
-        soup = str(BeautifulSoup(md_page, 'html.parser'))
-        print(soup)
-        soup_json = json.loads(soup)
-        print(soup_json)
-        
-        return soup_json
+    # if res is not None:
+        # md_page = res.text
+        # print(md_page)
+        # soup = str(BeautifulSoup(md_page, 'html.parser'))
+        # print(soup)
+        # soup_json = json.loads(soup)
+        # print(soup_json)  
+    return res
 
 # return all blocks with a valid smart contract
 def getAllValidContractAddress(w3, nob):
@@ -84,26 +88,15 @@ async def recur(w3, ca, tokens, res=None):
     
     print("METADATAAAAAAAAAAAA", md)
     
-    if md is not None:
-        res.append(NFTs(ca,
-                        md_ipfs,
-                        md["image"],
-                        md["name"],
-                        md["attributes"][0]["department"],
-                        num + 1,
-                        contract.functions.getOwnerOfToken(num+1).call()))
-    else:
-        # https://ipfs.io/ipfs/QmPSmDUWoT2DXbCjqnmgaQquNfTT1Kf9Lcwy2XvW9kveAZ
-        res.append(NFTs(ca,
-                        "currenly not available",
-                        "https://ipfs.io/ipfs/QmPSmDUWoT2DXbCjqnmgaQquNfTT1Kf9Lcwy2XvW9kveAZ",
-                        "currenly not available",
-                        "currenly not available",
-                        num + 1,
-                        contract.functions.getOwnerOfToken(num+1).call()))
+    res.append(NFTs(ca,
+                    md_ipfs,
+                    md["image"] if md else "https://ipfs.io/ipfs/Qmdgud3qvpxqbTYkk4x71FUV4zvfUufu377GQeprqokof4",
+                    md["name"] if md else "try later",
+                    md["attributes"][0]["department"] if md else "try later",
+                    num + 1,
+                    contract.functions.getOwnerOfToken(num+1).call()))
     
-    if md:
-        await recur(w3, ca, cur_token, res)
+    await recur(w3, ca, cur_token, res)
     
     return res    
     
