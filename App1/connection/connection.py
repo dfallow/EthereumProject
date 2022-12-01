@@ -9,6 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(
 import newDeployNFT
 import deployMachineData
 import deployPrescription
+import registerPatient
 
 ## Returns /home/dfallow/Documents/EthereumProject
 app_one_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -47,9 +48,18 @@ def ProcessPrescription(inputInfo):
     deployPrescription.deploy_prescription_nft(json.dumps(json.loads(inputInfo), indent=2))
     return('/')  
 
+@app.route('/ProcessPatient/<string:inputInfo>', methods=['POST'])
+def ProcessPatient(inputInfo):
+    registerPatient.register_new_patient(json.dumps(json.loads(inputInfo), indent=2))
+    return('/') 
+
 @app.route('/registerMachine', methods=['GET'])
 def registerMachine():
     return render_template('registerMachine.html')
+
+@app.route('/registerPatient', methods=['GET'])
+def registerPatientData():
+    return render_template('registerPatient.html')
 
 @app.route('/issuePrescription', methods=['GET'])
 def issuePrescription():
