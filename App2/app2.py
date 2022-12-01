@@ -55,12 +55,17 @@ async def singleCollection(contractAddress, collection):
   
   # async here
   nfts = await browseCollection.getNFTsBySmartContract(w3, contractAddress) 
+  # nfts = []
   
+  activity = await singleCollectionActivity.getCollectionActivity(w3, contractAddress, nfts)
   
+  # <h3>Items {{NFTs[-1].tokenId}}</h3>
    
   return render_template("singleCollection.html", 
                          c_name=collection,
                          creator=creator,
-                         NFTs=nfts)
+                         NFTs=nfts,
+                         ca=contractAddress, 
+                         Activity=activity)
   
 #  python3.10 -m flask --app app2 --debug run --host 0.0.0.0 --port 4444

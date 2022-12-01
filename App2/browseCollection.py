@@ -3,6 +3,7 @@ import json
 import os
 import sys
 from urllib.request import urlopen
+from urllib.error import HTTPError
 import json
 
 sys.path.append(os.path.abspath(os.path.join('.')))
@@ -28,13 +29,21 @@ class NFTs:
 
 async def getSmartContractCreator(w3, target_ca):
     numOfBLK = w3.eth.block_number
-    # find first appearance the contract address to see which address(user)created it
+    # dig deep into the history of each block
+    # and check which address(user) minted the smart contract
     for i in range(1, numOfBLK+1):
-        if w3.eth.get_transaction(w3.eth.get_block(i)["transactions"][0].hex())["to"] == target_ca:
-            return w3.eth.get_transaction(w3.eth.get_block(i)["transactions"][0].hex())["from"]
+        check_mint_txh = w3.eth.get_block(i)["transactions"][0].hex()
+        mint_receipt =  w3.eth.get_transaction_receipt(check_mint_txh)
+        if mint_receipt["logs"][0]["address"] == target_ca:
+            return mint_receipt["from"]
+        
      
 async def getUrlResponse(url):
-    req = urlopen(url)
+
+    try:
+        req = urlopen(url)
+    except HTTPError:
+        return None
     
     if int(req.status) != 504 or int(req.status) != 429:
         print("request status", req.status)
