@@ -8,9 +8,6 @@ const fileUploaded = document.querySelector("#file");
 const transferDiv = document.querySelector(".transfer-div");
 const issueDiv = document.querySelector(".issue-div");
 
-transferDiv.style.display = "none";
-issueDiv.style.display = "flex";
-
 issueButton.addEventListener("click", async () => {
   uploadFile();
 });
@@ -42,8 +39,6 @@ async function uploadFile() {
     const request = new XMLHttpRequest();
     request.open("POST", `/ProcessPrescription/${JSON.stringify(allData)}`);
     request.send();
-    transferDiv.style.display = "flex";
-    issueDiv.style.display = "none";
   };
 }
 
