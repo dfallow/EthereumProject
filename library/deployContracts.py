@@ -12,6 +12,7 @@ def show_accounts():
 
 # compiles and deploys contract, returns contract address
 def compile_and_deploy_contract(contract_abi, contract_bytecode, account):
+    # default account deploys contract -> msg.sender
     w3.eth.default_account = account
     compiled_contract = w3.eth.contract(
         abi=contract_abi, bytecode=contract_bytecode
@@ -27,7 +28,7 @@ def compile_and_deploy_contract(contract_abi, contract_bytecode, account):
         address=contract_address, abi=contract_abi
     )
 
-    return deployed_contract, contract_address
+    return deployed_contract, contract_address, transaction_hash, transanction_receipt
 
 #dep_contract, address = compile_and_deploy_contract(newContractDetails.#abi, newContractDetails.bytecode)
 #print("CONTRACT", address)

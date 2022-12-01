@@ -9,43 +9,41 @@ root.resizable(False, False)
 root.title('Register Machine')
 
 # store user input
-# TODO add account here
+manufacturer_account = tk.StringVar()
 file_dir = tk.StringVar()
-user_account = tk.StringVar()
 contract_address = tk.StringVar()
 
 def deploy_contract():
     print("test", deployContracts.w3.eth.accounts)
-    print(user_account.get())
-    contract, address = deployContracts.compile_and_deploy_contract(
+    print(manufacturer_account.get())
+    contract, address, hash, receipt = deployContracts.compile_and_deploy_contract(
         contractDetailsMachine.abi, 
         contractDetailsMachine.bytecode,
-        user_account.get()
+        manufacturer_account.get()
         )
 
-    #print("MACHINE", machine_contract_var)
     variables.machine_contract_var = contract
-    print("MACHINE", variables.machine_contract_var)
     contract_address.set(address)
-    print("CONTRACT", contract)
-    print("GET CONTRACT", variables.machine_contract_var)
-    print("ADDRESS", contract_address.get())
-
     set_contract_address(contract_address.get())
-    
+
+    print("\nThe Receipt which is given after the construction transact\n", receipt, "\n")
+    print("The deployed machine contract", variables.machine_contract_var)
+    print("The deployed contracts address", contract_address.get())
+
     return contract, address
 
 ## 1. uploads machine file to ipfs
 ## 2. mints the returned hash as url
 def register_machine_v1():
-    print("CONTRACT", variables.machine_contract_var)
 
     machine_hash = ipfs.store_file(file_dir.get())
 
-    print("EWNGWEIOGN", variables.machine_contract_var)
     contractInteraction.mint_machine_nft(variables.machine_contract_var, machine_hash)
 
     set_machine_info(machine_hash)
+
+    print("\nThe hash of the machine file stored in IPFS", machine_hash)
+    print("Access the file through this url:", "https://ipfs.io/ipfs/" + machine_hash)
 
     return machine_hash
 
@@ -59,11 +57,11 @@ deployContracts.show_accounts()
 deploy = Frame(root)
 deploy.pack(padx=10, pady=10, fill='x', expand=True)
 
-# user account
-account_label = Label(deploy, text="Enter User Account")
+# user account -> will deploy the machine contract
+account_label = Label(deploy, text="Enter Manufacturer Account")
 account_label.pack(fill='x', expand=True)
 
-account_entry = Entry(deploy, textvariable=user_account)
+account_entry = Entry(deploy, textvariable=manufacturer_account)
 account_entry.pack(fill='x', expand=True)
 
 # deploy contract button
@@ -78,7 +76,7 @@ deploy_btn.pack(fill='x', expand=True, pady=10)
 resgister_machine = Frame(root)
 resgister_machine.pack(padx=10, pady=10, fill='x', expand=True)
 
-# file directory
+# file directory -> path to the machine file
 directory_label = Label(resgister_machine, text="Enter Path to Machine File")
 directory_label.pack(fill='x', expand=True)
 
@@ -92,7 +90,7 @@ button = Button(
     command=register_machine_v1)
 button.pack(fill='x', expand=True, pady=10)
 
-# current contract frame
+# current contract frame -> showes inforamtion about the deployed contract
 contract = Frame(root, height=20)
 contract.pack(padx=10, pady=10, fill='x')
 
@@ -113,9 +111,11 @@ added_machine.pack(fill='x', expand=True)
 
 
 def set_contract_address(address):
+    current_contract.delete(0, END)
     current_contract.insert(0, address)
 
 def set_machine_info(hash):
+    added_machine.delete(0, END)
     added_machine.insert(0, hash)
     
 root.mainloop()

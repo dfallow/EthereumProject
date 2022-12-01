@@ -7,12 +7,10 @@ def mint_machine_nft(deployed_contract, file_hash):
     deployed_contract.functions.mint(file_url).transact()
 
     event = deployed_contract.events.Minted().getLogs()
-    print("MINTED EVENT", event)
+    print("\nMINTED EVENT", event)
     tokenId = event[0]["args"]["tokenId"]
-    print("NFT ID/TokenId", tokenId)
+    print("\nNFT ID/TokenId", tokenId)
 
-    print("FILE", file_url)
-    print("TOKEN", tokenId)
     return tokenId
 
 # used when minting prescription NFTs
