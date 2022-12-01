@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Blockchain app</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,29 +15,24 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/index.css') }}"
+    />
   </head>
   <body>
     <div class="container">
-      <div class="input-file-container">
-        <input type="file" name="file" id="file" class="input-file" />
-        <label for="file">Choose a file</label>
+      <h1 class="title">Blockchain app</h1>
+      <div class="button-container">
+        <a href="{{ url_for('registerMachine') }}"
+          ><button class="btn register-button">Register a machine</button></a
+        >
+        <a href="{{ url_for('manageData') }}">
+          <button class="btn manage-button">Manage machine data</button>
+        </a>
       </div>
-      <div class="image-container">
-        <img src="" alt="" class="image" />
-      </div>
-
-      <input type="text" name="name" id="name" class="input-text2" placeholder="Enter name"/>
-
-      <textarea
-        name="input-text"
-        class="input-text"
-        cols="40"
-        rows="10"
-        placeholder="Put your nft description here"
-      ></textarea>
-      <button class="btn">create NFT</button>
       <h1 class="contract-text"></h1>
     </div>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
   </body>
 </html>

@@ -6,40 +6,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            rel="stylesheet"
-            href="{{ url_for('static', filename='css/browse.css') }}"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"rel="stylesheet"/>
+        <title>Browsing NFTs</title>
     </head>
+<body>
 
-    <body>
-        <h3 class="browse_title">Browse all NFT collections</h3>
+    <div>
+        <h3>This page will show all the NFTs</h3>
+    </div>
 
-        <div class="all_Collections">
-            <div class="items">
-                {% if not collections or collections == [] %}
-                    <p>There is no any NFT on the market</p>
-                {% else %}
-                    {% for c in collections %}
-                    <form action="{{ url_for("browsingPage")}}" method="GET">
-                        <div class="nft_container">
-                            <div class="card">
-                                <input type = "hidden" name = "ca" value="{{c}}"/>
-                                <input type = "hidden" name = "collections" value="{{collections[c][1]}}"/>
-                                <input type="image" src="{{collections[c][0]}}"/>
-                            </div>
-                            <h5 class="nft_name">{{collections[c][1]}}</h5>
-                        </div>
-                    </form>
-                    {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="all_NFTs">
-            <h3 class="browse_title2">Browse all NFTs</h3>
-        </div>
-
-        
-    </body>
+    <div>
+        {% if not allNFTs or allNFTs == [] %}
+            <p>There is no any NFT on the market</p>
+        {% else %}
+            {% for nft in allNFTs %}
+            <img src="{{nft.img_ipfs}}" width="300" height="300">
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+</body>
 </html>
