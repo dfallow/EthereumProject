@@ -1,46 +1,82 @@
 import tkinter as tk
 from tkinter import *
-from library import ipfs, deployContracts, newContractDetails, mintNFTs
-import json
+from library import ipfs, deployContracts, contractDetailsMachine, variables, contractInteraction
+
 # root window
 root =  tk.Tk()
-root.geometry("450x250")
+root.geometry("450x450")
 root.resizable(False, False)
 root.title('Register Machine')
 
 # store user input
-# TODO add account here
+manufacturer_account = tk.StringVar()
 file_dir = tk.StringVar()
+contract_address = tk.StringVar()
 
 def deploy_contract():
-    contract, address = deployContracts.compile_and_deploy_contract(
-        newContractDetails.abi, 
-        newContractDetails.bytecode
+    print("List of accounts", deployContracts.w3.eth.accounts)
+    print("\nThe Account that will deploy the contract", manufacturer_account.get())
+    contract, address, hash, receipt = deployContracts.compile_and_deploy_contract(
+        contractDetailsMachine.abi, 
+        contractDetailsMachine.bytecode,
+        manufacturer_account.get()
         )
+
+    variables.machine_contract_var = contract
+    contract_address.set(address)
+    set_contract_address(contract_address.get())
+
+    print("\nThe Receipt which is given after the construction transact\n", receipt, "\n")
+    print("The deployed machine contract", variables.machine_contract_var)
+    print("The deployed contracts address", contract_address.get())
+
     return contract, address
 
 ## 1. uploads machine file to ipfs
 ## 2. mints the returned hash as url
-def register_machine_v1(contract, address, machine_file_path=""):
+def register_machine_v1():
 
-    machine_hash = ipfs.store_file(machine_file_path)
+    machine_hash = ipfs.store_file(file_dir.get())
 
-    mintNFTs.mint_nft(contract, machine_hash)
+    contractInteraction.mint_machine_nft(variables.machine_contract_var, machine_hash)
 
     set_machine_info(machine_hash)
 
-    return machine_hash, contract, address
+    print("\nThe hash of the machine file stored in IPFS", machine_hash)
+    print("Access the file through this url:", "https://ipfs.io/ipfs/" + machine_hash)
+
+    return machine_hash
 
 
-# when program is launched
-machine_contract, contract_address = deploy_contract()
+# show accounts in terminal when launched
+deployContracts.show_accounts()
 
 ## Tkinter ##
+
+# deploy contract frame
+deploy = Frame(root)
+deploy.pack(padx=10, pady=10, fill='x', expand=True)
+
+# user account -> will deploy the machine contract
+account_label = Label(deploy, text="Enter Manufacturer Account")
+account_label.pack(fill='x', expand=True)
+
+account_entry = Entry(deploy, textvariable=manufacturer_account)
+account_entry.pack(fill='x', expand=True)
+
+# deploy contract button
+deploy_btn = Button(
+    deploy,
+    text="Deploy Contract",
+    command=deploy_contract
+)
+deploy_btn.pack(fill='x', expand=True, pady=10)
+
 # register machine frame
 resgister_machine = Frame(root)
 resgister_machine.pack(padx=10, pady=10, fill='x', expand=True)
 
-# file directory
+# file directory -> path to the machine file
 directory_label = Label(resgister_machine, text="Enter Path to Machine File")
 directory_label.pack(fill='x', expand=True)
 
@@ -51,11 +87,10 @@ directory_entry.focus()
 button = Button(
     resgister_machine, 
     text='Register Machine', 
-    command=lambda: register_machine_v1(machine_contract, contract_address, file_dir.get())
-    )
+    command=register_machine_v1)
 button.pack(fill='x', expand=True, pady=10)
 
-# current contract frame
+# current contract frame -> showes inforamtion about the deployed contract
 contract = Frame(root, height=20)
 contract.pack(padx=10, pady=10, fill='x')
 
@@ -76,11 +111,11 @@ added_machine.pack(fill='x', expand=True)
 
 
 def set_contract_address(address):
+    current_contract.delete(0, END)
     current_contract.insert(0, address)
 
 def set_machine_info(hash):
+    added_machine.delete(0, END)
     added_machine.insert(0, hash)
-
-set_contract_address(contract_address)
     
 root.mainloop()
