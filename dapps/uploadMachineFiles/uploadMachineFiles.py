@@ -107,6 +107,7 @@ def upload_files_from_machine(machine, dir):
         
 
 # show accounts in terminal when launched
+print("\nList of accounts:")
 deployContracts.show_accounts()
 
 ## Tkinter ##

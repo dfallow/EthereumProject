@@ -69,13 +69,12 @@ def add_new_patient(
 
     if patient_exists:
         print("Patient Already Is Registered")
+        return patient_exists, "", "", ""
     else:
         deployed_contract.functions.addNewPatient(
             patient,
             data_contract,
             prescription_contract
         ).transact()
-        print("Patient Added")
-
-    
-    return
+        print("Patient Added") 
+        return  patient_exists, patient, data_contract, prescription_contract
