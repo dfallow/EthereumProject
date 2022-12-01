@@ -1,0 +1,140 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Rubik", sans-serif;
+    color: #333;
+    background: #212534;
+}
+
+.single_collection_title {
+    color: #f2f2f2;
+    padding-left: 3%;
+}
+
+.collection_name {
+    font-size: 40px;
+    padding-bottom: -5%;
+    margin-top: 36px;
+    margin-bottom: 10px;
+}
+
+.the_collection {
+    padding-left: 3%;
+    margin-top: 36px;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.items {
+    text-align: center;
+    display:flex;
+    gap: 36px;
+    width:100%;
+    margin: auto;
+}
+.items img {
+    width: 200px;
+    height: 200px;
+}
+
+.nft_container {
+    position: relative;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+}
+.nft_item{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nft_name {
+    color: #f2f2f2;
+    font-size: 15px;
+}
+
+@property --rotate {
+    syntax: "<angle>";
+    initial-value: 132deg;
+    inherits: false;
+}
+  
+:root {
+    --card-height: 200px;
+    --card-width: 200px;
+}
+    
+.card {
+    background: #191c29;
+    width: var(--card-width);
+    height: var(--card-height);
+    padding: 3px;
+    position: relative;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    font-size: 1.5em;
+    color: rgb(88 199 250 / 0%);
+    cursor: pointer;
+    font-family: cursive;
+  }
+  
+  
+.card::before {
+    content: "";
+    width: 104%;
+    height: 102%;
+    border-radius: 8px;
+    background-image: linear-gradient(
+      var(--rotate)
+      , #5ddcff, #3c67e3 43%, #4e00c2);
+      position: absolute;
+      z-index: -1;
+      top: -1%;
+      left: -2%;
+      animation: spin 2.5s linear infinite;
+}
+  
+.card::after {
+    position: absolute;
+    content: "";
+    top: calc(var(--card-height) / 6);
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    transform: scale(0.8);
+    filter: blur(calc(var(--card-height) / 6));
+    background-image: linear-gradient(
+      var(--rotate)
+      , #5ddcff, #3c67e3 43%, #4e00c2);
+      opacity: 1;
+    transition: opacity .5s;
+    animation: spin 2.5s linear infinite;
+}
+  
+@keyframes spin {
+    0% {
+      --rotate: 0deg;
+    }
+    100% {
+      --rotate: 360deg;
+    }
+}
+
+.items_activity {
+    min-height: 100vh;
+}
+
+.activity_title {
+    color: #f2f2f2;
+    padding-left: 3%;
+    font-size: 30px;
+}

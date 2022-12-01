@@ -19,6 +19,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
     "ganache": "^7.5.0",
-    "ganache-cli": "^6.12.2"
+    "ganache-cli": "^6.12.2",
+    "ipfs-mini": "^1.1.5"
   }
 }

@@ -15,26 +15,24 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+    <script src="https://cdn.jsdelivr.net/npm/ipfs/dist/index.min.js"></script>
   </head>
+
+
   <body>
     <div class="container">
       <div class="input-file-container">
-        <input type="file" name="file" id="file" class="input-file" />
+        <input type="file" accept="image/*" name="file" id="file" class="input-file" />
         <label for="file">Choose a file</label>
       </div>
       <div class="image-container">
         <img src="" alt="" class="image" />
       </div>
 
-      <input type="text" name="name" id="name" class="input-text2" placeholder="Enter name"/>
+      <input type="text" name="name" id="name" class="input-text2" placeholder="Enter Machine name"/>
 
-      <textarea
-        name="input-text"
-        class="input-text"
-        cols="40"
-        rows="10"
-        placeholder="Put your nft description here"
-      ></textarea>
+      <input type="text" name="name" id="department" class="input-text2" placeholder="Enter Machine Department"/>
+
       <button class="btn">create NFT</button>
       <h1 class="contract-text"></h1>
     </div>
