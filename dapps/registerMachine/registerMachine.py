@@ -14,8 +14,8 @@ file_dir = tk.StringVar()
 contract_address = tk.StringVar()
 
 def deploy_contract():
-    print("test", deployContracts.w3.eth.accounts)
-    print(manufacturer_account.get())
+    print("List of accounts", deployContracts.w3.eth.accounts)
+    print("\nThe Account that will deploy the contract", manufacturer_account.get())
     contract, address, hash, receipt = deployContracts.compile_and_deploy_contract(
         contractDetailsMachine.abi, 
         contractDetailsMachine.bytecode,

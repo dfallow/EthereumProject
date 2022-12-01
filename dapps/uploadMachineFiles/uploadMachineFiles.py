@@ -14,6 +14,7 @@ root.title('Upload Machine Files')
 # store user input
 doctor_account = tk.StringVar()
 patient_account = tk.StringVar()
+contract_address = tk.StringVar()
 directory = tk.StringVar()
 machine_hash = tk.StringVar()
 machine_token_id = tk.IntVar()
@@ -21,42 +22,54 @@ prescription_token_id = tk.IntVar()
 
 
 def deploy_data_contract():
-    print(deployContracts.w3.eth.accounts)
-    print(doctor_account.get())
+    print("List of accounts", deployContracts.w3.eth.accounts)
+    print("\nThe Account that will deploy the contract", patient_account.get())
 
-    contract, address = deployContracts.compile_contract_with_accounts(
+    contract, address, hash, receipt = deployContracts.compile_contract_with_accounts(
         contractDetailsMachineData.abi,
         contractDetailsMachineData.bytecode,
-        patient_account.get(),
-        doctor_account.get()
+        patient_account.get(), # patient deploys contract
+        doctor_account.get() # doctor is only registered
     )
 
     variables.machine_data_contract_var = contract
+    contract_address.set(address)
+    set_contract_address(address)
 
-    print(contract)
-
-    print(address)
+    print("\nThe Receipt which is given after the construction transact\n", receipt, "\n")
+    print("The deployed machine contract", variables.machine_contract_var)
+    print("The deployed contracts address", contract_address.get())
 
     return
 
 
 def upload_files_from_machine(machine, dir):
 
+    # gets files from user inputted directory
     file_from_directory = os.listdir(dir)
-    file_hash_array = []
 
+    # gets the current directory -> location where temporary files are stored
     dir_path = os.path.dirname(os.path.realpath(__file__))
+    print("\nPath to current directory containing current file (uploadMachineFiles.py)")
 
+    # the original files stored in IPFS
+    original_hash_array = []
+    # the altered files stored in IPFS
+    altered_hash_array = []
+
+    # checks if directory exists
     if os.path.exists(dir_path + '/files'):
         print("Directory Already Exists")
     else:
         os.mkdir(dir_path + '/files')
-        print("Directory Created")
+        print("Directory Did Not Exist\nCreated Directory")
 
     # store each file in ipfs
     for file_to_add in file_from_directory:
-        print("FILE", file_to_add)
+
+        print("Current file being added", file_to_add)
         file_hash = ipfs.store_file(dir + file_to_add)
+        original_hash_array.append(file_hash)
 
         json_info = {
             'fileHash': file_hash,
@@ -73,16 +86,10 @@ def upload_files_from_machine(machine, dir):
 
         # storing the newly created .json file in ipfs
         new_file_hash = ipfs.store_file(file_path)
-        file_hash_array.append(new_file_hash)
+        altered_hash_array.append(new_file_hash)
 
-
-        # TODO place this at the end
+        # removes the temporary file
         os.remove(file_path)
-
-
-        print("Patient", patient_account.get())
-        print("machine token", machine_token_id.get())
-        print("prescription token", prescription_token_id.get())
 
         data_token_id = contractInteraction.mint_data_nft(
             variables.machine_data_contract_var,
@@ -91,16 +98,13 @@ def upload_files_from_machine(machine, dir):
             prescription_token_id.get()
         )
 
-        print("MINTED TOKEN", data_token_id)
+        print("\nMINTED TOKEN", data_token_id)
 
-
-    print("FILE ARRAY", file_hash_array)    
-
-    ## TODO mint the returned hashes 
-
-    
+    print("\nOriginal files, IPFS hash array:\n", original_hash_array)
+    print("\nAltered files, IPFS hash array:\n", altered_hash_array)    
         
     return
+        
 
 # show accounts in terminal when launched
 deployContracts.show_accounts()
@@ -173,5 +177,22 @@ button = Button(
     command=lambda: upload_files_from_machine(machine_hash, directory.get())
 )
 button.pack(fill='x', expand=True)
+
+# details frame
+details_frame = Frame(root)
+details_frame.pack(padx=10, pady=10, fill='x', expand=True)
+
+# contract label
+contract_label = Label(details_frame, text="Current Contract Address:")
+contract_label.pack(fill='x', expand=True)
+
+# contract address
+current_contract = Entry(details_frame)
+current_contract.pack(fill='x', expand=True)
+
+def set_contract_address(address):
+    current_contract.delete(0, END)
+    current_contract.insert(0, address)
+
 
 root.mainloop()

@@ -49,9 +49,11 @@ def mint_data_nft(
     ).transact()
 
     mint_event = deployed_contract.events.Minted().getLogs()
+    print("\nMINTED EVENT", mint_event)
+    tokenId = mint_event[0]["args"]["nftId"]
+    print("\nNFT ID/TokenId", tokenId)
 
-    print("mintNFTs", data_token_id)
-    return mint_event[0]["args"]["nftId"]
+    return tokenId
 
 
 def add_new_patient(

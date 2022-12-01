@@ -30,8 +30,6 @@ def compile_and_deploy_contract(contract_abi, contract_bytecode, account):
 
     return deployed_contract, contract_address, transaction_hash, transanction_receipt
 
-#dep_contract, address = compile_and_deploy_contract(newContractDetails.#abi, newContractDetails.bytecode)
-#print("CONTRACT", address)
 
 def compile_contract_with_accounts(
     contract_abi, 
@@ -54,4 +52,4 @@ def compile_contract_with_accounts(
         address=contract_address, abi=contract_abi
     )
 
-    return deployed_contract, contract_address
+    return deployed_contract, contract_address, transaction_hash, transanction_receipt
