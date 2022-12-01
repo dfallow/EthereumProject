@@ -31,14 +31,14 @@ def deploy_prescription_nft(info_object):
         file_hash, file_url = IPFSv2.store_ipfs_file(file_name, info_object)
         # mint prescription NFT
         prescription_contract.functions.mintPrescriptionToken(
-            file_url).transact()
+            file_url, int(machine_token_id)).transact()
         event = prescription_contract.events.Minted().getLogs()
         print("MINTED EVENT", event)
         tokenId = event[0]["args"]["nftId"]
         print("PRESCRIPTION TOKEN ID", tokenId)
         # get NFT count
         print("Prescription count",
-            prescription_contract.functions.numberOfPrescriptionTokens().call())
+              prescription_contract.functions.numberOfPrescriptionTokens().call())
         print("BLOCK number", w3.eth.block_number)
 
 
