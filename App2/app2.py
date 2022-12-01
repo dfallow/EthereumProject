@@ -11,14 +11,12 @@ from App2 import handleTransaction, browseNFTs, nftTransfer, browseCollection, s
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
 # this default account represent the current user
-# can transfer his NFT
+# who can transfer his NFT
 w3.eth.default_account = w3.eth.accounts[0]
 
-# #  methods=["GET", "POST"]
-# @app.route('/transact')
-def transact():
+async def transact():
   
-  getMyNfts = handleTransaction.getMyNFTs(w3)
+  getMyNfts = await handleTransaction.getMyNFTs(w3)
   
   if request.method == "POST":
     nft = request.form.get("tid")
@@ -37,10 +35,10 @@ def transact():
   
   return render_template("transact.html", myNFTs=getMyNfts)
 
-def browsingPage():
+async def browsingPage():
   # display the first nft of a collection
   # reduce the loading time
-  getAllCollections = browseNFTs.getAllNFTsCollections(w3)
+  getAllCollections = await browseNFTs.getAllNFTsCollections(w3)
   
   # when the nft is clicked, it redirects to a page 
   # where contains all the nfts of the collection
@@ -52,21 +50,22 @@ def browsingPage():
   
   return render_template("BrowseNFTs.html", collections=getAllCollections)
 
-def singleCollection(contractAddress, collection):
-  creator = browseCollection.getSmartContractCreator(w3, contractAddress) 
-  nfts = browseCollection.getNFTsBySmartContract(w3, contractAddress) 
+async def singleCollection(contractAddress, collection):
+  creator = await browseCollection.getSmartContractCreator(w3, contractAddress)
   
+  # async here
+  nfts = await browseCollection.getNFTsBySmartContract(w3, contractAddress) 
+  # nfts = []
   
+  activity = await singleCollectionActivity.getCollectionActivity(w3, contractAddress, nfts)
+  
+  # <h3>Items {{NFTs[-1].tokenId}}</h3>
    
   return render_template("singleCollection.html", 
                          c_name=collection,
                          creator=creator,
-                         NFTs=nfts)
-  
-  
-
-# if __name__ == "__main__":
-#   app2.run(debug=True)
-#   app2.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 4444)))
+                         NFTs=nfts,
+                         ca=contractAddress, 
+                         Activity=activity)
   
 #  python3.10 -m flask --app app2 --debug run --host 0.0.0.0 --port 4444

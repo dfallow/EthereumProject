@@ -15,11 +15,12 @@ os.chdir(app_one_dir)
 
 # able to access other route from app2 folder
 sys.path.append(os.path.abspath(os.path.join('..')))
-from App2.app2 import transact, browsingPage
+from App2.app2 import transact, browsingPage, singleCollection
 
 app = Flask(__name__)
 app.add_url_rule('/transact', methods=["GET", "POST"], view_func=transact)
 app.add_url_rule('/browseNFTs', view_func=browsingPage)
+app.add_url_rule('/browseNFTs/collection/<string:contractAddress>/<string:collection>', methods=["GET", "POST"], view_func=singleCollection)
 
 @app.route('/')
 def index():
@@ -46,7 +47,13 @@ def registerMachine():
 
 @app.route('/manageData', methods=['GET'])
 def manageData():
+
     return render_template('manageData.html')
+
+@app.route('/showData', methods=['GET'])
+def showData():
+    return render_template('showData.html')
+
 
 if __name__ == "__main__":
     app.run(port=3000,debug=True, use_reloader=True)

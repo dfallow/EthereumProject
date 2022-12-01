@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/singleCollection.css') }}"
+        />
+    </head>
+<body>
+    <div class="single_collection_title">
+        <h3 class="collection_name">{{c_name}}</h3>
+        <h3>By {{creator}}</h3>
+        <h3>Contract {{ca}}</h3>
+        <h3>Items {{NFTs[-1].tokenId}}</h3>
+        
+    </div>
+
+    <div class="the_collection">
+        <div class="items">
+            {% for nft in NFTs %}
+            <div class="nft_item">
+                <div class="card">
+                    <div class="nft_container">
+                        <img src="{{nft.img_ipfs}}">
+                    </div>
+                </div>
+                <h5 class="nft_name">{{nft.name[0]}}</h5>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="items_activity">
+        <h3 class="activity_title">Items Activity</h3>
+
+        <div class="table-container">
+            <div class="table">
+              <div class="table-header">
+                <div class="header__item">
+                  <a id="name" class="filter__link">Event</a>
+                </div>
+                <div class="header__item">
+                  <a id="wins" class="filter__link filter__link--number">Item</a>
+                </div>
+                <div class="header__item">
+                  <a id="draws" class="filter__link filter__link--number">TokenID</a>
+                </div>
+                <div class="header__item">
+                  <a id="losses" class="filter__link filter__link--number">From</a>
+                </div>
+                <div class="header__item">
+                  <a id="total" class="filter__link filter__link--number">To</a
+                  >
+                </div>
+              </div>
+              <div class="table-content">
+
+                {% for activity in Activity[::-1] %}
+                    <div class="table-row">
+                        <!-- event -->
+                        <div class="table-data">{{activity.event[0]}}
+                            <span class="table-data-hover">Tooltip text</span>
+                        </div>
+                        <!-- item  -->
+                        <div class="table-data">{{activity.item[0][0]}}
+                            <span class="table-data-hover">Mmonkey1int</span>
+                        </div>
+                        <!-- token id -->
+                        <div class="table-data">{{activity.tid[0]}}
+                            <span class="table-data-hover">1</span>
+                        </div>
+                        <!-- from address -->
+                        {% if activity._from[0] == "NullAddress" or  activity._from[0] == "" %}
+                            <div class="table-data">{{activity._from[0]}}
+                                <span class="table-data-hover">{{activity._from[0]}}</span>
+                            </div>
+                        {% else %}
+                        <div class="table-data">{{activity._from[0][:6]}}
+                            <span class="table-data-hover">{{activity._from[0]}}</span>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- to address -->
+                        {% if activity._to[0] == "" %}
+                            <div class="table-data">{{activity._to[0]}}
+                                <span class="table-data-hover">{{activity._to[0]}}</span>
+                            </div>
+                        {% else %}
+                            <div class="table-data">{{activity._to[0][:6]}}
+                                <span class="table-data-hover">{{activity._to[0]}}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+              </div>
+            </div>
+          </div>
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div class="activity"></div>
+
+    </div>
+    
+</body>
+</html>
