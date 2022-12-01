@@ -6,10 +6,11 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir)))
 
-import newDeployNFT
+import deployMachine
 import deployMachineData
 import deployPrescription
 import registerPatient
+import transferOwnership
 
 ## Returns /home/dfallow/Documents/EthereumProject
 app_one_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -29,11 +30,16 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/ProcessMachineInfo/<string:inputInfo>', methods=['POST'])
-def ProcessMachineInfo(inputInfo):
+@app.route('/ProcessMachineInfo/<string:path>', methods=['POST'])
+def ProcessMachineInfo(path):
     # pass file name and the json to deployNFT
-    print("NEW DATA", json.loads(inputInfo))
-    newDeployNFT.new_deploy_nft(json.loads(inputInfo)['name'],json.dumps(json.loads(inputInfo), indent=2))
+    deployMachine.deploy_machine_nft(path)
+    return('/')
+
+@app.route('/TransferMachineOwnership/<string:doctorAddress>', methods=['POST'])
+def TransferMachineOwnership(doctorAddress):
+    # pass file name and the json to deployNFT
+    transferOwnership.transfer_machine_ownership_to_doctor(doctorAddress)
     return('/')
 
 @app.route('/ProcessFilesInfo/<string:inputInfo>', methods=['POST'])

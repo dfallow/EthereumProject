@@ -2,7 +2,7 @@ import IPFSv2
 import registerPatient
 import json
 
-from newDeployNFT import w3
+from deployMachine import w3
 
 doctor_patient_dict = {}
 

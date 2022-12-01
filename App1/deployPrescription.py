@@ -2,7 +2,7 @@ import IPFSv2
 import json
 import registerPatient
 
-from newDeployNFT import w3
+from deployMachine import w3
 
 
 def deploy_prescription_nft(info_object):

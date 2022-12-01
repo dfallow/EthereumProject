@@ -20,7 +20,9 @@
 
   <body>
     <div class="container">
+      <div class="register-div">
       <h1 class="title">Register a machine</h1>
+      <p class="title">For machine manufacturer only</p>
       <div class="input-file-container">
         <input
           type="file"
@@ -34,37 +36,23 @@
       <div class="image-container">
         <img src="" alt="" class="image" />
       </div>
+      <button class="btn register-button">register machine</button>
+    </div>
+    <div class="transfer-div">
+      <h3 class="title">Transfer machine ownership to doctor</h3>
+
       <div class="inputs-container">
         <input
           type="text"
           name="name"
-          id="name"
+          id="doctor-address"
           class="input-text2"
-          placeholder="Enter Machine name"
+          placeholder="Doctor address"
         />
-
-        <input
-          type="text"
-          name="name"
-          id="department"
-          class="input-text2"
-          placeholder="Enter Machine Department"
-        />
-        <div class="account-container">
-          <input
-            type="text"
-            name="name"
-            id="account-input"
-            class="input-text2"
-            placeholder="Enter account number of the token owner"
-          />
-          <p>or</p>
-          <button class="connect-button btn">connect to Metamask</button>
-        </div>
       </div>
-
-      <button class="btn create-button">create NFT</button>
-      <h1 class="contract-text"></h1>
+      <button class="btn transfer-button">transfer</button>
+    </div>
+    <h1 class="contract-text"></h1>
     </div>
     <script src="{{ url_for('static', filename='js/register.js') }}"></script>
   </body>
