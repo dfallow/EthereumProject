@@ -6,8 +6,11 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir)))
 
-import newDeployNFT
+import deployMachine
 import deployMachineData
+import deployPrescription
+import registerPatient
+import transferOwnership
 
 ## Returns /home/dfallow/Documents/EthereumProject
 app_one_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -27,11 +30,20 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/ProcessMachineInfo/<string:inputInfo>', methods=['POST'])
-def ProcessMachineInfo(inputInfo):
+@app.route('/ProcessMachineInfo/<string:path>', methods=['POST'])
+def ProcessMachineInfo(path):
     # pass file name and the json to deployNFT
-    print("NEW DATA", json.loads(inputInfo))
-    newDeployNFT.new_deploy_nft(json.loads(inputInfo)['name'],json.dumps(json.loads(inputInfo), indent=2))
+    deployMachine.deploy_machine_nft(path)
+    return('/')
+
+@app.route('/TransferMachineOwnership/<string:doctorAddress>', methods=['POST'])
+def TransferMachineOwnership(doctorAddress):
+    transferOwnership.transfer_machine_ownership_to_doctor(doctorAddress)
+    return('/')
+
+@app.route('/TransferMachineToPatient/<string:inputInfo>', methods=['POST'])
+def TransferMachineOwnershipToPatient(inputInfo):
+    transferOwnership.transfer_machine_ownership_to_patient(json.dumps(json.loads(inputInfo), indent=2))
     return('/')
 
 @app.route('/ProcessFilesInfo/<string:inputInfo>', methods=['POST'])
@@ -40,9 +52,28 @@ def ProcessFilesInfo(inputInfo):
     deployMachineData.deploy_nfts(inputInfo)
     return('/')    
 
+@app.route('/ProcessPrescription/<string:inputInfo>', methods=['POST'])
+def ProcessPrescription(inputInfo):
+    # pass prescription data and do something with it
+    deployPrescription.deploy_prescription_nft(json.dumps(json.loads(inputInfo), indent=2))
+    return('/')  
+
+@app.route('/ProcessPatient/<string:inputInfo>', methods=['POST'])
+def ProcessPatient(inputInfo):
+    registerPatient.register_new_patient(json.dumps(json.loads(inputInfo), indent=2))
+    return('/') 
+
 @app.route('/registerMachine', methods=['GET'])
 def registerMachine():
     return render_template('registerMachine.html')
+
+@app.route('/registerPatient', methods=['GET'])
+def registerPatientData():
+    return render_template('registerPatient.html')
+
+@app.route('/issuePrescription', methods=['GET'])
+def issuePrescription():
+    return render_template('issuePrescription.html')
 
 @app.route('/manageData', methods=['GET'])
 def manageData():
