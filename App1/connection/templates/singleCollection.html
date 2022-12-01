@@ -48,7 +48,7 @@
                   <a id="wins" class="filter__link filter__link--number">Item</a>
                 </div>
                 <div class="header__item">
-                  <a id="draws" class="filter__link filter__link--number">TokenID</a>
+                  <a id="draws" class="filter__link filter__link--number">Token ID</a>
                 </div>
                 <div class="header__item">
                   <a id="losses" class="filter__link filter__link--number">From</a>
@@ -63,17 +63,13 @@
                 {% for activity in Activity[::-1] %}
                     <div class="table-row">
                         <!-- event -->
-                        <div class="table-data">{{activity.event[0]}}
-                            <span class="table-data-hover">Tooltip text</span>
-                        </div>
+                        <div class="table-data">{{activity.event[0]}}</div>
                         <!-- item  -->
                         <div class="table-data">{{activity.item[0][0]}}
-                            <span class="table-data-hover">Mmonkey1int</span>
+                            <span class="table-data-hover">{{activity.item[0][0]}}</span>
                         </div>
                         <!-- token id -->
-                        <div class="table-data">{{activity.tid[0]}}
-                            <span class="table-data-hover">1</span>
-                        </div>
+                        <div class="table-data">{{activity.tid[0]}}</div>
                         <!-- from address -->
                         {% if activity._from[0] == "NullAddress" or  activity._from[0] == "" %}
                             <div class="table-data">{{activity._from[0]}}
