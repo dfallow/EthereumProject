@@ -38,8 +38,12 @@ def ProcessMachineInfo(path):
 
 @app.route('/TransferMachineOwnership/<string:doctorAddress>', methods=['POST'])
 def TransferMachineOwnership(doctorAddress):
-    # pass file name and the json to deployNFT
     transferOwnership.transfer_machine_ownership_to_doctor(doctorAddress)
+    return('/')
+
+@app.route('/TransferMachineToPatient/<string:inputInfo>', methods=['POST'])
+def TransferMachineOwnershipToPatient(inputInfo):
+    transferOwnership.transfer_machine_ownership_to_patient(json.dumps(json.loads(inputInfo), indent=2))
     return('/')
 
 @app.route('/ProcessFilesInfo/<string:inputInfo>', methods=['POST'])

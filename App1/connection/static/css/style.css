@@ -44,7 +44,7 @@ body {
   margin-bottom: 48px;
 }
 
-.transfer-div, .register-div {
+.transfer-div, .register-div, .issue-div {
   display: flex;
   flex-direction: column;
   align-items: center;

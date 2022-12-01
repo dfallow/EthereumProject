@@ -22,6 +22,12 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
         _patient = patient;
     }
 
+    struct PrescriptionItem {
+        uint256 machineTokenId;
+        uint256 prescriptionTokenId;
+        
+    }
+
     // events
     event Minted(address indexed minter, uint256 nftId);
     event TokenOwnershipChanged(bool success);
