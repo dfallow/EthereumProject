@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mint files from the machine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/ipfs/dist/index.min.js"></script>
+  </head>
+
+  <body>
+    <div class="issue-div">
+      <div class="container">
+        <h1 class="title">Issue a new prescription</h1>
+        <div class="input-file-container">
+          <input type="file" name="file" id="file" class="input-file" />
+          <label for="file">Choose a file</label>
+        </div>
+        <div class="image-container">
+          <img src="" alt="" class="image" />
+        </div>
+        <input
+          type="number"
+          min="1"
+          name="name"
+          id="machine-id"
+          class="input-text2"
+          placeholder="Machine token ID"
+        />
+        <input
+          type="text"
+          name="name"
+          id="doctor-address"
+          class="input-text2"
+          placeholder="Doctor account"
+        />
+        <input
+          type="text"
+          name="name"
+          id="patient-address"
+          class="input-text2"
+          placeholder="Patient account"
+        />
+        <button class="btn-issue">Issue</button>
+        <h1 class="contract-text"></h1>
+      </div>
+    </div>
+    <div class="transfer-div">
+      <button class="btn-transfer">Transfer machine to patient</button>
+    </div>
+    <script src="{{ url_for('static', filename='js/prescription.js') }}"></script>
+  </body>
+</html>

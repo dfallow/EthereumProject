@@ -1,7 +1,9 @@
-const container = document.querySelector('.container');
-console.dir(container);
+const generateButton = document.querySelector('.generate-button');
 
-// let imagesPath = '../../../../visualize/img';
+generateButton.addEventListener('click', generatePlots);
 
-// let image = document.createElement('img');
-// image.src = `${imagesPath}/hr.png`;
+function generatePlots() {
+  const request = new XMLHttpRequest();
+  request.open('GET', `/ProcessPlotsInfo`);
+  request.send();
+}

@@ -15,12 +15,13 @@ os.chdir(app_one_dir)
 
 # able to access other route from app2 folder
 sys.path.append(os.path.abspath(os.path.join('..')))
-from App2.app2 import transact, browsingPage, singleCollection
+from App2.app2 import transact, browsingPage
+from visualize.scripts.createGraphs import generate_plots
 
 app = Flask(__name__)
 app.add_url_rule('/transact', methods=["GET", "POST"], view_func=transact)
 app.add_url_rule('/browseNFTs', view_func=browsingPage)
-app.add_url_rule('/browseNFTs/collection/<string:contractAddress>/<string:collection>', methods=["GET", "POST"], view_func=singleCollection)
+# app.add_url_rule('/browseNFTs/collection/<string:contractAddress>/<string:collection>', methods=["GET", "POST"], view_func=singleCollection)
 
 @app.route('/')
 def index():
@@ -53,6 +54,11 @@ def manageData():
 @app.route('/showData', methods=['GET'])
 def showData():
     return render_template('showData.html')
+
+@app.route('/ProcessPlotsInfo', methods=['GET'])
+def ProcessPlotsInfo():
+    generate_plots()
+
 
 
 if __name__ == "__main__":
