@@ -9,6 +9,7 @@ root.geometry("900x500")
 root.title('Register Machine')
 
 # store user input
+logged_in_account = tk.StringVar()
 contract_owner_account = tk.StringVar()
 deploy_transfer_btn = tk.StringVar()
 file_dir = tk.StringVar()
@@ -24,6 +25,11 @@ def deploy_transfer_contract():
     if deploy_transfer_btn.get() == "Deploy Contract":
         print("List of accounts", deployContracts.w3.eth.accounts)
         print("\nThe Account that will deploy the contract", contract_owner_account.get())
+        
+        new_logged_in_account = deployContracts.change_default_account(contract_owner_account.get())       
+        
+        set_entry_value(logged_in_entry, new_logged_in_account)
+    
         contract, address, hash, receipt = deployContracts.compile_and_deploy_contract(
             contractDetailsMachine.abi, 
             contractDetailsMachine.bytecode,
@@ -33,7 +39,7 @@ def deploy_transfer_contract():
         variables.machine_contract_var = contract
         contract_address.set(address)
         set_contract_address(contract_address.get())
-        set_entry_value(current_owner_entry, address)
+        set_entry_value(current_owner_entry, contract_owner_account.get())
 
         print("\nThe Receipt which is given after the construction transact\n", receipt, "\n")
         print("The deployed machine contract", variables.machine_contract_var)
@@ -45,6 +51,10 @@ def deploy_transfer_contract():
         return contract, address
         
     else:
+        
+        new_logged_in_account = deployContracts.change_default_account(contract_owner_account.get())       
+        
+        set_entry_value(logged_in_entry, new_logged_in_account)
         
         set_entry_value(previous_owner_entry, current_owner.get()
                         )
@@ -98,7 +108,7 @@ deployContracts.show_accounts()
 
 # user interaction frame
 user_frame = Frame(root, width=450)
-user_frame.pack(side=LEFT, padx=10, pady=10, expand=True)
+user_frame.pack(side=LEFT, fill='x', padx=10, pady=10, expand=True)
 
 # target account -> delpoy contract or transfer ownership to
 account_label = Label(user_frame, text="Enter Account That Will Own The Contract")
@@ -156,6 +166,19 @@ button = Button(
     text='Transfer Token', 
     command=transfer_token)
 button.pack(fill='x', expand=True, pady=10)
+
+### Logged In User Account ###
+
+# logged in user frame
+logged_in_frame = Frame(root, width=400)
+logged_in_frame.pack(side=TOP, fill='x', padx=10, pady=10, expand=True)
+
+#logged in
+logged_in_label = Label(logged_in_frame, text="Account Logged In")
+logged_in_label.pack(side=TOP, padx=10, pady=10, expand=True)
+
+logged_in_entry = Entry(logged_in_frame, textvariable=logged_in_account.get())
+logged_in_entry.pack(side=TOP, fill='x', padx=10, pady=10, expand=True)
 
 ### Contract Info -> Right Side ###
 
