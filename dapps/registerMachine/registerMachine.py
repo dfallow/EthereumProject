@@ -46,7 +46,15 @@ def deploy_transfer_contract():
         
     else:
         
-        print("TEST")
+        set_entry_value(previous_owner_entry, current_owner.get()
+                        )
+        print("OWNER ACCOUNT", contract_owner_account.get())
+        contractInteraction.transfer_contract_ownership(
+            variables.machine_contract_var,
+            contract_owner_account.get()
+            )
+        
+        set_entry_value(current_owner_entry, contract_owner_account.get())
 
     
 
@@ -69,6 +77,12 @@ def register_machine_v1():
     return machine_hash
 
 def transfer_token():
+    
+    contractInteraction.transfer_token_ownership(
+        variables.machine_contract_var,
+        target_account.get(),
+        transfer_token_id.get()
+    )
     
     return
 
