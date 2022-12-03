@@ -23,10 +23,11 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
     }
 
     struct PrescriptionItem {
-        uint256 machineTokenId;
         uint256 prescriptionTokenId;
-        
+        uint256 machineTokenId;  
     }
+
+    PrescriptionItem[] private prescriptions;
 
     // events
     event Minted(address indexed minter, uint256 nftId);
@@ -34,7 +35,7 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
     event ContractOwnershipChanged(bool success);
 
     // mint prescription token
-    function mintPrescriptionToken(string memory ipfsDataURL)
+    function mintPrescriptionToken(string memory ipfsDataURL, uint256 machineTokenId)
         public
         onlyOwner
         returns (uint256)
@@ -55,8 +56,28 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
 
         emit Minted(msg.sender, tokenId);
 
+        _addData(tokenId, machineTokenId);
+
         // return token(NFT) ID
         return tokenId;
+    }
+
+    function _addData(uint256 prescriptionTokenId, uint256 machineTokenId) private onlyOwner {
+        prescriptions.push(PrescriptionItem(prescriptionTokenId, machineTokenId));
+    }
+
+    function getMachineTokenId(uint256 _prescriptionTokenId) public view returns (uint256) {
+         require(
+            _exists(_prescriptionTokenId),
+            "URI query for nonexistent token"
+        );
+        
+        for (uint256 i = 0; i < prescriptions.length; i++) {
+            if (prescriptions[i].prescriptionTokenId == _prescriptionTokenId) {
+                PrescriptionItem storage _prescriptionItem = prescriptions[i];
+                return _prescriptionItem.machineTokenId;
+            }
+        }
     }
 
     function tokenURI(uint256 tokenId)
