@@ -6,9 +6,10 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join('..')))
 
-from App2 import handleTransaction, browseNFTs
+from App2 import handleActivity, handleTransaction, browseNFTs
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
+w3.eth.default_account = w3.eth.accounts[1]
 
 # #  methods=["GET", "POST"]
 # @app.route('/transact')
@@ -29,6 +30,17 @@ def transact():
 
 def browsingPage():
   return render_template("BrowseNFTs.html", allNFTs=browseNFTs.getAllNFTs())
+
+def medicalActivity():
+  allActivity = handleActivity.getMedicalActivity(w3)
+  return render_template("medicalActivity.html", Activity=allActivity)
+
+def doctorPage():
+  return 0
+
+def patientPage():
+  return 0
+
 
 # if __name__ == "__main__":
 #   app2.run(debug=True)

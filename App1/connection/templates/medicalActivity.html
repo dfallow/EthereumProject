@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/activity.css') }}"
+        />
+    </head>
+<body>
+
+    <div class="page-title">
+        <h3 class="title">Medical Activity</h3>
+    </div>
+
+
+    <div class="items_activity">
+
+        <div class="table-container">
+
+            <div class="table">
+              <div class="table-header">
+                <div class="header__item">
+                  <a id="name" class="filter__link">Txh Hash</a>
+                </div>
+                <div class="header__item">
+                  <a id="wins" class="filter__link filter__link--number">Event</a>
+                </div>
+                <div class="header__item">
+                  <a id="draws" class="filter__link filter__link--number">Type</a>
+                </div>
+                <div class="header__item">
+                  <a id="losses" class="filter__link filter__link--number">Block</a>
+                </div>
+                <div class="header__item">
+                  <a id="losses" class="filter__link filter__link--number">From</a>
+                </div>
+                <div class="header__item">
+                  <a id="total" class="filter__link filter__link--number">To</a>
+                </div>
+              </div>
+
+
+              <div class="table-content">
+
+                {% for activity in Activity[::-1] %}
+                    <div class="table-row">
+                        <!-- txh -->
+                        <div class="table-data">{{activity.txh_hash[:6]}}
+                          <span class="table-data-hover">{{activity.txh_hash}}</span>
+                        </div>
+                        <!-- event  -->
+                        <div class="table-data">{{activity.event}}
+                          <span class="table-data-hover">{{activity.event}}</span>
+                        </div>
+                        <!-- type -->
+                        <div class="table-data">{{activity.contract}}</div>
+                        <!-- from blocks number -->
+                        <div class="table-data">{{activity.blkNum}}</div>
+                        <!-- from address-->
+                        {% if activity._from == "NullAddress" or  activity._from == "" %}
+                            <div class="table-data">{{activity._from}}</div>
+                        {% else %}
+                          <div class="table-data">{{activity._from[:6]}}
+                            <span class="table-data-hover">{{activity._from}}</span>
+                          </div>
+                        {% endif %}
+                        <!-- to address -->
+                        <div class="table-data">{{activity._to[:6]}}
+                          <span class="table-data-hover">{{activity._to}}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+
+
+
+              </div>
+
+            </div>
+
+          </div>
+
+    </div>
+   
+</body>
+</html>

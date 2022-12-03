@@ -2,5 +2,7 @@
     "python.analysis.extraPaths": [
         "./App3/python",
         "./library"
-    ]
+    ],
+    "markdown.preview.fontSize": 12,
+    "terminal.integrated.fontSize": 14
 }

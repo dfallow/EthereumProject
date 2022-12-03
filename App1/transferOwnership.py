@@ -5,7 +5,7 @@ import json
 
 def transfer_machine_ownership_to_doctor(doctor_address):
     # this should be manufacturer's address
-    w3.eth.default_account = w3.eth.accounts[9]
+    w3.eth.default_account = w3.eth.accounts[4]
 
     machine_contract = deployMachine.contract_deployed
     token_id = deployMachine.token_id
