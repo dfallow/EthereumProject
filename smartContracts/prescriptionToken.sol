@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * The reference to prescription on IPFS is stored in NFT token URI
  */
 contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
-    uint256 private _numberOfPrescriptionTokens;
+    uint256 public numberOfPrescriptionTokens;
 
     address private _patient;
 
@@ -20,6 +20,12 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
     constructor(address patient) ERC721("PrescriptionToken", "PTK") {
         _transferOwnership(msg.sender);
         _patient = patient;
+    }
+
+    struct PrescriptionItem {
+        uint256 machineTokenId;
+        uint256 prescriptionTokenId;
+        
     }
 
     // events
@@ -39,8 +45,8 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
         );
 
         // set NFT tokenID
-        _numberOfPrescriptionTokens += 1;
-        uint256 tokenId = _numberOfPrescriptionTokens;
+        numberOfPrescriptionTokens += 1;
+        uint256 tokenId = numberOfPrescriptionTokens;
 
         // mint
         _safeMint(msg.sender, tokenId);
@@ -68,14 +74,11 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
         return super.tokenURI(tokenId);
     }
 
-    // change ownership of prescription tokens passed in an array
-    function transferTokenOwnership(address to, uint256[] memory tokenIdArray)
+    function transferTokenOwnership(address to, uint256 tokenId)
         public
         onlyOwner
     {
-        for (uint256 i = 0; i < tokenIdArray.length; i++) {
-            safeTransferFrom(msg.sender, to, tokenIdArray[i]);
-        }
+        safeTransferFrom(msg.sender, to, tokenId);
 
         emit TokenOwnershipChanged(true);
     }
@@ -87,7 +90,7 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
         onlyOwner
     {
         _transferOwnership(newOwner);
-        emit ContractOwnershipChanged(false);
+        emit ContractOwnershipChanged(true);
     }
 
     function getPatient() public view onlyOwner returns (address) {
@@ -101,6 +104,4 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
     {
         super._burn(tokenId);
     }
-
-    // TODO: token and contract ownership transfer
 }
