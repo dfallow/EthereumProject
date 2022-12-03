@@ -103,3 +103,22 @@ def transfer_token_ownership(contract, target_account, token_id):
     print("\nNFT ID/TokenId", test)
     
     return
+
+def transfer_ownership_multiple_tokens(
+    contract, 
+    target_account, 
+    tokens
+    ):
+    
+    contract.functions.transferTokenOwnership(
+        target_account,
+        tokens
+    ).transact()
+    
+    transfer_tokens_event = contract.events.TokenOwnershipTransfered().getLogs()
+    
+    print("TRANSFER EVENT", transfer_tokens_event)
+    
+    
+    return
+

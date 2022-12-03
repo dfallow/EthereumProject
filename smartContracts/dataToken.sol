@@ -25,7 +25,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
 
     // events
     event Minted(address indexed minter, uint256 nftId);
-    event TokenOwnershipChanged(bool success);
+    event TokenOwnershipTransfered(bool success);
     event DoctorChanged(bool success);
     event ContractOwnershipTransfered(bool success);
     event DataSaved(bool success);
@@ -95,7 +95,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
             safeTransferFrom(msg.sender, to, tokenIdArray[i]);
         }
 
-        emit TokenOwnershipChanged(true);
+        emit TokenOwnershipTransfered(true);
     }
 
     function tokenURI(uint256 tokenId)
@@ -153,7 +153,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         address to,
         uint256 tokenId
     ) public override(ERC721) {
-        emit TokenOwnershipChanged(false);
+        emit TokenOwnershipTransfered(false);
     }
 
     // DON'T USE THIS
@@ -163,7 +163,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         uint256 tokenId,
         bytes memory data
     ) public override(ERC721) {
-        emit TokenOwnershipChanged(false);
+        emit TokenOwnershipTransfered(false);
     }
 
     // DON'T USE THIS
@@ -172,6 +172,6 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         address to,
         uint256 tokenId
     ) public override(ERC721) {
-        emit TokenOwnershipChanged(false);
+        emit TokenOwnershipTransfered(false);
     }
 }

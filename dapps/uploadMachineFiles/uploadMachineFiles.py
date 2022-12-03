@@ -131,6 +131,37 @@ def transfer_contract_ownership():
     )
     
     set_entry_value(contract_owner_entry, transfer_contract_to_account.get())
+    
+def transfer_ownership_mulitple_nfts():
+    
+    
+    tokens = nft_token_list.get()
+    
+    print("TOKENS", tokens)
+    
+    # creates token array and converts string values to ints
+    test = tokens.split(',')
+    print("TEST", test)
+    
+    for i in range(0, len(test)):
+        test[i] = int(test[i])
+    
+    #token_array = [eval(i) for i in test]
+    
+    #for each in token_array:
+    #    print(type(each))
+    
+    print("TRANFER ACCOUNT", transfer_nfts_to_account.get())
+    print("TOKEN ARRAY", test)
+    print("MSG SENDER", deployContracts.w3.eth.default_account)
+    
+    contractInteraction.transfer_ownership_multiple_tokens(
+        variables.machine_data_contract_var,
+        transfer_nfts_to_account.get(),
+        test
+    )
+    
+    return
         
 
 ## Tkinter ##
@@ -244,7 +275,7 @@ nfts_to_transfer_entry.pack(fill='x')
 button = Button(
     transfer_frame,
     text='Transfer NFTs',
-    command=""
+    command=transfer_ownership_mulitple_nfts
 )
 button.pack(fill='x', pady=10)
 
@@ -282,7 +313,7 @@ contract_owner_entry.pack(fill='x')
 nft_tokens_label = Label(details_frame, text="Token Ids of NFT uploaded")
 nft_tokens_label.pack(fill='x')
 
-nft_tokens_entry = Entry(details_frame)
+nft_tokens_entry = Entry(details_frame, textvariable=tokens_from_uploaded_files)
 nft_tokens_entry.pack(fill='x')
 
 def set_contract_address(address):
@@ -294,7 +325,7 @@ def set_entry_value(entry, value):
     entry.insert(0, value)
     
 def add_token_to_list(token_id):
-    nft_tokens_entry.insert(END,str(token_id) + ", ")
+    nft_tokens_entry.insert(END,str(token_id) + ",")
     
     
 # show accounts in terminal when launched
