@@ -22,14 +22,14 @@ from App1 import dataTokenABI as dta # data token abi
 
 class allActivityData:
     def __init__(
-        self, txh_hash: str,
+        self, txn_hash: str,
         event: str,
         contract: str,
         blkNum: int,
         _from: str,
         _to: str,
     ):
-        self.txh_hash = txh_hash
+        self.txn_hash = txn_hash
         self.event = event
         self.contract = contract
         self.blkNum = blkNum
@@ -165,7 +165,7 @@ async def getInfo(w3, checkType, nob):
         # print("REAL EVENT NAME ", event)
         
             
-        txh_hash = transaction["hash"].hex()
+        txn_hash = transaction["hash"].hex()
         
         blk = transaction["blockNumber"]
         
@@ -194,7 +194,7 @@ async def getInfo(w3, checkType, nob):
         
         data.append(
             allActivityData(
-                txh_hash,
+                txn_hash,
                 event,
                 cType,
                 blk,

@@ -25,7 +25,7 @@
             <div class="table">
               <div class="table-header">
                 <div class="header__item">
-                  <a id="name" class="filter__link">Txh Hash</a>
+                  <a id="name" class="filter__link">Txn Hash</a>
                 </div>
                 <div class="header__item">
                   <a id="wins" class="filter__link filter__link--number">Event</a>
@@ -48,31 +48,35 @@
               <div class="table-content">
 
                 {% for activity in Activity[::-1] %}
+                
                     <div class="table-row">
-                        <!-- txh -->
-                        <div class="table-data">{{activity.txh_hash[:6]}}
-                          <span class="table-data-hover">{{activity.txh_hash}}</span>
+                      <!-- txh -->
+                      
+                      <div class="table-data">
+                        <a href="{{url_for("medicalActivity", tx=activity.txn_hash, cType=activity.contract)}}" style="color: #575757;
+                        text-decoration: none;">{{activity.txn_hash[:6]}}</a>
+                        <span class="table-data-hover">{{activity.txn_hash}}</span>
+                      </div>
+                      <!-- event  -->
+                      <div class="table-data">{{activity.event}}
+                        <span class="table-data-hover">{{activity.event}}</span>
+                      </div>
+                      <!-- type -->
+                      <div class="table-data">{{activity.contract}}</div>
+                      <!-- from blocks number -->
+                      <div class="table-data">{{activity.blkNum}}</div>
+                      <!-- from address-->
+                      {% if activity._from == "NullAddress" or  activity._from == "" %}
+                          <div class="table-data">{{activity._from}}</div>
+                      {% else %}
+                        <div class="table-data">{{activity._from[:6]}}
+                          <span class="table-data-hover">{{activity._from}}</span>
                         </div>
-                        <!-- event  -->
-                        <div class="table-data">{{activity.event}}
-                          <span class="table-data-hover">{{activity.event}}</span>
-                        </div>
-                        <!-- type -->
-                        <div class="table-data">{{activity.contract}}</div>
-                        <!-- from blocks number -->
-                        <div class="table-data">{{activity.blkNum}}</div>
-                        <!-- from address-->
-                        {% if activity._from == "NullAddress" or  activity._from == "" %}
-                            <div class="table-data">{{activity._from}}</div>
-                        {% else %}
-                          <div class="table-data">{{activity._from[:6]}}
-                            <span class="table-data-hover">{{activity._from}}</span>
-                          </div>
-                        {% endif %}
-                        <!-- to address -->
-                        <div class="table-data">{{activity._to[:6]}}
-                          <span class="table-data-hover">{{activity._to}}</span>
-                        </div>
+                      {% endif %}
+                      <!-- to address -->
+                      <div class="table-data">{{activity._to[:6]}}
+                        <span class="table-data-hover">{{activity._to}}</span>
+                      </div>
                     </div>
                 {% endfor %}
 

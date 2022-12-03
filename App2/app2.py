@@ -6,7 +6,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join('..')))
 
-from App2 import handleActivity, handleTransaction, browseNFTs
+from App2 import handleActivity, handleTransaction, browseNFTs, handleActivityDetails
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 w3.eth.default_account = w3.eth.accounts[1]
@@ -32,14 +32,30 @@ def browsingPage():
   return render_template("BrowseNFTs.html", allNFTs=browseNFTs.getAllNFTs())
 
 async def medicalActivity():
+  # get all valid transaction history on the chain
   allActivity = await handleActivity.getMedicalActivity(w3)
+  
+  txn_hash = request.args.get("tx")
+  global cType 
+  cType = request.args.get("cType")
+  
+  if txn_hash is not "" and txn_hash is not None:
+    print(txn_hash)
+    print(cType)
+    return redirect(f'/tx/{txn_hash}')
+  
   return render_template("medicalActivity.html", Activity=allActivity)
 
-def doctorPage():
-  return 0
-
-def patientPage():
-  return 0
+def txDetails(txn_hash):
+  
+  typeOfContract = cType
+  print("ANOTHER PAGE", cType)
+  
+  transactionDetails = handleActivityDetails.getTransactionDetails(w3, typeOfContract, txn_hash)
+  
+  
+  return render_template("transactionDetails.html", details=transactionDetails)
+  
 
 
 # if __name__ == "__main__":
