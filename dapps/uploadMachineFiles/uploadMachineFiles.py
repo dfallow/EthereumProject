@@ -48,6 +48,7 @@ def deploy_data_contract():
     current_contract_address.set(address)
     #uploadMachineFiles.set_contract_address(address)
     set_entry_value(current_contract, address)
+    set_entry_value(contract_owner_entry, deploy_contract_patient.get())
 
     print("\nThe Receipt which is given after the construction transact\n", receipt, "\n")
     print("The deployed machine contract", variables.machine_data_contract_var)
@@ -56,10 +57,11 @@ def deploy_data_contract():
     return
 
 
-def upload_files_from_machine(machine, dir):
+def upload_files_from_machine():
+    
 
     # gets files from user inputted directory
-    file_from_directory = os.listdir(dir)
+    file_from_directory = os.listdir(directory_with_files.get())
 
     # gets the current directory -> location where temporary files are stored
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -81,13 +83,15 @@ def upload_files_from_machine(machine, dir):
     for file_to_add in file_from_directory:
 
         print("Current file being added", file_to_add)
-        file_hash = ipfs.store_file(dir + file_to_add)
+        file_hash = ipfs.store_file(directory_with_files.get() + file_to_add)
         original_hash_array.append(file_hash)
 
         json_info = {
             'fileHash': file_hash,
             'fileUrl': "https://ipfs.io/ipfs/" + file_hash,
-            'machine_hash': machine.get()
+            'machine_hash': machine_hash.get(),
+            'machine_token': machine_token_id.get(),
+            'precription_token': prescription_token_id.get()
         }
 
         # creatting temporary .json file
@@ -112,6 +116,7 @@ def upload_files_from_machine(machine, dir):
         )
 
         print("\nMINTED TOKEN", data_token_id)
+        add_token_to_list(data_token_id)
 
     print("\nOriginal files, IPFS hash array:\n", original_hash_array)
     print("\nAltered files, IPFS hash array:\n", altered_hash_array)    
@@ -126,6 +131,33 @@ def transfer_contract_ownership():
     )
     
     set_entry_value(contract_owner_entry, transfer_contract_to_account.get())
+    
+def transfer_ownership_mulitple_nfts():
+    
+    
+    tokens = nft_token_list.get()
+    
+    print("TOKENS", tokens)
+    
+    # creates token array and converts string values to ints
+    test = tokens.split(',')
+    print("TEST", test)
+    
+    for i in range(0, len(test)):
+        test[i] = int(test[i])
+    
+    #token_array = [eval(i) for i in test]
+    
+    #for each in token_array:
+    #    print(type(each))
+    
+    contractInteraction.transfer_token_ownership(
+        variables.machine_data_contract_var,
+        transfer_nfts_to_account.get(),
+        test
+    )
+    
+    return
         
 
 ## Tkinter ##
@@ -193,7 +225,7 @@ directory_input.pack(fill='x', )
 button = Button(
     deploy_upload,
     text='Upload Files',
-    command=""
+    command=upload_files_from_machine
 )
 button.pack(fill='x', pady=10)
 
@@ -239,7 +271,7 @@ nfts_to_transfer_entry.pack(fill='x')
 button = Button(
     transfer_frame,
     text='Transfer NFTs',
-    command=""
+    command=transfer_ownership_mulitple_nfts
 )
 button.pack(fill='x', pady=10)
 
@@ -274,10 +306,10 @@ contract_owner_entry = Entry(details_frame)
 contract_owner_entry.pack(fill='x')
 
 # nft tokens from upload
-nft_tokens_label = Label(details_frame, text="Token Ids of NFT just uploaded")
+nft_tokens_label = Label(details_frame, text="Token Ids of NFT uploaded")
 nft_tokens_label.pack(fill='x')
 
-nft_tokens_entry = Entry(details_frame)
+nft_tokens_entry = Entry(details_frame, textvariable=tokens_from_uploaded_files)
 nft_tokens_entry.pack(fill='x')
 
 def set_contract_address(address):
@@ -287,6 +319,9 @@ def set_contract_address(address):
 def set_entry_value(entry, value):
     entry.delete(0, END)
     entry.insert(0, value)
+    
+def add_token_to_list(token_id):
+    nft_tokens_entry.insert(END,str(token_id) + ",")
     
     
 # show accounts in terminal when launched

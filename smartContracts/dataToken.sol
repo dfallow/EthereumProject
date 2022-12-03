@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * The reference to data item on IPFS is stored in NFT token URI
  */
 contract DataToken is ERC721, ERC721URIStorage, Ownable {
-    uint256 private _numberOfDataTokens;
+    uint256 public numberOfDataTokens;
 
     // address is set in constructor or in changeDoctor()
     address private _doctor;
@@ -25,9 +25,9 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
 
     // events
     event Minted(address indexed minter, uint256 nftId);
-    event TokenOwnershipChanged(bool success);
+    event TokenOwnershipTransfered(bool success);
     event DoctorChanged(bool success);
-    event ContractOwnershipTransfered(bool success);
+    event ContractOwnershipChanged(bool success);
     event DataSaved(bool success);
 
     struct DataItem {
@@ -51,8 +51,8 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         );
 
         // set NFT tokenID
-        _numberOfDataTokens += 1;
-        uint256 tokenId = _numberOfDataTokens;
+        numberOfDataTokens += 1;
+        uint256 tokenId = numberOfDataTokens;
 
         // mint
         _safeMint(msg.sender, tokenId);
@@ -95,7 +95,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
             safeTransferFrom(msg.sender, to, tokenIdArray[i]);
         }
 
-        emit TokenOwnershipChanged(true);
+        emit TokenOwnershipTransfered(true);
     }
 
     function tokenURI(uint256 tokenId)
@@ -120,15 +120,16 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         return super.tokenURI(tokenId);
     }
 
-    // transfer contract ownership (this probably will not be used as this should be owned by the patient)
+   // transfer contract ownership
     function transferOwnership(address newOwner)
         public
         override(Ownable)
         onlyOwner
     {
         _transferOwnership(newOwner);
-        emit ContractOwnershipTransfered(false);
+        emit ContractOwnershipChanged(true);
     }
+
 
     function changeDoctor(address newDoctor) public onlyOwner {
         _doctor = newDoctor;
@@ -145,33 +146,5 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         override(ERC721, ERC721URIStorage)
     {
         super._burn(tokenId);
-    }
-
-    // DON'T USE THIS
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public override(ERC721) {
-        emit TokenOwnershipChanged(false);
-    }
-
-    // DON'T USE THIS
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        bytes memory data
-    ) public override(ERC721) {
-        emit TokenOwnershipChanged(false);
-    }
-
-    // DON'T USE THIS
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public override(ERC721) {
-        emit TokenOwnershipChanged(false);
     }
 }
