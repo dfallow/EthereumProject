@@ -31,8 +31,8 @@ def transact():
 def browsingPage():
   return render_template("BrowseNFTs.html", allNFTs=browseNFTs.getAllNFTs())
 
-def medicalActivity():
-  allActivity = handleActivity.getMedicalActivity(w3)
+async def medicalActivity():
+  allActivity = await handleActivity.getMedicalActivity(w3)
   return render_template("medicalActivity.html", Activity=allActivity)
 
 def doctorPage():
