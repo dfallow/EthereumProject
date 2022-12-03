@@ -12,32 +12,40 @@ root.geometry("900x500")
 root.title('Upload Machine Files')
 
 # store user input
-doctor_account = tk.StringVar()
-patient_account = tk.StringVar()
-contract_address = tk.StringVar()
-directory = tk.StringVar()
+deploy_contract_patient = tk.StringVar()
+deploy_contract_doctor = tk.StringVar()
 machine_hash = tk.StringVar()
 machine_token_id = tk.IntVar()
 prescription_token_id = tk.IntVar()
+directory_with_files = tk.StringVar()
+transfer_contract_to_account = tk.StringVar()
+transfer_nfts_to_account = tk.StringVar()
+nft_token_list = tk.StringVar()
+account_logged_in = tk.StringVar()
+current_contract_address = tk.StringVar()
+current_contract_owner = tk.StringVar()
+tokens_from_uploaded_files = tk.StringVar()
+
+### Functions ###
 
 def deploy_data_contract():
     print("List of accounts", deployContracts.w3.eth.accounts)
-    print("\nThe Account that will deploy the contract", patient_account.get())
+    print("\nThe Account that will deploy the contract", deploy_contract_patient.get())
 
     contract, address, hash, receipt = deployContracts.compile_contract_with_accounts(
         contractDetailsMachineData.abi,
         contractDetailsMachineData.bytecode,
-        patient_account.get(), # patient deploys contract
-        doctor_account.get() # doctor is only registered
+        deploy_contract_patient.get(), # patient deploys contract
+        deploy_contract_doctor.get() # doctor is only registered
     )
 
     variables.machine_data_contract_var = contract
-    contract_address.set(address)
+    current_contract_address.set(address)
     #uploadMachineFiles.set_contract_address(address)
 
     print("\nThe Receipt which is given after the construction transact\n", receipt, "\n")
     print("The deployed machine contract", variables.machine_contract_var)
-    print("The deployed contracts address", contract_address.get())
+    print("The deployed contracts address", current_contract_address.get())
 
     return
 
@@ -124,14 +132,14 @@ deploy_upload_label.pack(fill='x')
 account_label = Label(deploy_upload, text="Enter Patient Account")
 account_label.pack(fill='x', pady=10)
 
-account_entry = Entry(deploy_upload)
+account_entry = Entry(deploy_upload, textvariable=deploy_contract_patient)
 account_entry.pack(fill='x')
 
 # doctor account -> is registed with the data contract
 account_label = Label(deploy_upload, text="Enter Doctor Account")
 account_label.pack(fill='x')
 
-account_entry = Entry(deploy_upload)
+account_entry = Entry(deploy_upload, textvariable=deploy_contract_doctor)
 account_entry.pack(fill='x')
 
 # deploy contract button
@@ -146,28 +154,28 @@ deploy_btn.pack(fill='x', pady=10)
 machine_label = Label(deploy_upload, text="Enter Hash of Machine")
 machine_label.pack(fill='x', pady=20)
 
-machine_input = Entry(deploy_upload)
+machine_input = Entry(deploy_upload, textvariable=machine_hash)
 machine_input.pack(fill='x')
 
 # machine token id -> From when the machine NFT was minted
 machine_label = Label(deploy_upload, text="Enter Machine Token ID")
 machine_label.pack(fill='x')
 
-machine_input = Entry(deploy_upload)
+machine_input = Entry(deploy_upload, textvariable=machine_token_id)
 machine_input.pack(fill='x')
 
 # prescription token id -> From when the prescription NFT was minted
-machine_label = Label(deploy_upload, text="Enter Prescription Token ID")
-machine_label.pack(fill='x')
+prescription_label = Label(deploy_upload, text="Enter Prescription Token ID")
+prescription_label.pack(fill='x')
 
-machine_input = Entry(deploy_upload)
-machine_input.pack(fill='x')
+prescription_input = Entry(deploy_upload, textvariable=prescription_token_id)
+prescription_input.pack(fill='x')
 
 # user directory input -> Directory where files to upload at located
 directory_label = Label(deploy_upload, text="Enter Path to Files Directory")
 directory_label.pack(fill='x')
 
-directory_input = Entry(deploy_upload)
+directory_input = Entry(deploy_upload, textvariable=directory_with_files)
 directory_input.pack(fill='x', )
 
 # upload files button
@@ -191,8 +199,8 @@ transfer_to_account_label = Label(transfer_frame, text="Transfer Contract To Acc
 transfer_to_account_label.pack(fill='x', pady=10)
 
 # transfer contract to account address
-current_contract = Entry(transfer_frame)
-current_contract.pack(fill='x')
+transfer_to_account_entry = Entry(transfer_frame, textvariable=transfer_contract_to_account)
+transfer_to_account_entry.pack(fill='x')
 
 # transfer contract button
 button = Button(
@@ -206,14 +214,14 @@ button.pack(fill='x', pady=10)
 nfts_transfer_account_label = Label(transfer_frame, text="Transfer Files To Account:")
 nfts_transfer_account_label.pack(fill='x')
 
-nft_transfer_account_entry = Entry(transfer_frame)
+nft_transfer_account_entry = Entry(transfer_frame, textvariable=transfer_nfts_to_account)
 nft_transfer_account_entry.pack(fill='x')
 
 # nfts to transfer
 nfts_to_transfer_label = Label(transfer_frame, text="List of NTF Tokens to Transfer:")
 nfts_to_transfer_label.pack(fill='x')
 
-nfts_to_transfer_entry = Entry(transfer_frame)
+nfts_to_transfer_entry = Entry(transfer_frame, textvariable=nft_token_list)
 nfts_to_transfer_entry.pack(fill='x')
 
 # transfer contract button
