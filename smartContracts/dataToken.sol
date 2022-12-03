@@ -25,7 +25,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
 
     // events
     event Minted(address indexed minter, uint256 nftId);
-    event TokenOwnershipChanged(bool success);
+    event TokenOwnershipTransfered(bool success);
     event DoctorChanged(bool success);
     event ContractOwnershipChanged(bool success);
     event DataSaved(bool success);
@@ -95,7 +95,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
             safeTransferFrom(msg.sender, to, tokenIdArray[i]);
         }
 
-        emit TokenOwnershipChanged(true);
+        emit TokenOwnershipTransfered(true);
     }
 
     function tokenURI(uint256 tokenId)
