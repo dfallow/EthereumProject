@@ -52,9 +52,7 @@ def deploy_transfer_contract():
         
     else:
         
-        new_logged_in_account = deployContracts.change_default_account(contract_owner_account.get())       
         
-        set_entry_value(logged_in_entry, new_logged_in_account)
         
         set_entry_value(previous_owner_entry, current_owner.get()
                         )
@@ -64,6 +62,12 @@ def deploy_transfer_contract():
             contract_owner_account.get()
             )
         
+        new_logged_in_account = deployContracts.change_default_account(contract_owner_account.get())       
+        
+        set_entry_value(logged_in_entry, new_logged_in_account)
+        
+        contract_owner_account.set(new_logged_in_account)
+        #set_contract_address(contract_address.get())
         set_entry_value(current_owner_entry, contract_owner_account.get())
 
     
