@@ -7,7 +7,7 @@ from library import ipfs, deployContracts, contractDetailsMachineData, variables
 
 #root window
 root = tk.Tk()
-root.geometry("900x500")
+root.geometry("1200x500")
 #root.resizable(False, False)
 root.title('Upload Machine Files')
 
@@ -28,6 +28,10 @@ tokens_from_uploaded_files = tk.StringVar()
 
 ### Functions ###
 
+def initial_account_load():
+    set_entry_value(logged_in_entry, deployContracts.w3.eth.default_account)
+    
+    
 def deploy_data_contract():
     print("List of accounts", deployContracts.w3.eth.accounts)
     print("\nThe Account that will deploy the contract", deploy_contract_patient.get())
@@ -38,13 +42,15 @@ def deploy_data_contract():
         deploy_contract_patient.get(), # patient deploys contract
         deploy_contract_doctor.get() # doctor is only registered
     )
+    set_entry_value(logged_in_entry, deploy_contract_patient.get())
 
     variables.machine_data_contract_var = contract
     current_contract_address.set(address)
     #uploadMachineFiles.set_contract_address(address)
+    set_entry_value(current_contract, address)
 
     print("\nThe Receipt which is given after the construction transact\n", receipt, "\n")
-    print("The deployed machine contract", variables.machine_contract_var)
+    print("The deployed machine contract", variables.machine_data_contract_var)
     print("The deployed contracts address", current_contract_address.get())
 
     return
@@ -111,11 +117,16 @@ def upload_files_from_machine(machine, dir):
     print("\nAltered files, IPFS hash array:\n", altered_hash_array)    
         
     return
-        
 
-# show accounts in terminal when launched
-print("\nList of accounts:")
-deployContracts.show_accounts()
+def transfer_contract_ownership():
+    
+    contractInteraction.transfer_contract_ownership(
+        variables.machine_data_contract_var,
+        transfer_contract_to_account.get()
+    )
+    
+    set_entry_value(contract_owner_entry, transfer_contract_to_account.get())
+        
 
 ## Tkinter ##
 
@@ -206,7 +217,7 @@ transfer_to_account_entry.pack(fill='x')
 button = Button(
     transfer_frame,
     text='Transfer Contract',
-    command=""
+    command=transfer_contract_ownership
 )
 button.pack(fill='x', pady=10)
 
@@ -272,6 +283,16 @@ nft_tokens_entry.pack(fill='x')
 def set_contract_address(address):
     current_contract.delete(0, END)
     current_contract.insert(0, address)
+    
+def set_entry_value(entry, value):
+    entry.delete(0, END)
+    entry.insert(0, value)
+    
+    
+# show accounts in terminal when launched
+print("\nList of accounts:")
+deployContracts.show_accounts()
+initial_account_load()
 
 
 root.mainloop()

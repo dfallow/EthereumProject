@@ -52,11 +52,9 @@ def deploy_transfer_contract():
         
     else:
         
-        
-        
-        set_entry_value(previous_owner_entry, current_owner.get()
-                        )
+        set_entry_value(previous_owner_entry, current_owner.get())
         print("OWNER ACCOUNT", contract_owner_account.get())
+        
         contractInteraction.transfer_contract_ownership(
             variables.machine_contract_var,
             contract_owner_account.get()

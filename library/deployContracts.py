@@ -61,8 +61,11 @@ def compile_contract_with_accounts(
 
     contract_address = transanction_receipt["contractAddress"]
 
+    print("BEFORE")
     deployed_contract = w3.eth.contract(
         address=contract_address, abi=contract_abi
     )
+    print("AFTER")
+    print("DEPLOYED CONTRACT", deployed_contract)
 
     return deployed_contract, contract_address, transaction_hash, transanction_receipt
