@@ -23,13 +23,7 @@
 
   .table-container {
     margin: auto;
-    width: 85%;
-  }
-
-
-  .table-container {
-    margin: auto;
-    width: 85%;
+    width: 80%;
   }
   
   .table-header {
@@ -73,7 +67,7 @@
     flex: 1 1 20%;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
+    width: 100px;
   }
   
   .table-data-hover {
