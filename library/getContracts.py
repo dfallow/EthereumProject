@@ -19,11 +19,19 @@ def get_contracts(type, known_contract):
             ca = w3.eth.get_transaction_receipt(w3.eth.get_block(i)["transactions"][0].hex())["contractAddress"]
             matching_contract_addresses.append(ca)
             
+            print("\n\n\nTESTING", w3.eth.getTransaction(w3.eth.get_block(i)["transactions"][0].hex()))
+            
             # bytecode
             bc = w3.eth.getTransaction(w3.eth.get_block(i)["transactions"][0].hex())["input"]
             
+            print("\nBERFORE CHECK\n")
             bc_type = check_bytecode_type(type, bc, known_contract.bytecode)
-            types[ca] = bc_type
+            if bc_type == type:
+                types[ca] = bc_type
+            
+            print("\nAFTER CHECK\n")
+            
+            print("\n\n bc type", bc_type == bc)
             
             if bc_type == type:
                 type_contract = w3.eth.contract(address=ca, abi=known_contract.abi)
@@ -31,7 +39,7 @@ def get_contracts(type, known_contract):
                 
                 
                 ## TODO
-                tokens = type_contract.functions.totalMachineTokens().call()
+                tokens = type_contract.functions.numberOfTokens().call()
                 print("NUMBER OF TOKENS", tokens)
             else:
                 tokens = 0
@@ -54,11 +62,13 @@ def get_nfts(check_type, total_blocks, contract_abi):
         ca = transaction["to"]
         c_type = check_type[transaction["to"]]
         
-        current_contract = w3.eth.contract(address=ca, abi=contract_abi.abi)
+        print("\nTRANSACTION", transaction)
+        
+        current_contract = w3.eth.contract(address=ca, abi=contract_abi)
     
         history = current_contract.decode_function_input(transaction.input)
         
-        print("\n\nHISTORY", history[0])
+        print("\n\nHISTORY", history)
         
     
     
@@ -66,13 +76,17 @@ def get_nfts(check_type, total_blocks, contract_abi):
     return
 
 def check_bytecode_type(type, bc, known_bytecode):
-    
-    #print("\n\n\nBYTECODE", bc)
+    print("\nHERE\n")
+    print("\n\n\nBYTECODE", bc[:-64])
     #print("\n\n\nKNONW BC", known_bytecode)
     
     print("\n", bc == "0x" + known_bytecode)
 
-    if bc == "0x" + known_bytecode:
+    if type == "machine" and bc == "0x" + known_bytecode:
+        return type
+    elif type == "data" and bc[:-64] == "0x" + known_bytecode:
+        return type
+    elif type == "prescription" and bc[:-64] == "0x" + known_bytecode:
         return type
     else:
         return ""

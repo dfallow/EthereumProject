@@ -19,18 +19,17 @@ contract_type = tk.StringVar()
 def get_all_contract_address_on_block():
     
     
-    contracts, contract_addresses, check_type, number_of_tokens, total_blocks = getContracts.get_contracts("data", data_cd)
+    contracts, contract_addresses, check_type, number_of_tokens, total_blocks = getContracts.get_contracts("prescription", prescription_cd)
     
-    print("\n\nADDRESSES", contracts)
+    print("\n\nADDRESSES", check_type)
     
     print("CONTRACT FUNCTIONS", contracts[0].functions)
     
-    test = getContracts.get_nfts(check_type, total_blocks, machine_cd)
+    test = getContracts.get_nfts(check_type, total_blocks, prescription_cd.abi)
     
     print("TEST", test)
     
-    
-    #getContracts.check_contracts(contract_addresses)
+   
     
     return
 
