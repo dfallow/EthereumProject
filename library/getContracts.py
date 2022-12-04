@@ -44,7 +44,7 @@ def get_contracts(type, known_contract):
             else:
                 tokens = 0
             
-    return matching_contracts, matching_contract_addresses, types, tokens, total_blocks
+    return matching_contracts, types, total_blocks
 
 def get_all_token_hashes(check_type, total_blocks):
     return [w3.eth.get_block(n)["transactions"][0].hex()
@@ -57,6 +57,8 @@ def get_nfts(check_type, total_blocks, contract_abi):
     
     print(w3.eth.getTransaction(all_token_hashs[0]))
     
+    history_array = []
+    
     for token in all_token_hashs:
         transaction = w3.eth.getTransaction(token)
         ca = transaction["to"]
@@ -67,13 +69,10 @@ def get_nfts(check_type, total_blocks, contract_abi):
         current_contract = w3.eth.contract(address=ca, abi=contract_abi)
     
         history = current_contract.decode_function_input(transaction.input)
-        
+        history_array.append(history)
         print("\n\nHISTORY", history)
-        
     
-    
-    
-    return
+    return history_array
 
 def check_bytecode_type(type, bc, known_bytecode):
     print("\nHERE\n")
