@@ -26,12 +26,8 @@ contract PatientToken is ERC721, Ownable {
     Patient[] private patientsRegistry;
 
     // events
-<<<<<<< HEAD
-    event ContractOwnershipChanged(bool success);
-=======
     event Minted(address indexed minter, uint256 nftId);
     event ContractOwnershipTransfered(bool success);
->>>>>>> origin/view-contract-nfts
 
     function addNewPatient(
         address patient,

@@ -27,7 +27,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
     event Minted(address indexed minter, uint256 nftId);
     event TokenOwnershipTransfered(bool success);
     event DoctorChanged(bool success);
-    event ContractOwnershipChanged(bool success);
+    event ContractOwnershipTransfered(bool success);
     event DataSaved(bool success);
 
     struct DataItem {
