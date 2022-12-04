@@ -27,7 +27,7 @@ contract PatientToken is ERC721, Ownable {
 
     // events
     event Minted(address indexed minter, uint256 nftId);
-    event ContractOwnershipChanged(bool success);
+    event ContractOwnershipTransfered(bool success);
 
     function addNewPatient(
         address patient,
@@ -80,6 +80,6 @@ contract PatientToken is ERC721, Ownable {
         onlyOwner
     {
         _transferOwnership(newOwner);
-        emit ContractOwnershipChanged(true);
+        emit ContractOwnershipTransfered(true);
     }
 }
