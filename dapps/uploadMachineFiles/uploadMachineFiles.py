@@ -33,9 +33,9 @@ def initial_account_load():
     
     
 def deploy_data_contract():
-    print("List of accounts", deployContracts.w3.eth.accounts)
+    
     print("\nThe Account that will deploy the contract", deploy_contract_patient.get())
-
+    deployContracts.change_default_account(deploy_contract_patient.get())
     contract, address, hash, receipt = deployContracts.compile_contract_with_accounts(
         contractDetailsMachineData.abi,
         contractDetailsMachineData.bytecode,
@@ -130,7 +130,10 @@ def transfer_contract_ownership():
         transfer_contract_to_account.get()
     )
     
+    new_logged_user = deployContracts.change_default_account(transfer_contract_to_account.get())
+    
     set_entry_value(contract_owner_entry, transfer_contract_to_account.get())
+    set_entry_value(logged_in_entry, new_logged_user)
     
 def transfer_ownership_mulitple_nfts():
     
@@ -328,6 +331,7 @@ def add_token_to_list(token_id):
 print("\nList of accounts:")
 deployContracts.show_accounts()
 initial_account_load()
+print("List of accounts", deployContracts.w3.eth.default_account)
 
 
 root.mainloop()
