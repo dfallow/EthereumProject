@@ -86,7 +86,7 @@ def transfer_contract_ownership(contract, target_account):
     
     tranfer_contract_event = contract.events.ContractOwnershipTransfered().getLogs()
     
-    print("\nTransfer Ownership Event", transfer_contract_ownership)
+    print("\nTransfer Ownership Event", tranfer_contract_event)
     
     return
 
