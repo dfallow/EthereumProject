@@ -1,62 +1,62 @@
 import tkinter as tk
 from tkinter import *
-from library import deployContracts, variables, contractInteraction, getContracts
+from library import getContracts
 from library import contractDetailsMachine as machine_cd
 from library import contractDetailsMachineData as data_cd
-from library import contractDetailsPatientToken as patient_cd
 from library import contractDetailsPrescription as prescription_cd
 
 
 # root window
 root = tk.Tk()
-root.geometry("400x500")
-root.title("Get NFTs From Blockchain")
+root.geometry("1600x500")
+root.title("Get History From Blockchain")
 
 # store user input
 input_user_account = tk.StringVar()
-contract_type = tk.StringVar()
 
-def get_all_contract_address_on_block():
+def get_contract_history():
     
+    delete()
+
+    type = get_selected_item()
     
-    contracts, contract_addresses, check_type, number_of_tokens, total_blocks = getContracts.get_contracts("prescription", prescription_cd)
+    selected_contract = {
+        'machine': machine_cd,
+        'data': data_cd,
+        'prescription': prescription_cd
+    }
+    
+    contracts, check_type, total_blocks = getContracts.get_contracts(type, selected_contract[type])
     
     print("\n\nADDRESSES", check_type)
     
-    print("CONTRACT FUNCTIONS", contracts[0].functions)
+    print("CONTRACT FUNCTIONS", contracts)
     
-    test = getContracts.get_nfts(check_type, total_blocks, prescription_cd.abi)
+    all_history = getContracts.get_nfts(contracts,check_type, total_blocks)
     
-    print("TEST", test)
+    print("TEST", all_history)
     
+    for item in all_history:
+        #insert_into_text(str(item))
+        nfts_text_box.insert(INSERT, str(item) + "\n")
    
-    
+
     return
 
 def get_selected_item():
     for i in list.curselection():
         print(list.get(i))
-        contract_type.set(list.get(i))
+        return list.get(i)
 
-
-
-get_all_contract_address_on_block()
 
 # user input frame
 user_input = Frame(root)
 user_input.pack(side=LEFT, fill='x', padx=10, pady=10, expand=True)
 
-# user account input
-user_account_label = Label(user_input, text="Enter User Account")
-user_account_label.pack(fill='x')
-
-user_account_entry = Entry(user_input, textvariable=input_user_account)
-user_account_entry.pack(fill='x')
-
 list = Listbox(user_input, selectmode="single", height=0)
 list.pack()
 
-x = ["machine", "data", "patient", "prescription"]
+x = ["machine", "data", "prescription"]
 
 for each_item in range(len(x)):
 
@@ -65,10 +65,16 @@ for each_item in range(len(x)):
     
 find_contract = Button(
     user_input,
-    text="Find Contract",
-    command=get_selected_item
+    text="Get Contract History",
+    command=get_contract_history
 )
 find_contract.pack(fill='x', pady=10)
+
+nfts_text_box = Text(user_input)
+nfts_text_box.pack(fill='x', pady=10)
     
+    
+def delete():
+    nfts_text_box.delete('1.0', END)
 
 root.mainloop()
