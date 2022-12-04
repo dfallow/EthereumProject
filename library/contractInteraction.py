@@ -78,7 +78,18 @@ def add_new_patient(
         ).transact()
         print("Patient Added") 
         return  patient_exists, patient, data_contract, prescription_contract
+    
 
+def get_patient(deployed_contract, patient):
+    
+    patient_exists = deployed_contract.functions.checkIfPatientExists(patient).call()
+    
+    if patient_exists == False:
+        return patient_exists, "", ""
+    else:
+        data_contract, prescription_contract = deployed_contract.functions.getPatient(patient).call()
+        
+        return patient_exists, data_contract, prescription_contract
 
 def transfer_contract_ownership(contract, target_account):
     
@@ -86,7 +97,7 @@ def transfer_contract_ownership(contract, target_account):
     
     tranfer_contract_event = contract.events.ContractOwnershipTransfered().getLogs()
     
-    print("\nTransfer Ownership Event", transfer_contract_ownership)
+    print("\nTransfer Ownership Event", tranfer_contract_event)
     
     return
 
