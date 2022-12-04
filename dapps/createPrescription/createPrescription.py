@@ -4,7 +4,7 @@ from library import ipfs, deployContracts, contractDetailsPrescription, variable
 
 # root window
 root =  tk.Tk()
-root.geometry("1200x450")
+root.geometry("1400x400")
 root.resizable(False, False)
 root.title('Create Prescription')
 

@@ -64,21 +64,30 @@ def add_new_patient(
     prescription_contract
     ):
 
-    patient_exists = deployed_contract.functions.checkIfPatientExists(patient).call()
+    deployed_contract.functions.addNewPatient(
+        patient,
+        data_contract,
+        prescription_contract
+    ).transact()
+    print("Patient Added") 
+    return  patient, data_contract, prescription_contract
 
-    print("PATIENT EXISTS", patient_exists)
+
+def check_for_patient_data(
+    deployed_contract,
+    patient
+    ):
+
+    patient_exists = deployed_contract.functions.checkIfPatientExists(patient).call()
 
     if patient_exists:
         print("Patient Already Is Registered")
-        return patient_exists, "", "", ""
+        data_contract_address, prescription_contract_address = deployed_contract.functions.getPatient(patient).call()
+
+        return patient_exists, patient, data_contract_address, prescription_contract_address
     else:
-        deployed_contract.functions.addNewPatient(
-            patient,
-            data_contract,
-            prescription_contract
-        ).transact()
-        print("Patient Added") 
-        return  patient_exists, patient, data_contract, prescription_contract
+        print("Patient is not registered yet. Registering...")
+        return patient_exists, patient, "", ""
 
 
 def transfer_contract_ownership(contract, target_account):

@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import *
-from library import deployContracts, contractDetailsPatientToken, variables, contractInteraction
+from library import deployContracts, contractDetailsPatientToken, variables, contractInteraction, contractDetailsPrescription, contractDetailsMachineData
 
 # root window
 root =  tk.Tk()
@@ -9,18 +9,17 @@ root.resizable(False, False)
 root.title('Add & View Patients')
 
 # store user input
-doctor_account = tk.StringVar()
+doctor_address = tk.StringVar()
 contract_address = tk.StringVar()
 patient_address = tk.StringVar()
 patient_data_contract = tk.StringVar()
 patient_prescription_contract = tk.StringVar()
 
 def deploy_contract():
-
     contract, address, hash, receipt = deployContracts.compile_and_deploy_contract(
         contractDetailsPatientToken.abi,
         contractDetailsPatientToken.bytecode,
-        doctor_account.get() # doctor deploys contract
+        doctor_address.get() # doctor deploys contract
     )
 
     variables.add_new_patient_contract_var = contract
@@ -36,22 +35,47 @@ def deploy_contract():
 
 def add_new_patient():
 
-    patient_exists, patient, data, prescription = contractInteraction.add_new_patient(
+    patient_exists, patient, data_contract_address, prescription_contract_address = contractInteraction.check_for_patient_data(
         variables.add_new_patient_contract_var,
-        patient_address.get(),
-        patient_data_contract.get(),
-        patient_prescription_contract.get()
+        patient_address.get()
     )
-
-    print("PATIENT EXISTS", patient_exists)
+    
+    print("PATIENT EXISTS:", patient_exists)
 
     if patient_exists:
         print("\nCannot add duplicate patient")
+        print("\nPatient exists with data:")
+        print("Account:", patient)
+        print("Data contract address:", data_contract_address)
+        print("Prescription contract address:", prescription_contract_address)
     else:
+        #deploy data contract
+        data_contract, data_contract_address, transaction_hash, transaction_receipt = deployContracts.compile_contract_with_accounts(
+            contractDetailsMachineData.abi,
+            contractDetailsMachineData.bytecode,
+            patient_address.get(),
+            doctor_address.get()
+        )
+
+        #deploy prescription contract
+        prescription_contract, prescription_contract_address, transaction_hash, transaction_receipt = deployContracts.compile_contract_with_accounts(
+            contractDetailsPrescription.abi,
+            contractDetailsPrescription.bytecode,
+            doctor_address.get(),
+            patient_address.get()
+        )
+
+        patient, data, prescription = contractInteraction.add_new_patient(
+            variables.add_new_patient_contract_var,
+            patient_address.get(),
+            data_contract_address,
+            prescription_contract_address
+        )
+
         print("\nPatient added with data:")
         print("Account:", patient)
-        print("Data contract address:", data)
-        print("Prescription contract address:", prescription)
+        print("Data contract address:", data_contract_address)
+        print("Prescription contract address:", prescription_contract_address)
 
     return
 
@@ -70,7 +94,7 @@ deploy.pack(padx=10, pady=10, fill='x', expand=True)
 account_label = Label(deploy, text="Enter Doctor Account")
 account_label.pack(fill='x', expand=True)
 
-account_entry = Entry(deploy, textvariable=doctor_account)
+account_entry = Entry(deploy, textvariable=doctor_address)
 account_entry.pack(fill='x', expand=True)
 
 # deploy contract button
