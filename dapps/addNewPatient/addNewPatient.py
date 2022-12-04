@@ -12,8 +12,6 @@ root.title('Add & View Patients')
 doctor_address = tk.StringVar()
 contract_address = tk.StringVar()
 patient_address = tk.StringVar()
-patient_data_contract = tk.StringVar()
-patient_prescription_contract = tk.StringVar()
 
 def deploy_contract():
     contract, address, hash, receipt = deployContracts.compile_and_deploy_contract(
@@ -24,7 +22,7 @@ def deploy_contract():
 
     variables.add_new_patient_contract_var = contract
     contract_address.set(address)
-    set_contract_address(address)
+    set_contract_address(current_contract, address)
 
     print("\nThe Receipt which is given after the construction transact\n", receipt, "\n")
     print("The deployed machine contract", variables.add_new_patient_contract_var)
@@ -47,7 +45,9 @@ def add_new_patient():
         print("\nPatient exists with data:")
         print("Account:", patient)
         print("Data contract address:", data_contract_address)
+        set_contract_address(data_entry, data_contract_address)
         print("Prescription contract address:", prescription_contract_address)
+        set_contract_address(prescription_entry, prescription_contract_address)
     else:
         #deploy data contract
         data_contract, data_contract_address, transaction_hash, transaction_receipt = deployContracts.compile_contract_with_accounts(
@@ -75,7 +75,9 @@ def add_new_patient():
         print("\nPatient added with data:")
         print("Account:", patient)
         print("Data contract address:", data_contract_address)
+        set_contract_address(data_entry, data_contract_address)
         print("Prescription contract address:", prescription_contract_address)
+        set_contract_address(prescription_entry, prescription_contract_address)
 
     return
 
@@ -116,20 +118,6 @@ account_label.pack(fill='x', expand=True)
 account_entry = Entry(patient, textvariable=patient_address)
 account_entry.pack(fill='x', expand=True)
 
-# data contract of patient address
-account_label = Label(patient, text="Enter Data Contract Address")
-account_label.pack(fill='x', expand=True)
-
-account_entry = Entry(patient, textvariable=patient_data_contract)
-account_entry.pack(fill='x', expand=True)
-
-# prescription contract of patient address
-account_label = Label(patient, text="Enter Prescription Contract Address")
-account_label.pack(fill='x', expand=True)
-
-account_entry = Entry(patient, textvariable=patient_prescription_contract)
-account_entry.pack(fill='x', expand=True)
-
 # add patient button
 button = Button(
     patient, 
@@ -139,7 +127,7 @@ button.pack(fill='x', expand=True, pady=10)
 
 # details frame
 details_frame = Frame(root)
-details_frame.pack(padx=10, pady=10, fill='x', expand=True)
+details_frame.pack(side=RIGHT, padx=10, pady=10, fill='x', expand=True)
 
 # contract label
 contract_label = Label(details_frame, text="Current Contract Address:")
@@ -149,9 +137,23 @@ contract_label.pack(fill='x', expand=True)
 current_contract = Entry(details_frame)
 current_contract.pack(fill='x', expand=True)
 
-def set_contract_address(address):
-    current_contract.delete(0, END)
-    current_contract.insert(0, address)
+# data contract of patient address
+account_label = Label(details_frame, text="Patient Data Contract Address")
+account_label.pack(fill='x', expand=True)
+
+data_entry = Entry(details_frame)
+data_entry.pack(fill='x', expand=True)
+
+# prescription contract of patient address
+account_label = Label(details_frame, text="Patient Prescription Contract Address")
+account_label.pack(fill='x', expand=True)
+
+prescription_entry = Entry(details_frame)
+prescription_entry.pack(fill='x', expand=True)
+
+def set_contract_address(entry, address):
+    entry.delete(0, END)
+    entry.insert(0, address)
 
 
 root.mainloop()
