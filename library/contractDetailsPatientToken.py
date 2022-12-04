@@ -66,7 +66,7 @@ abi = json.loads("""[
 				"type": "bool"
 			}
 		],
-		"name": "ContractOwnershipChanged",
+		"name": "ContractOwnershipTransfered",
 		"type": "event"
 	},
 	{

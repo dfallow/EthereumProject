@@ -89,6 +89,16 @@ def check_for_patient_data(
         print("Patient is not registered yet. Registering...")
         return patient_exists, patient, "", ""
 
+def get_patient(deployed_contract, patient):
+    
+    patient_exists = deployed_contract.functions.checkIfPatientExists(patient).call()
+    
+    if patient_exists == False:
+        return patient_exists, "", ""
+    else:
+        data_contract, prescription_contract = deployed_contract.functions.getPatient(patient).call()
+        
+        return patient_exists, data_contract, prescription_contract
 
 def transfer_contract_ownership(contract, target_account):
     
@@ -96,7 +106,7 @@ def transfer_contract_ownership(contract, target_account):
     
     tranfer_contract_event = contract.events.ContractOwnershipTransfered().getLogs()
     
-    print("\nTransfer Ownership Event", transfer_contract_ownership)
+    print("\nTransfer Ownership Event", tranfer_contract_event)
     
     return
 
@@ -111,24 +121,6 @@ def transfer_token_ownership(contract, target_account, token_id):
     
 
     print("\nNFT ID/TokenId", test)
-    
-    return
-
-def transfer_ownership_multiple_tokens(
-    contract, 
-    target_account, 
-    tokens
-    ):
-    
-    contract.functions.transferTokenOwnership(
-        target_account,
-        tokens
-    ).transact()
-    
-    transfer_tokens_event = contract.events.TokenOwnershipTransfered().getLogs()
-    
-    print("TRANSFER EVENT", transfer_tokens_event)
-    
     
     return
 

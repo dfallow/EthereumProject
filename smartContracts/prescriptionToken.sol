@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * The reference to prescription on IPFS is stored in NFT token URI
  */
 contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
-    uint256 public numberOfPrescriptionTokens;
+    uint256 public numberOfTokens;
 
     address private _patient;
 
@@ -46,8 +46,8 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
         );
 
         // set NFT tokenID
-        numberOfPrescriptionTokens += 1;
-        uint256 tokenId = numberOfPrescriptionTokens;
+        numberOfTokens += 1;
+        uint256 tokenId = numberOfTokens;
 
         // mint
         _safeMint(msg.sender, tokenId);

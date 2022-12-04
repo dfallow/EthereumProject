@@ -151,11 +151,7 @@ def transfer_ownership_mulitple_nfts():
     #for each in token_array:
     #    print(type(each))
     
-    print("TRANFER ACCOUNT", transfer_nfts_to_account.get())
-    print("TOKEN ARRAY", test)
-    print("MSG SENDER", deployContracts.w3.eth.default_account)
-    
-    contractInteraction.transfer_ownership_multiple_tokens(
+    contractInteraction.transfer_token_ownership(
         variables.machine_data_contract_var,
         transfer_nfts_to_account.get(),
         test

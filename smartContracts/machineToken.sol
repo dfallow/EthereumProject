@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MachineToken is ERC721, Ownable, ERC721URIStorage {
-    uint256 public totalMachineTokens;
+    uint256 public numberOfTokens;
 
     event Minted(address indexed minter, uint256 tokenId, string tokenURI);
     event TokenOwnershipTransfered(address from, address to, uint256 tokenId);
@@ -17,8 +17,8 @@ contract MachineToken is ERC721, Ownable, ERC721URIStorage {
     }
 
     function mint(string memory ipfsURL) public onlyOwner returns (uint256) {
-        totalMachineTokens++;
-        uint256 tokenId = totalMachineTokens;
+        numberOfTokens++;
+        uint256 tokenId = numberOfTokens;
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, ipfsURL);
         emit Minted(msg.sender, tokenId, ipfsURL);
