@@ -24,21 +24,14 @@ def get_contracts(type, known_contract):
             # bytecode
             bc = w3.eth.getTransaction(w3.eth.get_block(i)["transactions"][0].hex())["input"]
             
-            print("\nBERFORE CHECK\n")
             bc_type = check_bytecode_type(type, bc, known_contract.bytecode)
             if bc_type == type:
                 types[ca] = bc_type
-            
-            print("\nAFTER CHECK\n")
-            
-            print("\n\n bc type", bc_type == bc)
             
             if bc_type == type:
                 type_contract = w3.eth.contract(address=ca, abi=known_contract.abi)
                 matching_contracts.append(type_contract)
                 
-                
-                ## TODO
                 tokens = type_contract.functions.numberOfTokens().call()
                 print("NUMBER OF TOKENS", tokens)
             else:
