@@ -9,7 +9,7 @@ from library import contractDetailsPrescription as prescription_cd
 def get_all_contract_address_on_block():
     
     
-    contract_addresses = getContracts.get_contracts("patient", prescription_cd)
+    contract_addresses = getContracts.get_contracts("machine", machine_cd)
     
     #print("\n\nADDRESSES", contract_addresses)
     

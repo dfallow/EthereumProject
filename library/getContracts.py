@@ -54,10 +54,3 @@ def get_addresses():
     
     
     return all_addresses
-
-def check_contracts(addresses):
-    
-    for ca in addresses:
-        contract = w3.eth.contract(address=ca, abi=cd.abi)
-    
-    return
