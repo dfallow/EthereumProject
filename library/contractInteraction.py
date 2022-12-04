@@ -16,16 +16,17 @@ def mint_machine_nft(deployed_contract, file_hash):
 # used when minting prescription NFTs
 def mint_prescription_nft(
     deployed_contract, 
-    file_hash
+    file_hash,
+    machine_token_id
     ):
 
     file_url = "https://ipfs.io/ipfs/" + file_hash
 
-    deployed_contract.functions.mintPrescriptionToken(file_url).transact()
+    deployed_contract.functions.mintPrescriptionToken(file_url, machine_token_id).transact()
 
     event = deployed_contract.events.Minted().getLogs()
     print("MINTED EVENT", event)
-    tokenId = event[0]["args"]["nftId"]
+    tokenId = event[0]["args"]["tokenId"]
     print("NFT ID/TokenId", tokenId)
 
     print("FILE", file_url)

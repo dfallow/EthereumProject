@@ -26,7 +26,7 @@ def deploy_prescription_nft(info_object):
 
     event = prescription_contract.events.Minted().getLogs()
     print("MINTED EVENT", event)
-    tokenId = event[0]["args"]["nftId"]
+    tokenId = event[0]["args"]["tokenId"]
     print("PRESCRIPTION TOKEN ID", tokenId)
 
     # get NFT count
