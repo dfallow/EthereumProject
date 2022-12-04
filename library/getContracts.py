@@ -65,11 +65,6 @@ def get_nfts(contracts, check_type, total_blocks):
     return history_array
 
 def check_bytecode_type(type, bc, known_bytecode):
-    print("\nHERE\n")
-    print("\n\n\nBYTECODE", bc[:-64])
-    #print("\n\n\nKNONW BC", known_bytecode)
-    
-    print("\n", bc == "0x" + known_bytecode)
 
     if type == "machine" and bc == "0x" + known_bytecode:
         return type
