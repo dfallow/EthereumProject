@@ -25,11 +25,11 @@ def mint_prescription_nft(
     deployed_contract.functions.mintPrescriptionToken(file_url, machine_token_id).transact()
 
     event = deployed_contract.events.Minted().getLogs()
-    print("MINTED EVENT", event)
+    print("\nMINTED EVENT", event)
     tokenId = event[0]["args"]["tokenId"]
-    print("NFT ID/TokenId", tokenId)
+    print("\nNFT ID/TokenId", tokenId)
 
-    print("FILE", file_url)
+    print("\nFILE", file_url)
     print("TOKEN", tokenId)
     return tokenId
 
@@ -48,6 +48,8 @@ def mint_data_nft(
     machine_token_id,
     precription_token_id
     ).transact()
+    
+    print("\nID OF TOKEN MINTED", data_token_id)
 
     mint_event = deployed_contract.events.Minted().getLogs()
     print("\nMINTED EVENT", mint_event)
@@ -119,7 +121,6 @@ def transfer_token_ownership(contract, target_account, token_id):
     
     test = transfer_token_event[0]['args']
     
-
     print("\nNFT ID/TokenId", test)
     
     return
