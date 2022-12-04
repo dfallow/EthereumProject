@@ -12,11 +12,8 @@ from App1 import dataTokenABI as dta # data token abi
 
 
 # loop through the blocks
-
 # get all valid ca which means "to" 
-
 # check input (abi bytecode) to determine which contract
-
 # then check event log to see what's the action
 
 

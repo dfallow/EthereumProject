@@ -12,7 +12,7 @@ from App1 import dataTokenABI as dta
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
-w3.eth.default_account = w3.eth.accounts[1]
+w3.eth.default_account = w3.eth.accounts[0]
 
 caToBytecode = {}
 
@@ -44,22 +44,34 @@ numOfBLK = w3.eth.block_number
 allValidTxh = [w3.eth.get_block(n)["transactions"][0].hex() for n in range(1, numOfBLK+1)]
 
 txh = w3.eth.getTransaction(allValidTxh[2])
+ca = txh["to"]
 print(txh["hash"].hex())
 print(txh["blockNumber"])
 print(txh["from"])
 # print(txh["to"])
 
-
-ca = "0x4033c8e18773A11a5f97112551a102C77BaA30a8"
-
 contract = w3.eth.contract(address=ca, abi=mta.abi)
 
-history = contract.decode_function_input(txh.input)
+numOfToken = contract.functions.totalMachineTokens().call()
 
-print(history)
+print("NUMBER OF MACHINE TOKEN ", numOfToken)
 
-print(history[1]['_to'])
-        
+for n in range(1, numOfToken+1):
+    print(f"OWNER of TOKEN {n}: ", contract.functions.getTokenOwner(n).call())
+    
+print(contract.functions.tokenURI(2).call())
+print("\n")
+
+
+# patient
+txh = w3.eth.getTransaction(allValidTxh[6])
+ca = txh["to"]
+# print(ca)
+contract = w3.eth.contract(address=ca, abi=pta.abi)
+patients = contract.functions.getPatient("0x43Db7fbcd8aa4c265e24F5a0EDF47C23Da48A04a").call()
+print(patients)
+
+
     
 
     

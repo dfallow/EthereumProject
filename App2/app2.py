@@ -55,6 +55,9 @@ def txDetails(txn_hash):
   
   
   return render_template("transactionDetails.html", details=transactionDetails)
+
+def ownNFTs():
+  return render_template("OwnNFT.html")
   
 
 
