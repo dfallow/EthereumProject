@@ -8,7 +8,7 @@ from library import contractDetailsPrescription as prescription_cd
 
 # root window
 root = tk.Tk()
-root.geometry("1100x500")
+root.geometry("1600x500")
 root.title("Get History From Blockchain")
 
 # store user input
@@ -30,9 +30,9 @@ def get_contract_history():
     
     print("\n\nADDRESSES", check_type)
     
-    print("CONTRACT FUNCTIONS", contracts[0].functions)
+    print("CONTRACT FUNCTIONS", contracts)
     
-    all_history = getContracts.get_nfts(check_type, total_blocks, machine_cd.abi)
+    all_history = getContracts.get_nfts(contracts,check_type, total_blocks)
     
     print("TEST", all_history)
     

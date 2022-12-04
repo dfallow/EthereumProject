@@ -51,27 +51,24 @@ def get_all_token_hashes(check_type, total_blocks):
             for n in range(1, total_blocks+1)
             if w3.eth.get_transaction(w3.eth.get_block(n)["transactions"][0].hex())["to"] in check_type]
     
-def get_nfts(check_type, total_blocks, contract_abi):
+def get_nfts(contracts, check_type, total_blocks):
     
     all_token_hashs = get_all_token_hashes(check_type, total_blocks)
     
     print(w3.eth.getTransaction(all_token_hashs[0]))
     
     history_array = []
-    
+    index = 0
     for token in all_token_hashs:
         transaction = w3.eth.getTransaction(token)
-        ca = transaction["to"]
-        c_type = check_type[transaction["to"]]
         
         print("\nTRANSACTION", transaction)
         
-        current_contract = w3.eth.contract(address=ca, abi=contract_abi)
-    
-        history = current_contract.decode_function_input(transaction.input)
+
+        history = contracts[index].decode_function_input(transaction.input)
         history_array.append(history)
         print("\n\nHISTORY", history)
-    
+        index + 1
     return history_array
 
 def check_bytecode_type(type, bc, known_bytecode):
