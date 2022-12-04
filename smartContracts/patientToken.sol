@@ -27,7 +27,7 @@ contract PatientToken is ERC721, Ownable {
 
     // events
     event Minted(address indexed minter, uint256 nftId);
-    event ContractOwnershipChanged(bool success);
+    event ContractOwnershipTransfered(bool success);
 
     function addNewPatient(
         address patient,
@@ -73,6 +73,31 @@ contract PatientToken is ERC721, Ownable {
         }
     }
 
+    //return Array of structure
+    function getAllPatients()
+        public
+        view
+        onlyOwner
+        returns (
+            address[] memory,
+            address[] memory,
+            address[] memory
+        )
+    {
+        address[] memory patientAddress = new address[](numberOfPatients);
+        address[] memory dataContract = new address[](numberOfPatients);
+        address[] memory prescriptionContract = new address[](numberOfPatients);
+        for (uint256 i = 0; i < numberOfPatients; i++) {
+            Patient storage _currentPatient = patientsRegistry[i];
+            patientAddress[i] = _currentPatient.patientAddress;
+            dataContract[i] = _currentPatient.patientDataContract;
+            prescriptionContract[i] = _currentPatient
+                .patientPrescriptionContract;
+        }
+
+        return (patientAddress, dataContract, prescriptionContract);
+    }
+
     // transfer contract ownership
     function transferOwnership(address newOwner)
         public
@@ -80,6 +105,6 @@ contract PatientToken is ERC721, Ownable {
         onlyOwner
     {
         _transferOwnership(newOwner);
-        emit ContractOwnershipChanged(true);
+        emit ContractOwnershipTransfered(true);
     }
 }

@@ -30,9 +30,9 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
     PrescriptionItem[] private prescriptions;
 
     // events
-    event Minted(address indexed minter, uint256 nftId);
-    event TokenOwnershipChanged(bool success);
-    event ContractOwnershipChanged(bool success);
+    event Minted(address indexed minter, uint256 tokenId);
+    event TokenOwnershipTransfered(address from, address to, uint256 tokenId);
+    event ContractOwnershipTransfered(bool success);
 
     // mint prescription token
     function mintPrescriptionToken(string memory ipfsDataURL, uint256 machineTokenId)
@@ -101,7 +101,7 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
     {
         safeTransferFrom(msg.sender, to, tokenId);
 
-        emit TokenOwnershipChanged(true);
+        emit TokenOwnershipTransfered(msg.sender, to, tokenId);
     }
 
     // transfer contract ownership
@@ -111,7 +111,7 @@ contract PrescriptionToken is ERC721, ERC721URIStorage, Ownable {
         onlyOwner
     {
         _transferOwnership(newOwner);
-        emit ContractOwnershipChanged(true);
+        emit ContractOwnershipTransfered(true);
     }
 
     function getPatient() public view onlyOwner returns (address) {

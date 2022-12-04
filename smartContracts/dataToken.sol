@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * The reference to data item on IPFS is stored in NFT token URI
  */
 contract DataToken is ERC721, ERC721URIStorage, Ownable {
-    uint256 public numberOfDataTokens;
+    uint256 public numberOfTokens;
 
     // address is set in constructor or in changeDoctor()
     address private _doctor;
@@ -27,7 +27,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
     event Minted(address indexed minter, uint256 nftId);
     event TokenOwnershipTransfered(bool success);
     event DoctorChanged(bool success);
-    event ContractOwnershipChanged(bool success);
+    event ContractOwnershipTransfered(bool success);
     event DataSaved(bool success);
 
     struct DataItem {
@@ -51,8 +51,8 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         );
 
         // set NFT tokenID
-        numberOfDataTokens += 1;
-        uint256 tokenId = numberOfDataTokens;
+        numberOfTokens += 1;
+        uint256 tokenId = numberOfTokens;
 
         // mint
         _safeMint(msg.sender, tokenId);
@@ -127,7 +127,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         onlyOwner
     {
         _transferOwnership(newOwner);
-        emit ContractOwnershipChanged(true);
+        emit ContractOwnershipTransfered(true);
     }
 
 
