@@ -127,7 +127,7 @@ button.pack(fill='x', expand=True, pady=10)
 
 # details frame
 details_frame = Frame(root)
-details_frame.pack(side=RIGHT, padx=10, pady=10, fill='x', expand=True)
+details_frame.pack(padx=10, pady=10, fill='x', expand=True)
 
 # contract label
 contract_label = Label(details_frame, text="Current Contract Address:")
@@ -138,14 +138,14 @@ current_contract = Entry(details_frame)
 current_contract.pack(fill='x', expand=True)
 
 # data contract of patient address
-account_label = Label(details_frame, text="Patient Data Contract Address")
+account_label = Label(details_frame, text="Current Patient Data Contract Address:")
 account_label.pack(fill='x', expand=True)
 
 data_entry = Entry(details_frame)
 data_entry.pack(fill='x', expand=True)
 
 # prescription contract of patient address
-account_label = Label(details_frame, text="Patient Prescription Contract Address")
+account_label = Label(details_frame, text="Current Patient Prescription Contract Address:")
 account_label.pack(fill='x', expand=True)
 
 prescription_entry = Entry(details_frame)

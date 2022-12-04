@@ -4,7 +4,7 @@ from library import ipfs, deployContracts, contractDetailsPrescription, variable
 
 # root window
 root =  tk.Tk()
-root.geometry("1400x400")
+root.geometry("800x400")
 root.resizable(False, False)
 root.title('Create Prescription')
 
@@ -55,16 +55,6 @@ def create_prescription():
 
     return prescription_hash
 
-def transfer_machine_token():
-    
-    contractInteraction.transfer_token_ownership(
-        variables.machine_contract_var,
-        patient_account.get(),
-        machine_token_id.get()
-    )
-    
-    return
-
 # show accounts in terminal when launched
 deployContracts.show_accounts()
 
@@ -97,51 +87,26 @@ deploy_btn = Button(
 deploy_btn.pack(fill='x', pady=10)
 
 # create prescription frame
-prescription = Frame(root)
-prescription.pack(side=LEFT,padx=10, pady=10, fill='x', expand=True)
 
 # file directory
-directory_label = Label(prescription, text="Enter Path to Prescription File")
+directory_label = Label(deploy, text="Enter Path to Prescription File")
 directory_label.pack(fill='x')
 
-directory_entry = Entry(prescription, textvariable=file_dir)
+directory_entry = Entry(deploy, textvariable=file_dir)
 directory_entry.pack(fill='x')
 directory_entry.focus()
 
 # machine token id
-token_label = Label(prescription, text = "Machine Token ID")
+token_label = Label(deploy, text = "Machine Token ID")
 token_label.pack(fill='x')
 
-token_entry = Entry(prescription, textvariable=machine_token_id)
+token_entry = Entry(deploy, textvariable=machine_token_id)
 token_entry.pack(fill='x')
 
 button = Button(
-    prescription, 
+    deploy, 
     text='Create Prescription', 
     command=create_prescription)
-button.pack(fill='x', pady=10)
-
-# transfer machine token ownership frame
-transfer_frame = Frame(root)
-transfer_frame.pack(side=LEFT, padx=10, pady=10, fill='x', expand=True)
-
-# transfer frame label
-transfer_frame_label = Label(transfer_frame, text="Transfer Machine Ownership To Patient")
-transfer_frame_label.pack(fill='x')
-
-# transfer token to account label
-transfer_to_account_label = Label(transfer_frame, text="Transfer Machine To Patient:")
-transfer_to_account_label.pack(fill='x', pady=10)
-
-# transfer token to account address
-transfer_to_account_entry = Entry(transfer_frame, textvariable=patient_account)
-transfer_to_account_entry.pack(fill='x')
-
-# transfer token button
-button = Button(
-    transfer_frame,
-    text='Transfer Machine Token',
-    command=transfer_machine_token)
 button.pack(fill='x', pady=10)
 
 # details frame
