@@ -127,7 +127,7 @@ contract DataToken is ERC721, ERC721URIStorage, Ownable {
         onlyOwner
     {
         _transferOwnership(newOwner);
-        emit ContractOwnershipChanged(true);
+        emit ContractOwnershipTransfered(true);
     }
 
 
