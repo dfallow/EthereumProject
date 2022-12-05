@@ -20,6 +20,7 @@ from App2.app2 import transact, browsingPage
 from visualize.scripts.createGraphs import execute
 
 app = Flask(__name__)
+
 app.add_url_rule('/transact', methods=["GET", "POST"], view_func=transact)
 app.add_url_rule('/browseNFTs', view_func=browsingPage)
 # app.add_url_rule('/browseNFTs/collection/<string:contractAddress>/<string:collection>', methods=["GET", "POST"], view_func=singleCollection)

@@ -13,8 +13,11 @@ w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 # this default account represent the current user
 # who can transfer his NFT
 w3.eth.default_account = w3.eth.accounts[0]
+from visualize.scripts.createGraphs import execute
+
 
 async def transact():
+  print('transact()')
   
   getMyNfts = await handleTransaction.getMyNFTs(w3)
   

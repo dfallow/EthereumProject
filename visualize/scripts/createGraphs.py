@@ -42,6 +42,7 @@ def generate_plots(current_path, file_names):
       plt.savefig('./img/{}.png'.format(column_name))
 
 def execute(url):
+  print("execute()")
   current_path = os.getcwd()
   files_folder_path = '{}/inputData'.format(current_path)
   img_path = '{}/img'.format(current_path)
