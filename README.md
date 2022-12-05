@@ -9,7 +9,16 @@ sh InitialSetup.sh
 ```
 
 ### IPFS
-To start ipfs:
+To install IPFS, enter these commands:
+```
+wget https://dist.ipfs.tech/kubo/v0.17.0/kubo_v0.17.0_linux-amd64.tar.gz
+tar -xvzf kubo_v0.17.0_linux-amd64.tar.gz
+
+cd kubo
+sudo bash install.sh
+```
+
+To start IPFS:
 ```
 ipfs init
 ipfs daemon
