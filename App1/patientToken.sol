@@ -72,9 +72,17 @@ contract PatientToken is ERC721, Ownable {
         }
     }
 
-
     //return Array of structure
-    function getAllPatients() public view onlyOwner returns (address[] memory, address[] memory, address[] memory){
+    function getAllPatients()
+        public
+        view
+        onlyOwner
+        returns (
+            address[] memory,
+            address[] memory,
+            address[] memory
+        )
+    {
         address[] memory patientAddress = new address[](numberOfPatients);
         address[] memory dataContract = new address[](numberOfPatients);
         address[] memory prescriptionContract = new address[](numberOfPatients);

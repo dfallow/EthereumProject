@@ -4,8 +4,8 @@ import json
 from web3 import Web3
 
 # test environment
-w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 # w3 = Web3(Web3.EthereumTesterProvider())
+w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
 # deployed by manufacturer
 # this is atm set to the available accounts
