@@ -16,7 +16,8 @@ os.chdir(app_one_dir)
 # able to access other route from app2 folder
 sys.path.append(os.path.abspath(os.path.join('..')))
 from App2.app2 import transact, browsingPage
-from visualize.scripts.createGraphs import generate_plots
+
+from visualize.scripts.createGraphs import execute
 
 app = Flask(__name__)
 app.add_url_rule('/transact', methods=["GET", "POST"], view_func=transact)
@@ -53,15 +54,17 @@ def manageData():
 
 @app.route('/showData', methods=['GET'])
 def showData():
-    return render_template('showData.html')
+    current_path = os.getcwd()
+    image_names = os.listdir("{}/connection/static/img".format(current_path))
+    return render_template('showData.html', image_names=image_names )
 
 @app.route('/ProcessPlotsInfo', methods=['GET'])
 def ProcessPlotsInfo():
-    generate_plots()
-
+    execute("https://ipfs.io/ipfs/QmevinMfbqDdTYUDuwoWCe38imCYnEyXHKJM7gGX5VXDAo")
 
 
 if __name__ == "__main__":
     app.run(port=3000,debug=True, use_reloader=True)
+    
 
 

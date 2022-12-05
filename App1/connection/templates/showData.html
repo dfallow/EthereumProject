@@ -22,13 +22,20 @@
   </head>
   <body>
     <div class="container">
-      <button class="btn generate-button">Generate graphs</button>
-      <img
-        src="{{ url_for('static', filename='img/gray.jpg') }}"
-        alt=""
-        class="sample"
-      />
+      <div class="images-container">
+        {% for name in image_names %}
+        <div class="plot-container">
+          <h2 class="plot-title">{{ name[:-4] }}</h2>
+          <img
+            src="{{ url_for('static', filename='img/' + name) }}"
+            alt=""
+            class="plot-img"
+          />
+        </div>
+        {% endfor %}
+      </div>
     </div>
+
     <script src="{{ url_for('static', filename='js/showData.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/ipfs/dist/index.min.js"></script>
   </body>
