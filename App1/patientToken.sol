@@ -90,11 +90,11 @@ contract PatientToken is ERC721, Ownable {
             Patient storage _currentPatient = patientsRegistry[i];
             patientAddress[i] = _currentPatient.patientAddress;
             dataContract[i] = _currentPatient.patientDataContract;
-            prescriptionContract[i] = _currentPatient
-                .patientPrescriptionContract;
+            prescriptionContract[i] = _currentPatient.patientPrescriptionContract;
         }
 
         return (patientAddress, dataContract, prescriptionContract);
+
     }
 
     // transfer contract ownership

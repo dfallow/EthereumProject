@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/own.css') }}"/>
+    <title>Token Details</title>
+  </head>
+
+  <body>
+
+    <div class="page-title">
+        <h3>Token Details</h3>
+        <img class="detail-img" src="{{icon}}" width="300" height="300", style="text-align: center">
+    </div>
+
+    <div class="machine-session">
+        
+        <h3>Contract Address {{contractAddress}}</h3>
+    
+        {% if typeOfToken == "machine" %}
+            <h3>Token ID {{tokenId}}</h3>
+            <h3>Contract Owner {{contractOwner}}</h3>
+            <h3>Token Owner {{tokenOwner}}</h3>
+        {% endif %}
+    
+        {% if typeOfToken == "patient" %}
+            <h3>Patient Address {{tokenId}}</h3>
+            <h3>Prescription Token {{prescriptionContractAddress}}</h3>
+            <h3>Data Token {{dataContractAddress}}</h3>
+        {% endif %}
+    
+        {% if typeOfToken == "prescription" %}
+            <h3>Token ID {{tokenId}}</h3>
+            <h3>Owner(Doctor) {{contractOwner}}</h3>
+            <a href="{{metaDataUrl}}" style="color: #F2F2f2">
+                <h3>Link to MetaData</h3>
+            </a>
+        {% endif %}
+    
+        {% if typeOfToken == "data" %}
+            <h3>Token ID {{tokenId}}</h3>
+            <h3>Owner(Patient) {{contractOwner}}</h3>
+            <a href="{{metaDataUrl}}" style="color: #F2F2f2">
+                <h3>Link to MetaData</h3>
+            </a>
+        {% endif %}
+    </div>
+  </body>
+</html>

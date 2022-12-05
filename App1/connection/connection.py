@@ -18,11 +18,17 @@ os.chdir(app_one_dir)
 
 # able to access other route from app2 folder
 sys.path.append(os.path.abspath(os.path.join('..')))
-from App2.app2 import transact, browsingPage
+from App2.app2 import transact, browsingPage, medicalActivity, txDetails, ownNFTs, ownNFTDetails
 
 app = Flask(__name__)
+# app2 routes
 app.add_url_rule('/transact', methods=["GET", "POST"], view_func=transact)
 app.add_url_rule('/browseNFTs', view_func=browsingPage)
+app.add_url_rule('/medicalActivity', methods=["GET", "POST"], view_func=medicalActivity)
+app.add_url_rule('/tx/<string:txn_hash>', methods=["GET", "POST"], view_func=txDetails)
+app.add_url_rule('/ownnft', methods=["GET", "POST"], view_func=ownNFTs)
+app.add_url_rule('/<string:contract_address>/<string:tid>',  methods=["GET", "POST"], view_func=ownNFTDetails)
+
 
 @app.route('/')
 def index():
@@ -38,7 +44,9 @@ def ProcessMachineInfo(path):
 
 @app.route('/TransferMachineOwnership/<string:doctorAddress>', methods=['POST'])
 def TransferMachineOwnership(doctorAddress):
-    transferOwnership.transfer_machine_ownership_to_doctor(doctorAddress)
+    if request.method == "POST":
+        transferOwnership.transfer_machine_ownership_to_doctor(doctorAddress)
+        redirect(url_for('index'))
     return('/')
 
 @app.route('/TransferMachineToPatient/<string:inputInfo>', methods=['POST'])
