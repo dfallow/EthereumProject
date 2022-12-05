@@ -11,9 +11,10 @@ from App2 import handleTransaction
 from App2 import browseNFTs
 from App2 import handleActivityDetails
 from App2 import handleOwnNFT
+from App2 import handleMetaData
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
-w3.eth.default_account = w3.eth.accounts[1]
+w3.eth.default_account = w3.eth.accounts[0]
 
 # #  methods=["GET", "POST"]
 # @app.route('/transact')
@@ -51,10 +52,7 @@ async def medicalActivity():
   return render_template("medicalActivity.html", Activity=allActivity)
 
 def txDetails(txn_hash):
-  
   typeOfContract = cType
-  print("ANOTHER PAGE", cType)
-  
   transactionDetails = handleActivityDetails.getTransactionDetails(w3, typeOfContract, txn_hash)
   
   
@@ -62,8 +60,65 @@ def txDetails(txn_hash):
 
 async def ownNFTs():
   md, pd, pred, dd = await handleOwnNFT.getOwnNFTs(w3)
-  # print(md)
+  
+  # essential for access details page
+  contractAddress = request.args.get("ca")
+  tokenId = request.args.get("tid")
+  
+  # another variables for specific page
+  global typeOfToken
+  typeOfToken = request.args.get("type")
+  global icon
+  icon = request.args.get("icon")
+  global contractOwner
+  contractOwner = request.args.get("c_owner")
+  global tokenOwner
+  tokenOwner = request.args.get("owner")
+  global dataContractAddress
+  dataContractAddress = request.args.get("dca")
+  global prescriptionContractAddress
+  prescriptionContractAddress = request.args.get("preca")
+  global metaDataUrl
+  metaDataUrl = request.args.get("md_url")
+  
+  if contractAddress:
+    return redirect(f'/{contractAddress}/{tokenId}')
+  
+  # contractAddress
+  
+  
+  
   return render_template("OwnNFT.html", machine=md, patient=pd, prescription=pred, data=dd)
+
+async def ownNFTDetails(contract_address, tid):
+  
+  
+  typeoftoken = "" if typeOfToken is None else typeOfToken
+  Icon = "" if icon is None else icon
+  contractowner = "" if contractOwner is None else contractOwner
+  tokenowner = "" if tokenOwner is None else tokenOwner
+  datacontractaddress = "" if dataContractAddress is None else dataContractAddress
+  prescriptioncontractaddress = "" if prescriptionContractAddress is None else prescriptionContractAddress
+  metadataurl = "" if metaDataUrl is None else metaDataUrl
+  
+  metadata = []
+  
+  # if typeOfToken in [""]
+  
+   
+  
+  return render_template("OwnNFTDetails.html",
+                         contractAddress=contract_address,
+                         tokenId=tid,
+                         typeOfToken=typeoftoken,
+                         icon=Icon,
+                         contractOwner=contractowner,
+                         tokenOwner=tokenowner,
+                         dataContractAddress=datacontractaddress,
+                         prescriptionContractAddress=prescriptioncontractaddress,
+                         metaDataUrl=metadataurl,
+                         metadata=metadata
+                         )
   
 
 

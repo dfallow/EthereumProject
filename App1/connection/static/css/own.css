@@ -48,3 +48,8 @@ body {
     position: absolute;
     font-size: 15px;
 }
+
+.detail-img {
+    padding-top: 3%;
+    padding-bottom: 5%;
+}

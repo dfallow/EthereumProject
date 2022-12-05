@@ -24,7 +24,13 @@
             <div class="item">
                 {% for m in machine[::-1] %}
                     <div class="nft-container">
-                        <a href="{{url_for("medicalActivity")}}">
+                        <a href="{{url_for("ownNFTs",
+                         type="machine",
+                         ca=m.ca,
+                         tid=m.tid,
+                         icon=m.file_ipfs, 
+                         c_owner=m.c_owner, 
+                         owner=m.owner)}}">
                             <img src="{{m.file_ipfs}}" width="150" height="150">
                         </a>
                         <h5 class="nft_name">{{m.ca[:6]}} T{{m.tid}}</h5>
@@ -41,7 +47,13 @@
             <div class="item">
                 {% for p in patient[::-1] %}
                     <div class="nft-container">
-                        <a href="{{url_for("medicalActivity")}}">
+                        <a href="{{url_for("ownNFTs", 
+                        type="patient",
+                        ca=p.pca, 
+                        tid=p.patientAddress, 
+                        icon=p.icon, 
+                        dca=p.dca,
+                        preca=p.preca)}}">
                             <img src="{{p.icon}}" width="150" height="150">
                         </a>
                         <h5 class="nft_name">{{p.pca[:6]}} PAT.{{p.patientAddress[:6]}}</h5>
@@ -58,7 +70,13 @@
             <div class="item">
                 {% for pre in prescription[::-1] %}
                     <div class="nft-container">
-                        <a href="{{url_for("medicalActivity")}}">
+                        <a href="{{url_for("ownNFTs",
+                        type="prescription", 
+                        ca=pre.preca, 
+                        tid=pre.precaId,
+                        md_url=pre.file_ipfs, 
+                        c_owner=pre.owner, 
+                        icon=pre.icon)}}">
                             <img src="{{pre.icon}}" width="150" height="150">
                         </a>
                         <h5 class="nft_name">{{pre.preca[:6]}} ID.{{pre.precaId}}</h5>
@@ -75,7 +93,13 @@
             <div class="item">
                 {% for d in data[::-1] %}
                     <div class="nft-container">
-                        <a href="{{url_for("medicalActivity")}}">
+                        <a href="{{url_for("ownNFTs",
+                        type="data",
+                        ca=d.dca, 
+                        tid=d.dataId, 
+                        md_url=d.file_ipfs,
+                        c_owner=d.owner,
+                        icon=d.icon)}}">
                             <img src="{{d.icon}}" width="150" height="150">
                         </a>
                         <h5 class="nft_name">{{d.dca[:6]}} ID.{{d.dataId}}</h5>
