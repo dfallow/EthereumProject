@@ -23,6 +23,10 @@ source env/bin/activate
 pip install flask
 ```
 
+### Ganache
+* Currently applications are running using a Ganache test chain
+* Ganache need to be installed
+
 ### Running the website
 
 * To launch website run connection.py (EthereumProject/App1/connection/connection.py)
