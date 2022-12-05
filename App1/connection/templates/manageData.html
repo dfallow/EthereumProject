@@ -20,45 +20,52 @@
 
   <body>
     <div class="container">
+      <h1 class="title">Store machine data into an NFT</h1>
       <div class="input-file-container">
         <input type="file" name="file" id="file" class="input-file" multiple />
         <label for="file">Choose a file</label>
       </div>
-      <h1 class="title">Store machine data into an NFT</h1>
       <div class="image-container">
         <img src="" alt="" class="image" />
       </div>
-      <input
-        type="number"
-        min="1"
-        name="name"
-        id="machine-id"
-        class="input-text2"
-        placeholder="Enter machine token ID"
-      />
-      <input
-        type="number"
-        min="1"
-        name="name"
-        id="prescription-id"
-        class="input-text2"
-        placeholder="Enter prescription token ID"
-      />
-      <input
-        type="text"
-        name="name"
-        id="doctor-address"
-        class="input-text2"
-        placeholder="Doctor account"
-      />
-      <input
-        type="text"
-        name="name"
-        id="patient-address"
-        class="input-text2"
-        placeholder="Patient account"
-      />
-      <button class="btn">create NFT</button>
+      <div class="input-container">
+        <input
+          type="number"
+          min="1"
+          name="name"
+          id="machine-id"
+          class="input-text2"
+          placeholder="Enter machine token ID"
+        />
+        <input
+          type="number"
+          min="1"
+          name="name"
+          id="prescription-id"
+          class="input-text2"
+          placeholder="Enter prescription token ID"
+        />
+        <input
+          type="text"
+          name="name"
+          id="doctor-address"
+          class="input-text2"
+          placeholder="Doctor account"
+        />
+        <input
+          type="text"
+          name="name"
+          id="patient-address"
+          class="input-text2"
+          placeholder="Patient account"
+        />
+      </div>
+      <div class="button-container">
+        <button class="btn">create NFT</button>
+        <a href="{{ url_for('showData') }}">
+          <button class="btn">visualize the data</button>
+        </a>
+      </div>
       <h1 class="contract-text"></h1>
     </div>
     <script src="{{ url_for('static', filename='js/manage.js') }}"></script>

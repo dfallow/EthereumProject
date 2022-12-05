@@ -20,6 +20,8 @@ os.chdir(app_one_dir)
 sys.path.append(os.path.abspath(os.path.join('..')))
 from App2.app2 import transact, browsingPage, medicalActivity, txDetails, ownNFTs, ownNFTDetails
 
+from visualize.scripts.createGraphs import execute
+
 app = Flask(__name__)
 # app2 routes
 app.add_url_rule('/transact', methods=["GET", "POST"], view_func=transact)
@@ -85,7 +87,19 @@ def issuePrescription():
 
 @app.route('/manageData', methods=['GET'])
 def manageData():
+
     return render_template('manageData.html')
+
+@app.route('/showData', methods=['GET'])
+def showData():
+    current_path = os.getcwd()
+    image_names = os.listdir("{}/connection/static/img".format(current_path))
+    return render_template('showData.html', image_names=image_names )
+
+@app.route('/ProcessPlotsInfo', methods=['GET'])
+def ProcessPlotsInfo():
+    execute("https://ipfs.io/ipfs/QmevinMfbqDdTYUDuwoWCe38imCYnEyXHKJM7gGX5VXDAo")
+
 
 if __name__ == "__main__":
     app.run(port=3000,debug=True, use_reloader=False)

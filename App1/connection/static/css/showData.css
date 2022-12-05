@@ -1,0 +1,15 @@
+.images-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 96px;
+  row-gap: 96px;
+}
+.plot-container {
+}
+.plot-title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.plot-img {
+  width: 400px;
+}
