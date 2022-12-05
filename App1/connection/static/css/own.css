@@ -1,0 +1,50 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Rubik", sans-serif;
+    color: #f2f2f2;
+    background: #212534;
+    min-height: 100vh;
+}
+
+.page-title {
+    padding-top: 3%;
+    text-align: center;
+    font-size: 25px;
+    padding-bottom: 3%;
+}
+
+.machine-session, .patient-session, .prescrption-session, .data-session{
+    padding-left: 3%;
+    padding-bottom: 5%;
+}
+
+.machine-title, .patient-title, .prescription-title, .data-title{
+    font-size: 20px;
+    margin-bottom: 1%;
+}
+
+.item {
+    text-align: center;
+    display: flex;
+    gap: 36px;
+    width: 100%;
+    margin: auto;
+}
+
+.nft_container {
+    position: relative;
+    text-align: center;
+    padding: 10px;
+    float: left;
+    display: block;
+}
+
+.nft_name {
+    color: #f2f2f2;
+    position: absolute;
+    font-size: 15px;
+}

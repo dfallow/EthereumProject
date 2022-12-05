@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/own.css') }}"/>
+    <title>Own NFTs</title>
+  </head>
+
+  <body>
+
+    <div class="page-title">
+        <h3>Your related Medical Tokens</h3>
+    </div>
+
+    {% if machine %}
+        <div class="machine-session">
+            <h3 class="machine-title">Machine</h3>
+
+            <div class="item">
+                {% for m in machine[::-1] %}
+                    <div class="nft-container">
+                        <a href="{{url_for("medicalActivity")}}">
+                            <img src="{{m.file_ipfs}}" width="150" height="150">
+                        </a>
+                        <h5 class="nft_name">{{m.ca[:6]}} T{{m.tid}}</h5>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if patient %}
+        <div class="patient-session">
+            <h3 class="patient-title">Patient</h3>
+
+            <div class="item">
+                {% for p in patient[::-1] %}
+                    <div class="nft-container">
+                        <a href="{{url_for("medicalActivity")}}">
+                            <img src="{{p.icon}}" width="150" height="150">
+                        </a>
+                        <h5 class="nft_name">{{p.pca[:6]}} PAT.{{p.patientAddress[:6]}}</h5>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if prescription %}
+        <div class="prescrption-session">
+            <h3 class="prescription-title">Prescription</h3>
+
+            <div class="item">
+                {% for pre in prescription[::-1] %}
+                    <div class="nft-container">
+                        <a href="{{url_for("medicalActivity")}}">
+                            <img src="{{pre.icon}}" width="150" height="150">
+                        </a>
+                        <h5 class="nft_name">{{pre.preca[:6]}} ID.{{pre.precaId}}</h5>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if data %}
+        <div class="data-session">
+            <h3 class="data-title">Machine Data</h3>
+
+            <div class="item">
+                {% for d in data[::-1] %}
+                    <div class="nft-container">
+                        <a href="{{url_for("medicalActivity")}}">
+                            <img src="{{d.icon}}" width="150" height="150">
+                        </a>
+                        <h5 class="nft_name">{{d.dca[:6]}} ID.{{d.dataId}}</h5>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    
+    
+  </body>
+</html>

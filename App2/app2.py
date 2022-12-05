@@ -6,7 +6,11 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join('..')))
 
-from App2 import handleActivity, handleTransaction, browseNFTs, handleActivityDetails
+from App2 import handleActivity
+from App2 import handleTransaction
+from App2 import browseNFTs
+from App2 import handleActivityDetails
+from App2 import handleOwnNFT
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 w3.eth.default_account = w3.eth.accounts[1]
@@ -56,8 +60,10 @@ def txDetails(txn_hash):
   
   return render_template("transactionDetails.html", details=transactionDetails)
 
-def ownNFTs():
-  return render_template("OwnNFT.html")
+async def ownNFTs():
+  md, pd, pred, dd = await handleOwnNFT.getOwnNFTs(w3)
+  # print(md)
+  return render_template("OwnNFT.html", machine=md, patient=pd, prescription=pred, data=dd)
   
 
 
