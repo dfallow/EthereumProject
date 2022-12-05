@@ -1,11 +1,11 @@
 import os
 
 import IPFSv2
-import newDeployNFT
+import deployMachine as deployMachine
 
 
 def test_is_connected():
-    assert newDeployNFT.is_connected(newDeployNFT.w3) is True
+    assert deployMachine.is_connected(deployMachine.w3) is True
 
 
 # def test_default_account():

@@ -101,6 +101,7 @@ def deploy_patient_contract(doctor_address):
 
 
 def deploy_prescription_contract(doctor_address, patient_address):
+    print("\n\n\n\n", prescriptionTokenABI.bytecode, "\n\n\n\n")
     w3.eth.default_account = doctor_address
     prescription_contract_compiled = w3.eth.contract(
         abi=prescriptionTokenABI.abi, bytecode=prescriptionTokenABI.bytecode)

@@ -5,7 +5,7 @@ import mne
 import glob
 import ipfsApi
 import deployMachineData
-import newDeployNFT
+import deployMachine
 
 api = ipfsApi.Client("127.0.0.1", 5001)
 
@@ -94,7 +94,7 @@ def register_machine():
 
     print("HASH", machine_data)
 
-    newDeployNFT.new_deploy_nft("test", machine_data)
+    deployMachine.new_deploy_nft("test", machine_data)
 
 register_machine()
 
