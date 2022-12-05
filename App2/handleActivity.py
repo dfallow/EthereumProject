@@ -143,7 +143,7 @@ async def getInfo(w3, checkType, nob):
         }
         
         pretaEvent = {
-            '<Function mintPrescriptionToken(string)>': 'mintPrescriptionToken'
+            '<Function mintPrescriptionToken(string,uint256)>': 'mintPrescriptionToken'
         }
         
         dtaEvent = {
