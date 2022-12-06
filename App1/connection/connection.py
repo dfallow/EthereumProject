@@ -59,34 +59,10 @@ def showData():
     image_names = os.listdir("{}/connection/static/img".format(current_path))
     return render_template('showData.html', image_names=image_names )
 
+from visualize.scripts.createGraphs import execute
+
 @app.route('/showJsData', methods=['GET'])
 def showJsData():
-    allPlots = []
-    for i in range(4):
-        plotData = [
-            (1, 1500),
-            (2, 7226),
-            (3, 2202),
-            (4, 4491),
-            (5, 4912),
-            (6, 5361),
-            (7, 8234),
-            (8, 1510),
-        ]
-        labels = [row[0] for row in plotData]
-        values = [row[1] for row in plotData]
-        plot = {
-            "name": "plot" + str(i),
-            "labels": labels,
-            "values": values
-        }
-        allPlots.append(
-            plot
-        )
-
-    print(allPlots)
-
-
     return render_template('showJsData.html', allPlots=allPlots)
 
 @app.route('/ProcessPlotsInfo', methods=['GET'])
