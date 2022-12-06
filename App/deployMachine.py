@@ -1,5 +1,5 @@
-import IPFSv2
-import machineTokenABI
+import IPFS
+import contractDetailsMachineToken
 import json
 from web3 import Web3
 
@@ -24,7 +24,7 @@ def is_connected(w3):
 
 # compile contract
 contract_compiled = w3.eth.contract(
-    abi=machineTokenABI.abi, bytecode=machineTokenABI.bytecode
+    abi=contractDetailsMachineToken.abi, bytecode=contractDetailsMachineToken.bytecode
 )
 transaction_hash = contract_compiled.constructor().transact()
 print("MACHINE CONTRACT TRANSACTION HASH", transaction_hash)
@@ -37,7 +37,7 @@ print("MACHINE CONTRACT ADDRESS", contract_address)
 
 # deploy contract (creates an instance of a contract) with the address above
 contract_deployed = w3.eth.contract(
-    address=contract_address, abi=machineTokenABI.abi
+    address=contract_address, abi=contractDetailsMachineToken.abi
 )
 
 token_id = 0

@@ -1,5 +1,5 @@
-import IPFSv2
-import registerPatient
+import IPFS
+import deployPatient
 import json
 
 from deployMachine import contract_deployed as machine_contract
@@ -38,14 +38,14 @@ def deploy_nfts(input_info):
         # it keeps a registry of doctor's patients
         # if contract doesn't exists, then a new one is deployed
         print("Check for patient contract")
-        patient_contract = registerPatient.check_for_patient_contract(
+        patient_contract = deployPatient.check_for_patient_contract(
             doctor_address)
 
         # check if this particular patient is already in the registry
         # if not, new patient data contract and prescription contract is deployed and the patient is added to the registry (patient_contract)
         # data contract and prescription contract are deployed once per doctor's patient atm
         print("Check for patient data")
-        prescription_contract, data_contract = registerPatient.check_for_patient_data(
+        prescription_contract, data_contract = deployPatient.check_for_patient_data(
             doctor_address, patient_address)
 
         # check if machine owned by patient is the one that was prescribed
@@ -87,10 +87,10 @@ def create_files_to_store(name, files):
 
     for file in files_array:
         # Store single file in ipfs
-        file_hash, file_url = IPFSv2.store_ipfs_file_only_hash(
+        file_hash, file_url = IPFS.store_ipfs_file_only_hash(
             name, file, files_array.index(file))
         # Store single file in ipfs
-        # file_hash, file_url = IPFSv2.store_ipfs_file_only_hash(name, file[1:-1], files_array.index(file))
+        # file_hash, file_url = IPFS.store_ipfs_file_only_hash(name, file[1:-1], files_array.index(file))
         files_hash_array.append(file_hash)
         files_url_array.append(file_url)
     return files_hash_array, files_url_array

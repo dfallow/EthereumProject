@@ -1,6 +1,6 @@
 import os
 
-import IPFSv2
+import IPFS
 import deployMachine as deployMachine
 
 
@@ -26,7 +26,7 @@ def test_save_to_file():
     expected_content = '"image": "https://ipfs.io/ipfs/12345?12345",'
 
     # create the file
-    IPFSv2.write_json(new_file, info_object)
+    IPFS.write_json(new_file, info_object)
 
     # compare file contents with expected result
     file = open(new_file).readlines()

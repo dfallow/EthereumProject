@@ -1,7 +1,7 @@
-import IPFSv2
-import dataTokenABI
-import patientTokenABI
-import prescriptionTokenABI
+import IPFS
+import contractDetailsDataToken
+import contractDetailsPatientToken
+import contractDetailsPrescriptionToken
 import json
 
 from deployMachine import w3
@@ -50,10 +50,10 @@ def check_for_patient_data(doctor_address, patient_address):
         data_contract_address, prescription_contract_address = patient_contract.functions.getPatient(
             patient_address).call()
         prescription_contract = w3.eth.contract(
-            address=prescription_contract_address, abi=prescriptionTokenABI.abi
+            address=prescription_contract_address, abi=contractDetailsPrescriptionToken.abi
         )
         data_contract = w3.eth.contract(
-            address=data_contract_address, abi=dataTokenABI.abi
+            address=data_contract_address, abi=contractDetailsDataToken.abi
         )
         w3.eth.default_account = doctor_address
         print("PATIENT", patient_address)
@@ -79,7 +79,7 @@ def deploy_patient_contract(doctor_address):
     # this should be done once per doctor
     w3.eth.default_account = doctor_address
     patient_contract_compiled = w3.eth.contract(
-        abi=patientTokenABI.abi, bytecode=patientTokenABI.bytecode)
+        abi=contractDetailsPatientToken.abi, bytecode=contractDetailsPatientToken.bytecode)
     patient_contract_transaction_hash = patient_contract_compiled.constructor().transact()
     print("NEW PATIENT CONTRACT TRANSACTION HASH",
           patient_contract_transaction_hash)
@@ -91,7 +91,7 @@ def deploy_patient_contract(doctor_address):
     patient_contract_address = patient_contract_transaction_receipt["contractAddress"]
     # deploy data contract (creates an instance of a contract) with the address above
     patient_contract_deployed = w3.eth.contract(
-        address=patient_contract_address, abi=patientTokenABI.abi
+        address=patient_contract_address, abi=contractDetailsPatientToken.abi
     )
     print("PATIENT CONTRACT ADDRESS: ", patient_contract_address)
     global doctor_patient_dict
@@ -101,10 +101,10 @@ def deploy_patient_contract(doctor_address):
 
 
 def deploy_prescription_contract(doctor_address, patient_address):
-    print("\n\n\n\n", prescriptionTokenABI.bytecode, "\n\n\n\n")
+    print("\n\n\n\n", contractDetailsPrescriptionToken.bytecode, "\n\n\n\n")
     w3.eth.default_account = doctor_address
     prescription_contract_compiled = w3.eth.contract(
-        abi=prescriptionTokenABI.abi, bytecode=prescriptionTokenABI.bytecode)
+        abi=contractDetailsPrescriptionToken.abi, bytecode=contractDetailsPrescriptionToken.bytecode)
     prescription_contract_transaction_hash = prescription_contract_compiled.constructor(
         patient_address).transact()
     print("NEW PRESCRIPTION CONTRACT TRANSACTION HASH",
@@ -119,7 +119,7 @@ def deploy_prescription_contract(doctor_address, patient_address):
     print("PRESCRIPTION CONTRACT ADDRESS: ", prescription_contract_address)
     # deploy data contract (creates an instance of a contract) with the address above
     prescription_contract_deployed = w3.eth.contract(
-        address=prescription_contract_address, abi=prescriptionTokenABI.abi
+        address=prescription_contract_address, abi=contractDetailsPrescriptionToken.abi
     )
     return prescription_contract_deployed
 
@@ -128,7 +128,7 @@ def deploy_data_contract(patient_address, doctor_address):
     w3.eth.default_account = patient_address
     # compile data contract
     data_contract_compiled = w3.eth.contract(
-        abi=dataTokenABI.abi, bytecode=dataTokenABI.bytecode
+        abi=contractDetailsDataToken.abi, bytecode=contractDetailsDataToken.bytecode
     )
     data_contract_transaction_hash = data_contract_compiled.constructor(
         doctor_address).transact()
@@ -142,6 +142,6 @@ def deploy_data_contract(patient_address, doctor_address):
     print("DATA CONTRACT ADDRESS: ", data_contract_address)
     # deploy data contract (creates an instance of a contract) with the address above
     data_contract_deployed = w3.eth.contract(
-        address=data_contract_address, abi=dataTokenABI.abi
+        address=data_contract_address, abi=contractDetailsDataToken.abi
     )
     return data_contract_deployed

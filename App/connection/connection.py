@@ -9,16 +9,14 @@ sys.path.append(os.path.abspath(os.path.join(
 import deployMachine
 import deployMachineData
 import deployPrescription
-import registerPatient
+import deployPatient
 import transferOwnership
+from fetchBlockData import transact, browsingPage, medicalActivity, txDetails, ownNFTs, ownNFTDetails
+
 
 ## Returns /home/dfallow/Documents/EthereumProject
 app_one_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 os.chdir(app_one_dir)
-
-# able to access other route from app2 folder
-sys.path.append(os.path.abspath(os.path.join('..')))
-from App2.app2 import transact, browsingPage, medicalActivity, txDetails, ownNFTs, ownNFTDetails
 
 app = Flask(__name__)
 # app2 routes
@@ -68,15 +66,15 @@ def ProcessPrescription(inputInfo):
 
 @app.route('/ProcessPatient/<string:inputInfo>', methods=['POST'])
 def ProcessPatient(inputInfo):
-    registerPatient.register_new_patient(json.dumps(json.loads(inputInfo), indent=2))
+    deployPatient.register_new_patient(json.dumps(json.loads(inputInfo), indent=2))
     return('/') 
 
 @app.route('/registerMachine', methods=['GET'])
 def registerMachine():
     return render_template('registerMachine.html')
 
-@app.route('/registerPatient', methods=['GET'])
-def registerPatientData():
+@app.route('/deployPatient', methods=['GET'])
+def deployPatientData():
     return render_template('registerPatient.html')
 
 @app.route('/issuePrescription', methods=['GET'])

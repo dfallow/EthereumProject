@@ -29,11 +29,11 @@ Open Browser and vistit localhost:5001/webui
 ### Run the website
 
 - To launch website run connection.py
-- python3 App1/connection/connection.py
+- python3 App/connection/connection.py
 - Check terminal for ip address
  
 newDeployNft.py is the file which contains the function new_deploy_nft() which is run when you hit
  create NFT btn.
  
- The contract being used is newDataNFT.sol in App1/
+ The contract being used is newDataNFT.sol in App/
  
