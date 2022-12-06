@@ -1,7 +1,6 @@
 node_modules
 __pycache__
 venv
-tempFiles
 build
 library.egg-info
 dist

@@ -50,12 +50,8 @@ def store_ipfs_file_only_hash(file_name, file_hash, file_index):
 
 
 def store_ipfs_file(file_name, info_object):
-    # print(__file__)
     new_dir = os.path.dirname(os.path.realpath(__file__))
-    # new_ipfs_file = new_dir + "/fileForIPFS.json"
-    # print(new_dir)
 
-    # new_file = new_dir + "/fileForIPFS.json"
     new_file = new_dir + "/tempFiles/" + file_name + ".json"
 
     write_json(new_file, info_object)
