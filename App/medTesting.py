@@ -28,7 +28,7 @@ date2 = datetime.fromtimestamp(datetime.timestamp(datetime.now()))
 print("date ", date1)
 print("date2 ", date2)
 
-print((date2-date1).minute)
+print((date2-date1).seconds)
 
 # if timestamp day > 0 then show days
 # else if second < 60 then n second ago

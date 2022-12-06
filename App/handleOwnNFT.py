@@ -235,6 +235,7 @@ async def ownMachineData(w3, dataContractAddress):
             try:
                 md_url = contract.functions.tokenURI(token+1).call()
             except:
+                print("Third Party: permission denied")
                 pass
             else:
                 md_url = contract.functions.tokenURI(token+1).call()
@@ -249,7 +250,7 @@ async def ownMachineData(w3, dataContractAddress):
                     icon="https://ipfs.io/ipfs/QmUxPgmvw99jekV1uLrCjEBQcTQg3VQb9bgg5T4QMdBgGC"
                 ))
 
-        return res
+    return res
 
 
 async def checkContractAddressValidation(w3, ca, bc_type):
