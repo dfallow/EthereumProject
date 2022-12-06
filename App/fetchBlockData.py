@@ -1,17 +1,11 @@
 from flask import Flask, render_template, url_for, request, redirect
 from web3 import Web3
-import json
-import os
-import sys
-
-sys.path.append(os.path.abspath(os.path.join('..')))
-
-from App2 import handleActivity
-from App2 import handleTransaction
-from App2 import browseNFTs
-from App2 import handleActivityDetails
-from App2 import handleOwnNFT
-from App2 import handleMetaData
+import handleActivity
+import handleTransaction
+import browseNFTs
+import handleActivityDetails
+import handleOwnNFT
+import handleMetaData
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 w3.eth.default_account = w3.eth.accounts[1]

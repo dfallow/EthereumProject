@@ -38,7 +38,7 @@ pip install flask
 
 ### Running the website
 
-* To launch website run connection.py (EthereumProject/App1/connection/connection.py)
+* To launch website run connection.py (EthereumProject/App/connection/connection.py)
 * Check terminal for ip address
 
 ## Dapps

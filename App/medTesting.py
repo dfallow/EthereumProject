@@ -1,14 +1,10 @@
 from web3 import Web3
-import json
-import os
-import sys
 from urllib.request import urlopen
 
-sys.path.append(os.path.abspath(os.path.join('.')))
-from App1 import machineTokenABI as mta
-from App1 import patientTokenABI as pta
-from App1 import prescriptionTokenABI as preta
-from App1 import dataTokenABI as dta
+import contractDetailsMachineToken as mta
+import contractDetailsPatientToken as pta
+import contractDetailsPrescriptionToken as preta
+import contractDetailsDataToken as dta
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
@@ -26,7 +22,7 @@ numOfBLK = w3.eth.block_number
 #         bc = w3.eth.getTransaction(w3.eth.get_block(n)["transactions"][0].hex())["input"]
 #         #print("\nBC", bc )
 #         caToBytecode[ca] = bc
-        
+
 # # print(preta.bytecode)
 
 # for i in caToBytecode:
@@ -39,9 +35,10 @@ numOfBLK = w3.eth.block_number
 #         print("prescription")
 #     elif caToBytecode[i][:(len(caToBytecode[i])-64)] == "0x" + dta.bytecode:
 #         print("data")
-        
 
-allValidTxh = [w3.eth.get_block(n)["transactions"][0].hex() for n in range(1, numOfBLK+1)]
+
+allValidTxh = [w3.eth.get_block(n)["transactions"][0].hex()
+               for n in range(1, numOfBLK+1)]
 
 # txh = w3.eth.getTransaction(allValidTxh[2])
 # ca = txh["to"]
@@ -58,7 +55,7 @@ allValidTxh = [w3.eth.get_block(n)["transactions"][0].hex() for n in range(1, nu
 
 # for n in range(1, numOfToken+1):
 #     print(f"OWNER of TOKEN {n}: ", contract.functions.getTokenOwner(n).call())
-    
+
 # print(contract.functions.tokenURI(2).call())
 # print("\n")
 
@@ -109,13 +106,9 @@ print(item)
 #     print(md_json["patient"])
 # except:
 #     pass
-    # numOfToken = contract.functions.numberOfPrescriptionTokens().call()
+# numOfToken = contract.functions.numberOfPrescriptionTokens().call()
 # print(numOfToken)
 # nft = contract.functions.tokenURI(1).call()
 # print(nft)
 
 # 0x846CA53CcEE308F5065059D1f2E3037E48E31548
-    
-
-    
-
