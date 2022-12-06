@@ -1,10 +1,14 @@
 from web3 import Web3
 from urllib.request import urlopen
+from datetime import datetime
+
 
 import contractDetailsMachineToken as mta
 import contractDetailsPatientToken as pta
 import contractDetailsPrescriptionToken as preta
 import contractDetailsDataToken as dta
+
+
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
@@ -14,6 +18,26 @@ caToBytecode = {}
 
 numOfBLK = w3.eth.block_number
 # print(numOfBLK)
+
+
+print("old timestamp ", w3.eth.get_block(1).timestamp)
+print("now timestamp ", datetime.timestamp(datetime.now()))
+date = datetime(2022,3,27,13,27,45,46000) 
+date1 = datetime.fromtimestamp(w3.eth.get_block(1).timestamp)
+date2 = datetime.fromtimestamp(datetime.timestamp(datetime.now()))
+print("date ", date1)
+print("date2 ", date2)
+
+print((date2-date1).seconds)
+
+# if timestamp day > 0 then show days
+# else if second < 60 then n second ago
+# if second > 60 then / 60 then n mins ago
+# if 
+
+
+# print(type(date2-date1))
+
 
 # for n in range(1, numOfBLK+1):
 #     if (w3.eth.get_transaction(w3.eth.get_block(n)["transactions"][0].hex())["to"] == None and
@@ -37,8 +61,8 @@ numOfBLK = w3.eth.block_number
 #         print("data")
 
 
-allValidTxh = [w3.eth.get_block(n)["transactions"][0].hex()
-               for n in range(1, numOfBLK+1)]
+# allValidTxh = [w3.eth.get_block(n)["transactions"][0].hex()
+#                for n in range(1, numOfBLK+1)]
 
 # txh = w3.eth.getTransaction(allValidTxh[2])
 # ca = txh["to"]
@@ -82,17 +106,17 @@ allValidTxh = [w3.eth.get_block(n)["transactions"][0].hex()
 
 # prescription
 # txh = w3.eth.getTransaction(allValidTxh[11])
-ca = "0x34bb3DF4db6f0b8F383b5B368E63C83314660A10"
-contract = w3.eth.contract(address=ca, abi=dta.abi)
-owner = contract.functions.owner().call()
-print(owner)
-doctor = contract.functions.getDoctor().call()
-print(doctor)
-numOfTokens = contract.functions._numberOfDataTokens().call()
-print(numOfTokens)
+# ca = "0x34bb3DF4db6f0b8F383b5B368E63C83314660A10"
+# contract = w3.eth.contract(address=ca, abi=dta.abi)
+# owner = contract.functions.owner().call()
+# print(owner)
+# doctor = contract.functions.getDoctor().call()
+# print(doctor)
+# numOfTokens = contract.functions._numberOfDataTokens().call()
+# print(numOfTokens)
 
-item = contract.functions.tokenURI(1).call()
-print(item)
+# item = contract.functions.tokenURI(1).call()
+# print(item)
 # prescriptionOwner = contract.functions.owner().call()
 # print(prescriptionOwner)
 # token = contract.functions.tokenURI(1).call()
