@@ -53,21 +53,11 @@ def manageData():
 
     return render_template('manageData.html')
 
+
 @app.route('/showData', methods=['GET'])
-def showData():
-    current_path = os.getcwd()
-    image_names = os.listdir("{}/connection/static/img".format(current_path))
-    return render_template('showData.html', image_names=image_names )
-
-from visualize.scripts.createGraphs import execute
-
-@app.route('/showJsData', methods=['GET'])
 def showJsData():
-    return render_template('showJsData.html', allPlots=allPlots)
-
-@app.route('/ProcessPlotsInfo', methods=['GET'])
-def ProcessPlotsInfo():
-    execute("https://ipfs.io/ipfs/QmevinMfbqDdTYUDuwoWCe38imCYnEyXHKJM7gGX5VXDAo")
+    all_plots = execute("https://ipfs.io/ipfs/QmcBKQ17PEGiUC2jnpHd5cfshGuGGyWXuANozExF7auJPr")
+    return render_template('showData.html', allPlots=all_plots)
 
 
 if __name__ == "__main__":
