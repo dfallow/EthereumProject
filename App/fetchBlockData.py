@@ -78,14 +78,9 @@ async def ownNFTs():
   if contractAddress:
     return redirect(f'/{contractAddress}/{tokenId}')
   
-  # contractAddress
-  
-  
-  
   return render_template("OwnNFT.html", machine=md, patient=pd, prescription=pred, data=dd)
 
 async def ownNFTDetails(contract_address, tid):
-  
   
   typeoftoken = "" if typeOfToken is None else typeOfToken
   Icon = "" if icon is None else icon
@@ -98,8 +93,6 @@ async def ownNFTDetails(contract_address, tid):
   metadata = []
   
   # if typeOfToken in [""]
-  
-   
   
   return render_template("OwnNFTDetails.html",
                          contractAddress=contract_address,
