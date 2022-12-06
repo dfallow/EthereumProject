@@ -13,6 +13,7 @@ import deployPatient
 import transferOwnership
 from fetchBlockData import transact, browsingPage, medicalActivity, txDetails, ownNFTs, ownNFTDetails
 
+from createGraphs import execute
 
 ## Returns /home/dfallow/Documents/EthereumProject
 app_one_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -84,6 +85,11 @@ def issuePrescription():
 @app.route('/manageData', methods=['GET'])
 def manageData():
     return render_template('manageData.html')
+
+@app.route('/displayData', methods=['GET'])
+def displayData():
+    all_plots = execute("QmcBKQ17PEGiUC2jnpHd5cfshGuGGyWXuANozExF7auJPr")
+    return render_template('displayData.html', allPlots=all_plots)
 
 if __name__ == "__main__":
     app.run(port=3000,debug=True, use_reloader=False)
