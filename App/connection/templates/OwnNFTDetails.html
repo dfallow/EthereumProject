@@ -60,7 +60,7 @@
       {% endif %}
     </div>
     <div class="button-container">
-      <a href="{{ url_for('displayData') }}">
+      <a href="{{ url_for('displayData', metaDataUrl=metaDataUrl[21:]) }}">
         <button class="btn" id="generate-button">Generate graphs</button>
       </a>
     </div>

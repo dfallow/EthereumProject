@@ -86,9 +86,10 @@ def issuePrescription():
 def manageData():
     return render_template('manageData.html')
 
-@app.route('/displayData', methods=['GET'])
-def displayData():
-    all_plots = execute("QmcBKQ17PEGiUC2jnpHd5cfshGuGGyWXuANozExF7auJPr")
+@app.route('/displayData/<metaDataUrl>', methods=['GET'])
+def displayData(metaDataUrl):
+    print("displayData()")
+    all_plots = execute(metaDataUrl)
     return render_template('displayData.html', allPlots=all_plots)
 
 if __name__ == "__main__":

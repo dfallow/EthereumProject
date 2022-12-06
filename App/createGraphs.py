@@ -9,7 +9,7 @@ import numpy as np
 import mne
 
 DATA_FOLDER_NAME = "inputData"
-DATA_FILE_NAME = "file.edf"
+DATA_FILE_NAME = "data.csv"
 
 def clean_folder(folder_path):
   for f in os.listdir(folder_path):
@@ -58,10 +58,6 @@ def get_plot_objects_from_csv(csv_file_path):
     return all_plot_objects  
 
 
-
-    
-
-
 def execute(hash):
   url = 'https://ipfs.io/ipfs/{}'.format(hash)
   
@@ -74,12 +70,12 @@ def execute(hash):
   edf_file_path = '{}/{}'.format(data_folder_path, DATA_FILE_NAME)
   csv_file_path = '{}/{}'.format(data_folder_path, "data.csv")
 
-  create_csv_from_edf(edf_file_path, csv_file_path)
+  # create_csv_from_edf(edf_file_path, csv_file_path)
 
   return get_plot_objects_from_csv(csv_file_path)
 
  
 
 
-if __name__ == "__main__":
-  execute("QmcBKQ17PEGiUC2jnpHd5cfshGuGGyWXuANozExF7auJPr")
+# if __name__ == "__main__":
+#   execute("QmcBKQ17PEGiUC2jnpHd5cfshGuGGyWXuANozExF7auJPr")
