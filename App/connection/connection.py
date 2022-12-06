@@ -11,7 +11,7 @@ import deployMachineData
 import deployPrescription
 import deployPatient
 import transferOwnership
-from fetchBlockData import transact, browsingPage, medicalActivity, txDetails, ownNFTs, ownNFTDetails
+from fetchBlockData import medicalActivity, txDetails, ownNFTs, ownNFTDetails, fakeLogin
 
 
 ## Returns /home/dfallow/Documents/EthereumProject
@@ -20,8 +20,7 @@ os.chdir(app_one_dir)
 
 app = Flask(__name__)
 # app2 routes
-app.add_url_rule('/transact', methods=["GET", "POST"], view_func=transact)
-app.add_url_rule('/browseNFTs', view_func=browsingPage)
+app.add_url_rule('/login', methods=["GET", "POST"], view_func=fakeLogin)
 app.add_url_rule('/medicalActivity', methods=["GET", "POST"], view_func=medicalActivity)
 app.add_url_rule('/tx/<string:txn_hash>', methods=["GET", "POST"], view_func=txDetails)
 app.add_url_rule('/ownnft', methods=["GET", "POST"], view_func=ownNFTs)
