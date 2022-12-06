@@ -57,12 +57,12 @@
       <a href="{{metaDataUrl}}">
         <h3>Link to MetaData</h3>
       </a>
+      <div class="button-container">
+        <a href="{{ url_for('displayData', metaDataUrl=metaDataUrl[21:]) }}">
+          <button class="btn" id="generate-button">Generate graphs</button>
+        </a>
+      </div>
       {% endif %}
-    </div>
-    <div class="button-container">
-      <a href="{{ url_for('displayData', metaDataUrl=metaDataUrl[21:]) }}">
-        <button class="btn" id="generate-button">Generate graphs</button>
-      </a>
     </div>
   </body>
 </html>
