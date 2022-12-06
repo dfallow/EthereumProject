@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/own.css') }}"/>
+    <title>Login as</title>
+  </head>
+
+  <body>
+
+    <h2 class="login-title">Login As</h2>
+
+    <div class="login-accounts">
+        {% for acc in accounts %} 
+            <div class="account">
+                <a href="{{url_for("fakeLogin", 
+                acc_num=acc, 
+                avatar=accounts[acc][0], 
+                id=accounts[acc][1]
+                )}}"">
+                    <img src="{{accounts[acc][0]}}" width="250" height="250">
+                </a>
+                <h3>{{acc[:6]}}...{{acc[-4:]}}</h3>
+                <h3>({{accounts[acc][1]}})</h3>
+            </div>
+        {% endfor %}
+    </div>
+    
+  </body>
+</html>

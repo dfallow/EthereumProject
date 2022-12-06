@@ -1,6 +1,7 @@
 from web3 import Web3
 from urllib.request import urlopen
 from datetime import datetime
+import collections
 
 
 import contractDetailsMachineToken as mta
@@ -20,15 +21,41 @@ numOfBLK = w3.eth.block_number
 # print(numOfBLK)
 
 
-print("old timestamp ", w3.eth.get_block(1).timestamp)
-print("now timestamp ", datetime.timestamp(datetime.now()))
-date = datetime(2022,3,27,13,27,45,46000) 
-date1 = datetime.fromtimestamp(w3.eth.get_block(1).timestamp)
-date2 = datetime.fromtimestamp(datetime.timestamp(datetime.now()))
-print("date ", date1)
-print("date2 ", date2)
+# print("old timestamp ", w3.eth.get_block(1).timestamp)
+# print("now timestamp ", datetime.timestamp(datetime.now()))
+# date = datetime(2022,3,27,13,27,45,46000) 
+# date1 = datetime.fromtimestamp(w3.eth.get_block(1).timestamp)
+# date2 = datetime.fromtimestamp(datetime.timestamp(datetime.now()))
+# print("date ", date1)
+# print("date2 ", date2)
 
-print((date2-date1).seconds)
+# print((date2-date1).seconds)
+
+
+avatar = {
+    0: "https://ipfs.io/ipfs/Qmemr6XQy7DqKi6q8SM6XuhJ6VSvEmktYHhvsUPpwWg3Wz",
+    1: "https://ipfs.io/ipfs/QmSqhAwm5Yqdyf8Smkp3hpMt7gShDDEa27R51gR14qU7up",
+    2: "https://ipfs.io/ipfs/QmPrGrmwkrPEUdyw3A2eoQtysBV8MsZ13VgBt7P4YVaeH9",
+    3: "https://ipfs.io/ipfs/QmdVJ34h6GJzsrmxpVuqHvMrembxqpM3Xrtcn7GVnHYWCA",
+    4: "https://ipfs.io/ipfs/QmS7rfZQjG135AwpuKjcVkFRgPJ6Fgk5rcYrPKtAfn6T4u",
+}
+  
+identity = {
+    0: "doctor",
+    1: "patient",
+    2: "patient",
+    3: "patient",
+    4: "manufacturer"
+}
+  
+account = collections.defaultdict(list)
+  
+for i, e in enumerate(w3.eth.accounts):
+    account[e].append(avatar[i])
+    account[e].append(identity[i])
+    
+for acc in account:
+    print(account[acc][0])
 
 # if timestamp day > 0 then show days
 # else if second < 60 then n second ago

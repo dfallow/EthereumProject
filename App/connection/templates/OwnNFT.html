@@ -13,9 +13,19 @@
 
   <body>
 
-    <div class="page-title">
-        <h3>Your related Medical Tokens</h3>
+    <div class="profile">
+        <img class="avatar" src="{{avatar}}" width="220" height="220">
+        <h3 class="user-contract-address">{{user}}</h3>
     </div>
+
+    <div class="topnav">
+        <a id="focus" class="collected"href="{{url_for("ownNFTs")}}">
+            <h3>Collected {{machine|length + patient|length + prescription|length + data|length}}</h3>
+        </a>
+        <a class="activity" href="activity"><h3>Activity</h3></a>
+    </div>
+
+    <hr>
 
     {% if machine %}
         <div class="machine-session">

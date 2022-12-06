@@ -17,6 +17,55 @@ body {
     padding-bottom: 3%;
 }
 
+.profile {
+    padding-top: 3%;
+    padding-left: 3%;
+    padding-bottom: 2%;
+}
+
+.avatar {
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.user-contract-address{
+    font-size: 18px;
+}
+
+.topnav {
+    font-size: 25px;
+    padding-left: 3%;
+    overflow: hidden;
+    display: flex;
+    gap: 30px;
+    padding-bottom: 2%;
+}
+  
+  /* Style the links inside the navigation bar */
+  .topnav a {
+    float: left;
+    color: #a2a2a2;
+    text-align: center;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  
+  /* Change the color of links on hover */
+  .topnav a:hover {
+    color: #f4f4f4;
+    text-decoration: underline;
+  }
+  
+  /* Add a color to the active/current link */
+  .topnav a#focus {
+    color: #f4f4f4;
+    text-decoration: underline;
+  }
+
+  hr {
+    margin-bottom: 3%;
+  }
+
 .machine-session, .patient-session, .prescrption-session, .data-session{
     padding-left: 3%;
     padding-bottom: 5%;
@@ -49,7 +98,34 @@ body {
     font-size: 15px;
 }
 
+img {
+    border-radius: 15px;
+}
+
 .detail-img {
     padding-top: 3%;
     padding-bottom: 5%;
+}
+
+.login-title {
+    padding-top: 10%;
+    padding-bottom: 3%;
+    font-size: 70px;
+    text-align: center;
+}
+
+.login-accounts {
+    text-align: center;
+    display: flex;
+    gap: 36px;
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+}
+
+.account {
+    position: relative;
+    text-align: center;
+    padding: 10px;
+    display: block;
 }
