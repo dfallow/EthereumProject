@@ -10,6 +10,8 @@ pip install eth-tester
 pip install py-evm
 pip install asgiref
 pip install aioflask
+pip install pandas
+pip install mne
 
 sudo apt-get install python3-tk
 sudo apt-get update
