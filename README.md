@@ -1,9 +1,10 @@
+
 # EthereumProject
 
-##Project setup
+## Project setup
 
-1. Start in project directory (/EthereumProject)
-2. Run the initial setup script
+Start in project directory (/EthereumProject)
+Run the initial setup script
 ```
 sh InitialSetup.sh
 ```
@@ -23,8 +24,6 @@ To start IPFS:
 ipfs init
 ipfs daemon
 ```
-Vist ip address in teminal
-
 ### Install Flask
 
 ```
@@ -33,15 +32,18 @@ pip install flask
 ```
 
 ### Ganache
-* Currently applications are running using a Ganache test chain
-* Ganache need to be installed
+Currently both the website and dapps are running using a Ganache test chain
+* Install Ganache (can download it from [here](https://trufflesuite.com/ganache/))
+* Use Quickstart in Ganache to open a new workspace
 
-### Running the website
+## Running the website
 
-* To launch website run connection.py (EthereumProject/App/connection/connection.py)
-* Check terminal for ip address
+ 1. To launch the website run connection.py (EthereumProject/App/connection/connection.py)
+ 2. Make sure IPFS is running (run ```ipfs daemon``` in another terminal)
+ 3. Visit the IP address provided in the terminal after connection.py launches
+ 4. On the website for doctor and patient addresses use any of the default addresses provided in Ganache workspace
 
-## Dapps
+## Running decentralized applications (dapps)
 
 ### Setup
 
@@ -49,64 +51,76 @@ pip install flask
 ```
 sudo python3 setup.py install
 ```
-* Location of dapps (/EthereumProject/dapps/)
-* EthereumProject/library contains functionality
+* All dapps are located in /EthereumProject/dapps/
+* Dapp functionality is contained within a library located in /EthereumProject/library/
 
 ### registerMachine.py (dapp1)
 1. Run File
-   - Console will show a list of accounts to use
+   - Console will show a list of account addresses to use (they are the same as the ones in Ganache workspace)
 2. Deploy/Transfer Contract
-   - Input account for the manufacturer -> they deploy the contract
+   - Input account address for the manufacturer -> they deploy the contract on the blockchain
    - Deploy contract before continuing
-   - Transferring contract ownership is then done using the same field
-3. Register Maching -> Create/Mint Maching NFT
+   - After that transferring of contract ownership is done using the same input field
+3. Register Machine -> Create/Mint Machine NFT
    - Enter path to the file you are associating the machine with
    - Click "Register Machine"
+	   - This will upload machine file to IPFS and mint an NFT associated to it to the blockchain
    - Information shows on right side and in console
-4. Transfer Token/NFT
-   - Enter Account to be transfered to
+4. Transfer Token/NFT ownership
+   - Enter account address of the new NFT owner
    - Enter Token ID
+   - Click "Transfer Token"
 
-### createPrescription.py (daap2)
+### createPrescription.py (dapp2)
 1. Run the file
-   - Console will show a list of accounts to use
+   - Console will show a list of account addresses to use
 2. Deploy Contract
-   - Enter Patient Account -> Deploys/Owns Comtract
-   - Enter Doctor Account -> Associated with the Contract/Patient
+   - Enter Patient Account address  -> Deploys/Owns the contract
+   - Enter Doctor Account address -> Associated with the Contract/Patient
+   - Click "Deploy Contract"
 3. Create Prescription NFT
-   - Enter path to file containing prescription information
+   - Enter path to the file containing prescription information
    - Enter Machine Token ID -> The machine NFT that the prescription is registered to
+   - Click "Create Prescription"
+	   - This will upload prescription file to IPFS and mint an NFT associated to it to the blockchain
 
 
-### uploadMachineFies.py(dapp3)
+### uploadMachineFiles.py (dapp3)
 1. Run the file
-   - Console will show a list of account
+   - Console will show a list of account addresses to use
 2. Deploy Contract
-   - Enter Patient Account -> Deploys/Ows their own contract/files
-   - Enter Doctor Account -> Asscoiated with patient
+   - Enter Patient Account address -> Deploys/Owns their own contract/files
+   - Enter Doctor Account address -> Associated with Patient
 3. Upload Files
-   - Enter Maching Hash -> Reference to file location on IPFS
+   - Enter Machine Hash -> Reference to file location on IPFS (CID)
    - Enter Machine Token ID -> The machine which produces these files
-   - Enter Prescription Token ID -> Reference to All Contracts/Files
+   - Enter Prescription Token ID -> The Prescription NFT that is associated with the Machine producing the data files
    - Enter path to directory containing files to upload (e.g. ../path/to/dir/ )
-4. Transfer Contract
-   - Enter Account to transfer ownership of contract to
-5. Transfer NFTs
-   - Enter the account to transfer to
-   - Enter a select number of NFTs Token IDs to transfer to the account (e.g. 1,3,6 )  
+   - Click "Upload Files"
+	   - This will upload files to IPFS and mint NFTs for each of them
+4. Transfer Contract ownership
+   - Enter account address to transfer the ownership of contract to
+5. Transfer NFT ownership
+   - Enter the account address of the new owner
+   - Enter a select number of NFT Token IDs to transfer to the account (e.g. 1,3,6 )  
+   - Click "Transfer NFTs"
    
 
 ### addNewPatient.py (dapp4)
 1. Run the file
-   - Console will show a list of accounts
+   - Console will show a list of account addresses to use
 2. Deploy Contract
-   - Enter Doctor Account -> Deploys/owns Contract
+   - Enter Doctor Account address -> Deploys/owns Contract
+   - Click "Deploy Contract"
 3. Add Patient
-   - Enter Patient Account -> Patient is associated with this Doctor
-4. Input doctor account -> they are registered with the contract
+   - Enter Patient Account address -> Patient is associated with this Doctor
+   - Click "Add New Patient"
+	   - This will check whether patient account address is already registered
+		   - If yes, it will return data contract and prescription contract addresses on the blockchain associated with this patient
+		   - If no, new data and prescription contracts will be deployed to the blockchain and their addresses will be returned
 
 ###  getContractNFTs.py (dapp5)
 1. Run the file
-2. Select contract
-   - choose which contract to view history for
-   - History appears in the text box after button is clicked
+2. Select contract type
+3. Click "Get Contract History"
+4. History for that contract appears in the text box

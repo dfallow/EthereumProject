@@ -6,11 +6,12 @@ const transferButton = document.querySelector(".transfer-button");
 const doctorAddress = document.querySelector("#doctor-address");
 const transferDiv = document.querySelector(".transfer-div");
 const registerDiv = document.querySelector(".register-div");
-// const inputText = document.querySelector('.input-text');
-// const connectButton = document.querySelector('.connect-button');
+const loading = document.querySelector("#loading");
 
 registerDiv.style.display = "block";
 transferDiv.style.display = "none";
+registerButton.style.display = "block";
+loading.style.display = "none";
 
 function uploadImage() {
   const fileReader = new FileReader();
@@ -29,6 +30,7 @@ function uploadImage() {
     request.send();
     registerDiv.style.display = "none";
     transferDiv.style.display = "block";
+    loading.style.display = "none";
   };
 }
 
@@ -38,39 +40,13 @@ function transferOwnership() {
   request.send();
 }
 
-inputFile.onchange = function (evt) {
-  var tgt = evt.target || window.event.srcElement,
-    files = tgt.files;
-
-  // FileReader support
-  if (FileReader && files && files.length) {
-    var fr = new FileReader();
-    fr.onload = function () {
-      document.querySelector(".image").src = fr.result;
-    };
-    fr.readAsDataURL(files[0]);
-  }
-  // Not supported
-  else {
-    console.log("File reader not supported");
-  }
-};
-
-/* async function connectToMetamask() {
-  if (typeof window.ethereum !== 'undefined') {
-    ethereum.request({ method: 'eth_requestAccounts' });
-  }
-} */
-
 registerButton.addEventListener("click", async () => {
+  registerButton.style.display = "none";
+  loading.style.display = "block";
   uploadImage();
 });
 
 transferButton.addEventListener("click", async () => {
   transferOwnership();
+  window.history.back();
 });
-
-/* connectButton.addEventListener('click', () => {
-  connectToMetamask();
-});
- */
