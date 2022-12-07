@@ -23,8 +23,8 @@
                 avatar=accounts[acc][0], 
                 id=accounts[acc][1]
                 )}}"">
-                    <img src="{{ url_for('static', filename='accounts[acc][0]' )}}" width="250" height="250">
-                </a>
+                    <img src="../static/img/{{accounts[acc][0]}}" width="250" height="250">
+                </a
                 <h3>{{acc[:6]}}...{{acc[-4:]}}</h3>
                 <h3>({{accounts[acc][1]}})</h3>
             </div>
