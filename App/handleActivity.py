@@ -29,7 +29,35 @@ class allActivityData:
         self.age = age
         self._from = _from
         self._to = _to
-
+        
+async def cal_timediff(tx_timestamp):
+    
+    current_timestamp = datetime.fromtimestamp(datetime.timestamp(datetime.now()))
+    time_diff = current_timestamp - tx_timestamp
+            
+    # days
+    if time_diff.days > 0:
+        if time_diff.days > 1:
+            age = str(time_diff.days) + " days"
+        else:
+            age = str(time_diff.days) + " day"
+    # hours
+    elif time_diff.seconds/(60*60) >= 1:
+        if time_diff.seconds/(60*60) > 1:
+            age = str(int(time_diff.seconds/(60*60))) + " hours"
+        else:
+            age = str(int(time_diff.seconds/(60*60))) + " hour"
+    # minutes
+    elif time_diff.seconds/60 >= 1 and time_diff.seconds/60 <= 59:
+        if time_diff.seconds/60 > 1:
+            age = str(int(time_diff.seconds/60)) + " minutes"
+        else:
+            age = str(int(time_diff.seconds/60)) + " minute" 
+    # seconds
+    else:
+        age = str(time_diff.seconds) + " seconds"
+    
+    return age
 
 async def checkContractAddressValidation(w3, ca, bc_type):
 
@@ -165,31 +193,8 @@ async def getInfo(w3, checkType, nob):
         blk = transaction["blockNumber"]
         
         tx_timestamp = datetime.fromtimestamp(w3.eth.get_block(blk).timestamp)
-        current_timestamp = datetime.fromtimestamp(datetime.timestamp(datetime.now()))
-        time_diff = current_timestamp - tx_timestamp
         
-        # days
-        if time_diff.days > 0:
-            if time_diff.days > 1:
-                age = str(time_diff.days) + " days"
-            else:
-                age = str(time_diff.days) + " day"
-        # hours
-        elif time_diff.seconds/(60*60) >= 1:
-            if time_diff.seconds/(60*60) > 1:
-                age = str(int(time_diff.seconds/(60*60))) + " hours"
-            else:
-                age = str(int(time_diff.seconds/(60*60))) + " hour"
-        # minutes
-        elif time_diff.seconds/60 >= 1 and time_diff.seconds/60 <= 59:
-            if time_diff.seconds/60 > 1:
-                age = str(int(time_diff.seconds/60)) + " minutes"
-            else:
-                age = str(int(time_diff.seconds/60)) + " minute" 
-        # seconds
-        else:
-            age = str(time_diff.seconds) + " seconds"
-                
+        age = await cal_timediff(tx_timestamp)
 
         _fromAdd = {
             'Mint': "NullAddress",

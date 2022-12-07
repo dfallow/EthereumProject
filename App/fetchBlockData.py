@@ -2,10 +2,9 @@ from flask import Flask, render_template, url_for, request, redirect
 from web3 import Web3
 import collections
 import handleActivity
-import handleTransaction
-import browseNFTs
 import handleActivityDetails
 import handleOwnNFT
+import handleSingleTokenActivity
 import handleMetaData
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
@@ -106,8 +105,6 @@ async def ownNFTs():
   if contractAddress:
     return redirect(f'/{contractAddress}/{tokenId}')
   
-
-  
   return render_template("OwnNFT.html", machine=md, 
                          patient=pd, 
                          prescription=pred, 
@@ -117,7 +114,6 @@ async def ownNFTs():
 
 async def ownNFTDetails(contract_address, tid):
   
-  
   typeoftoken = "" if typeOfToken is None else typeOfToken
   Icon = "" if icon is None else icon
   contractowner = "" if contractOwner is None else contractOwner
@@ -125,13 +121,12 @@ async def ownNFTDetails(contract_address, tid):
   datacontractaddress = "" if dataContractAddress is None else dataContractAddress
   prescriptioncontractaddress = "" if prescriptionContractAddress is None else prescriptionContractAddress
   metadataurl = "" if metaDataUrl is None else metaDataUrl
+  metadata = [] # for the graph
+  itemHistory = [] 
   
-  metadata = []
-  
-  # if typeOfToken in [""]
-  
-   
-  
+  if typeOfToken is not None and typeOfToken in ["machine", "prescription", "data"]:
+    itemHistory = await handleSingleTokenActivity.getSingleTokenActivity(w3,contract_address, tid, typeOfToken)
+
   return render_template("OwnNFTDetails.html",
                          contractAddress=contract_address,
                          tokenId=tid,
@@ -142,8 +137,8 @@ async def ownNFTDetails(contract_address, tid):
                          dataContractAddress=datacontractaddress,
                          prescriptionContractAddress=prescriptioncontractaddress,
                          metaDataUrl=metadataurl,
-                         metadata=metadata
-                         )
+                         metadata=metadata,
+                         Activity=itemHistory)
   
 
 
