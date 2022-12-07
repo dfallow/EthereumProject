@@ -52,23 +52,19 @@ body {
   /* Style the links inside the navigation bar */
   .topnav a {
     float: left;
-    color: #a2a2a2;
+    color: #666;
     text-align: center;
     text-decoration: none;
     font-size: 17px;
   }
   
   /* Change the color of links on hover */
-  .topnav a:hover {
-    color: #f4f4f4;
+  .topnav a:hover,  
+  .topnav a:focus  {
     text-decoration: underline;
+    color: #444;
   }
   
-  /* Add a color to the active/current link */
-  .topnav a#focus {
-    color: #f4f4f4;
-    text-decoration: underline;
-  }
 
   hr {
     margin-bottom: 3%;
@@ -131,8 +127,6 @@ h3 {
   justify-content: center;
 }
 .detail-img {
-    padding-top: 3%;
-    padding-bottom: 5%;
 }
 
 .login-title {

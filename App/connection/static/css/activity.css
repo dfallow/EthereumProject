@@ -5,11 +5,10 @@
   body {
     font-family: 'Rubik', sans-serif;
     /* color: #333; */
-    background: #212534;
   }
 
   .page-title {
-    color: #f2f2f2;
+    color: #333;
     padding-left: 3%;
     padding-bottom: 3%;
   }
