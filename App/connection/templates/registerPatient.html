@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mint files from the machine</title>
+    <title>Register Patient</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,28 +15,36 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
+    
     <script src="https://cdn.jsdelivr.net/npm/ipfs/dist/index.min.js"></script>
   </head>
 
   <body>
     <div class="container">
     <h1 class="title">Register a new patient</h1>
+    <form>
+      <label>Doctor account address</label><br>
       <input
         type="text"
         name="name"
         id="doctor-address"
         class="input-text2"
-        placeholder="Doctor account"
-      />
+        placeholder="account"
+      /> 
+      <br><br>
+      <label>Patient account address</label><br>
       <input
         type="text"
         name="name"
         id="patient-address"
         class="input-text2"
-        placeholder="Patient account"
+        placeholder="account"
       />
-      <button class="btn">Register</button>
-      <h1 class="contract-text"></h1>
+    </form>
+      <div class="container">
+        <p id="loading">Processing the transaction. Please wait...</p>
+        <button class="btn">Register</button>
+      </div>
     </div>
     <script src="{{ url_for('static', filename='js/patient.js') }}"></script>
   </body>

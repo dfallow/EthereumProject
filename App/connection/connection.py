@@ -19,7 +19,6 @@ app_one_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 os.chdir(app_one_dir)
 
 app = Flask(__name__)
-# app2 routes
 app.add_url_rule('/transact', methods=["GET", "POST"], view_func=transact)
 app.add_url_rule('/browseNFTs', view_func=browsingPage)
 app.add_url_rule('/medicalActivity', methods=["GET", "POST"], view_func=medicalActivity)

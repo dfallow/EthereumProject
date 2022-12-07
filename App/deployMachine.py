@@ -1,14 +1,16 @@
 import IPFS
+import os
+import sys
 import contractDetailsMachineToken
-import json
 from web3 import Web3
+
 
 # test environment
 # w3 = Web3(Web3.EthereumTesterProvider())
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
 
 # deployed by manufacturer
-# this is atm set to the available accounts
+# this is atm set to one of the available accounts
 w3.eth.default_account = w3.eth.accounts[4]
 print("ACCOUNTS", w3.eth.accounts)
 
@@ -46,6 +48,7 @@ token_id = 0
 def deploy_machine_nft(file_hash):
     global token_id
 
+    # this is currently used as a mock manufacturer account
     w3.eth.default_account = w3.eth.accounts[4]
 
     file_url = "https://ipfs.io/ipfs/" + file_hash + "?" + file_hash

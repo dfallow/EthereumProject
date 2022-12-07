@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mint files from the machine</title>
+    <title>Issue Prescription</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,35 +29,40 @@
         <div class="image-container">
           <img src="" alt="" class="image" />
         </div>
-        <input
+        <form>
+          <label>Machine Token ID</label><br>
+          <input
           type="number"
           min="1"
           name="name"
           id="machine-id"
           class="input-text2"
-          placeholder="Machine token ID"
-        />
+          placeholder="ID"
+        /><br><br>
+        <label>Doctor account address</label><br>
         <input
           type="text"
           name="name"
           id="doctor-address"
           class="input-text2"
           placeholder="Doctor account"
-        />
+        /><br><br>
+        <label>Patient account address</label><br>
         <input
           type="text"
           name="name"
           id="patient-address"
           class="input-text2"
           placeholder="Patient account"
-        />
-        <button class="btn-issue">Issue</button>
-        <h1 class="contract-text"></h1>
+        /><br><br>
+        </form>
+        <button class="btn" id="btn-issue">Issue</button>
+        <p id="loading">Processing the transaction. Please wait...</p>
       </div>
-    </div>
-    <div class="transfer-div">
-      <h3 class="title">Transfer machine to patient</h3>
-      <button class="btn-transfer">Transfer</button>
+      <div class="transfer-div">
+        <h4 class="title">Transfer machine to patient</h4>
+        <button class="btn" id="btn-transfer">Transfer</button>
+      </div>
     </div>
     <script src="{{ url_for('static', filename='js/prescription.js') }}"></script>
   </body>

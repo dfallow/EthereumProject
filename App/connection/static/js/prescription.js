@@ -2,14 +2,20 @@ const inputMachineID = document.querySelector("#machine-id");
 const inputDoctorAddress = document.querySelector("#doctor-address");
 const inputPatientAddress = document.querySelector("#patient-address");
 const inputFile = document.querySelector(".input-file");
-const issueButton = document.querySelector(".btn-issue");
-const transferButton = document.querySelector(".btn-transfer");
+const issueButton = document.querySelector("#btn-issue");
+const transferButton = document.querySelector("#btn-transfer");
 const fileUploaded = document.querySelector("#file");
 const transferDiv = document.querySelector(".transfer-div");
 const issueDiv = document.querySelector(".issue-div");
+const loading = document.querySelector("#loading");
+
+loading.style.display = "none";
+transferDiv.style.display = "none";
 
 issueButton.addEventListener("click", async () => {
-  uploadFile();
+  issueButton.style.display = "none";
+  loading.style.display = "block";
+  await uploadFile();
 });
 
 transferButton.addEventListener("click", async () => {
@@ -39,6 +45,8 @@ async function uploadFile() {
     const request = new XMLHttpRequest();
     request.open("POST", `/ProcessPrescription/${JSON.stringify(allData)}`);
     request.send();
+    loading.style.display = "none";
+    transferDiv.style.display = "block";
   };
 }
 
@@ -52,6 +60,7 @@ async function transfer() {
   const request = new XMLHttpRequest();
   request.open("POST", `/TransferMachineToPatient/${JSON.stringify(allData)}`);
   request.send();
+  window.history.back();
 }
 
 inputFile.onchange = function (evt) {
