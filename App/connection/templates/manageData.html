@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mint files from the machine</title>
+    <title>Store Machine Data</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -28,37 +28,44 @@
       <div class="image-container">
         <img src="" alt="" class="image" />
       </div>
-      <input
+      <form>
+        <label>Machine token ID</label><br>
+        <input
         type="number"
         min="1"
         name="name"
         id="machine-id"
         class="input-text2"
-        placeholder="Enter machine token ID"
-      />
+        placeholder="Machine token ID"
+      /><br><br>
+      <label>Prescription token ID</label><br>
       <input
         type="number"
         min="1"
         name="name"
         id="prescription-id"
         class="input-text2"
-        placeholder="Enter prescription token ID"
-      />
+        placeholder="Prescription token ID"
+      /><br><br>
+      <label>Doctor account address</label><br>
       <input
         type="text"
         name="name"
         id="doctor-address"
         class="input-text2"
         placeholder="Doctor account"
-      />
+      /><br><br>
+      <label>Patient account address</label><br>
       <input
         type="text"
         name="name"
         id="patient-address"
         class="input-text2"
         placeholder="Patient account"
-      />
-      <button class="btn">create NFT</button>
+      /><br><br>
+      </form>
+      <p id="loading">Processing the transaction. Please wait...</p>
+      <button class="btn">Upload</button>
       <h1 class="contract-text"></h1>
     </div>
     <script src="{{ url_for('static', filename='js/manage.js') }}"></script>

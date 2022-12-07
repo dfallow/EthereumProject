@@ -1,16 +1,16 @@
 from web3 import Web3
 from urllib.request import urlopen
+from datetime import datetime
+
 import contractDetailsMachineToken as mta  # machine token abi
 import contractDetailsPatientToken as pta  # patient token abi
 import contractDetailsPrescriptionToken as preta  # prescription token abi
 import contractDetailsDataToken as dta  # data token abi
 
-
 # loop through the blocks
 # get all valid ca which means "to"
 # check input (abi bytecode) to determine which contract
 # then check event log to see what's the action
-
 
 class allActivityData:
     def __init__(
@@ -18,6 +18,7 @@ class allActivityData:
         event: str,
         contract: str,
         blkNum: int,
+        age: str,
         _from: str,
         _to: str,
     ):
@@ -25,9 +26,38 @@ class allActivityData:
         self.event = event
         self.contract = contract
         self.blkNum = blkNum
+        self.age = age
         self._from = _from
         self._to = _to
-
+        
+async def cal_timediff(tx_timestamp):
+    
+    current_timestamp = datetime.fromtimestamp(datetime.timestamp(datetime.now()))
+    time_diff = current_timestamp - tx_timestamp
+            
+    # days
+    if time_diff.days > 0:
+        if time_diff.days > 1:
+            age = str(time_diff.days) + " days"
+        else:
+            age = str(time_diff.days) + " day"
+    # hours
+    elif time_diff.seconds/(60*60) >= 1:
+        if time_diff.seconds/(60*60) > 1:
+            age = str(int(time_diff.seconds/(60*60))) + " hours"
+        else:
+            age = str(int(time_diff.seconds/(60*60))) + " hour"
+    # minutes
+    elif time_diff.seconds/60 >= 1 and time_diff.seconds/60 <= 59:
+        if time_diff.seconds/60 > 1:
+            age = str(int(time_diff.seconds/60)) + " minutes"
+        else:
+            age = str(int(time_diff.seconds/60)) + " minute" 
+    # seconds
+    else:
+        age = str(time_diff.seconds) + " seconds"
+    
+    return age
 
 async def checkContractAddressValidation(w3, ca, bc_type):
 
@@ -161,6 +191,10 @@ async def getInfo(w3, checkType, nob):
         txn_hash = transaction["hash"].hex()
 
         blk = transaction["blockNumber"]
+        
+        tx_timestamp = datetime.fromtimestamp(w3.eth.get_block(blk).timestamp)
+        
+        age = await cal_timediff(tx_timestamp)
 
         _fromAdd = {
             'Mint': "NullAddress",
@@ -189,6 +223,7 @@ async def getInfo(w3, checkType, nob):
                 event,
                 cType,
                 blk,
+                age,
                 _from,
                 _to
             )

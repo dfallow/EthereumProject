@@ -4,3 +4,4 @@ venv
 build
 library.egg-info
 dist
+App1/tempFiles

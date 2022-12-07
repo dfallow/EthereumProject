@@ -14,14 +14,13 @@
 <body>
 
     <div class="page-title">
-        <h3 class="title">Medical Activity</h3>
+        <h3 class="title">Latest Transactions</h3>
     </div>
-
 
     <div class="items_activity">
 
         <div class="table-container">
-
+            <h3 class="filter__link">A total of {{Activity|length}} transactions found</h3>
             <div class="table">
               <div class="table-header">
                 <div class="header__item">
@@ -32,6 +31,9 @@
                 </div>
                 <div class="header__item">
                   <a id="losses" class="filter__link filter__link--number">Block</a>
+                </div>
+                <div class="header__item">
+                  <a id="losses" class="filter__link filter__link--number">Age</a>
                 </div>
                 <div class="header__item">
                   <a id="losses" class="filter__link filter__link--number">From</a>
@@ -50,8 +52,7 @@
                       <!-- txh -->
                       
                       <div class="table-data">
-                        <a href="{{url_for("medicalActivity", tx=activity.txn_hash, cType=activity.contract)}}" style="color: #575757;
-                        text-decoration: none;">{{activity.txn_hash[:6]}}</a>
+                        <a class="to-details-link" href="{{url_for("medicalActivity", tx=activity.txn_hash, cType=activity.contract)}}">{{activity.txn_hash[:6]}}</a>
                         <span class="table-data-hover">{{activity.txn_hash}}</span>
                       </div>
                       <!-- event  -->
@@ -60,6 +61,8 @@
                       </div>
                       <!-- from blocks number -->
                       <div class="table-data">{{activity.blkNum}}</div>
+                      <!-- Age -->
+                      <div class="table-data">{{activity.age}} ago</div>
                       <!-- from address-->
                       {% if activity._from == "NullAddress" or  activity._from == "" %}
                           <div class="table-data">{{activity._from}}</div>

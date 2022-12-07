@@ -1,34 +1,14 @@
 from flask import Flask, render_template, url_for, request, redirect
 from web3 import Web3
+import collections
 import handleActivity
-import handleTransaction
-import browseNFTs
 import handleActivityDetails
 import handleOwnNFT
+import handleSingleTokenActivity
 import handleMetaData
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
-w3.eth.default_account = w3.eth.accounts[1]
-
-# #  methods=["GET", "POST"]
-# @app.route('/transact')
-def transact():
-  if request.method == "POST":
-    nft = request.form.get("nft")
-    recipient = request.form.get("recipient")
-    key = request.form.get("key")
-    contract = request.form.get("contract")
-    
-    if not nft or not recipient or not key or not contract:
-      error = "all form fields required..."
-      return error
-    print(f"key: {key}, recipient: {recipient}, nft: {nft}, contract: {contract}")
-    return redirect(url_for('transact'))
-  
-  return render_template("transact.html", myNFTs=handleTransaction.getMyNFTs(w3))
-
-def browsingPage():
-  return render_template("BrowseNFTs.html", allNFTs=browseNFTs.getAllNFTs())
+w3.eth.default_account = w3.eth.accounts[0]
 
 async def medicalActivity():
   # get all valid transaction history on the chain
@@ -52,7 +32,54 @@ def txDetails(txn_hash):
   
   return render_template("transactionDetails.html", details=transactionDetails)
 
+def fakeLogin():
+  
+  global currentUserAddress
+  currentUserAddress = request.args.get("acc_num")
+  global userAvatar
+  userAvatar = request.args.get("avatar")
+  global userIdentity
+  userIdentity = request.args.get("id")
+  
+  if currentUserAddress or userAvatar or userIdentity:
+    return redirect('/ownnft')
+  
+  gan_acc = w3.eth.accounts[:5]
+  
+  avatar = {
+    0: "https://ipfs.io/ipfs/Qmemr6XQy7DqKi6q8SM6XuhJ6VSvEmktYHhvsUPpwWg3Wz",
+    1: "https://ipfs.io/ipfs/QmSqhAwm5Yqdyf8Smkp3hpMt7gShDDEa27R51gR14qU7up",
+    2: "https://ipfs.io/ipfs/QmPrGrmwkrPEUdyw3A2eoQtysBV8MsZ13VgBt7P4YVaeH9",
+    3: "https://ipfs.io/ipfs/QmdVJ34h6GJzsrmxpVuqHvMrembxqpM3Xrtcn7GVnHYWCA",
+    4: "https://ipfs.io/ipfs/QmS7rfZQjG135AwpuKjcVkFRgPJ6Fgk5rcYrPKtAfn6T4u",
+  }
+  
+  identity = {
+    0: "Doctor",
+    1: "Patient",
+    2: "Patient",
+    3: "Patient",
+    4: "Manufacturer"
+  }
+  
+  account = collections.defaultdict(list)
+  
+  for i, e in enumerate(gan_acc):
+    account[e].append(avatar[i])
+    account[e].append(identity[i])
+    
+  
+  return render_template("fakeLogin.html", accounts=account)
+
 async def ownNFTs():
+  
+  user_acc = currentUserAddress
+  w3.eth.default_account = user_acc
+  
+  user_avatar = userAvatar
+  
+  identity = userIdentity
+  
   md, pd, pred, dd = await handleOwnNFT.getOwnNFTs(w3)
   
   # essential for access details page
@@ -78,7 +105,12 @@ async def ownNFTs():
   if contractAddress:
     return redirect(f'/{contractAddress}/{tokenId}')
   
-  return render_template("OwnNFT.html", machine=md, patient=pd, prescription=pred, data=dd)
+  return render_template("OwnNFT.html", machine=md, 
+                         patient=pd, 
+                         prescription=pred, 
+                         data=dd,
+                         avatar=user_avatar,
+                         user=w3.eth.default_account)
 
 async def ownNFTDetails(contract_address, tid):
   
@@ -89,11 +121,16 @@ async def ownNFTDetails(contract_address, tid):
   datacontractaddress = "" if dataContractAddress is None else dataContractAddress
   prescriptioncontractaddress = "" if prescriptionContractAddress is None else prescriptionContractAddress
   metadataurl = "" if metaDataUrl is None else metaDataUrl
+  metadata = [] # for the graph
+  itemHistory = [] 
   
   metadata = []
   
   # if typeOfToken in [""]
   
+  if typeOfToken is not None and typeOfToken in ["machine", "prescription", "data"]:
+    itemHistory = await handleSingleTokenActivity.getSingleTokenActivity(w3,contract_address, tid, typeOfToken)
+
   return render_template("OwnNFTDetails.html",
                          contractAddress=contract_address,
                          tokenId=tid,
@@ -104,8 +141,8 @@ async def ownNFTDetails(contract_address, tid):
                          dataContractAddress=datacontractaddress,
                          prescriptionContractAddress=prescriptioncontractaddress,
                          metaDataUrl=metadataurl,
-                         metadata=metadata
-                         )
+                         metadata=metadata,
+                         Activity=itemHistory)
   
 
 

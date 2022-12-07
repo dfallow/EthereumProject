@@ -4,7 +4,7 @@
   }
   body {
     font-family: 'Rubik', sans-serif;
-    color: #333;
+    /* color: #333; */
     background: #212534;
   }
 
@@ -15,7 +15,7 @@
   }
   
   .page-title .title {
-    font-size: 40px;
+    font-size: 35px;
     padding-bottom: -5%;
     margin-top: 36px;
     margin-bottom: 10px;
@@ -61,6 +61,7 @@
   }
 
   .table-data {
+    color: #212534;
     text-align: center;
     position: relative;
     display: inline-block;
@@ -129,6 +130,15 @@
     margin-bottom: 10px;
   }
 
+  .to-details-link {
+    color: #575757;
+    text-decoration: none;
+  }
+
+  .to-details-link:hover{
+    text-decoration: underline;
+  }
+
   .event-log{
     color: #f2f2f2;
     padding-left: 3%;
@@ -140,4 +150,16 @@
   .event-log .from_to {
     margin-top: 10px;
     padding-left: 5%;
+  }
+
+
+  .machine-session, .patient-session, .prescrption-session, .data-session{
+    padding-left: 3%;
+    padding-bottom: 5%;
+  }
+
+  .machine-title, .patient-title, .prescription-title, .data-title{
+      color: #f2f2f2;
+      font-size: 20px;
+      margin-bottom: 1%;
   }
