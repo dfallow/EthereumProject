@@ -5,9 +5,13 @@ const inputPatientAddress = document.querySelector("#patient-address");
 const inputFile = document.querySelector(".input-file");
 const createButton = document.querySelector(".btn");
 const filesUploaded = document.querySelector("#file");
+const loading = document.querySelector("#loading");
+
+loading.style.display = "none";
 
 createButton.addEventListener("click", async () => {
-  // uploadData();
+  loading.style.display = "block";
+  createButton.style.display = "none";
   uploadMultipleFiles();
 });
 
@@ -49,6 +53,7 @@ async function uploadMultipleFiles() {
         let request = new XMLHttpRequest();
         request.open("POST", `/ProcessFilesInfo/${JSON.stringify(allData)}`);
         request.send();
+        window.history.back();
       }
     };
   }
