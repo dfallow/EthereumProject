@@ -124,6 +124,10 @@ async def ownNFTDetails(contract_address, tid):
   metadata = [] # for the graph
   itemHistory = [] 
   
+  metadata = []
+  
+  # if typeOfToken in [""]
+  
   if typeOfToken is not None and typeOfToken in ["machine", "prescription", "data"]:
     itemHistory = await handleSingleTokenActivity.getSingleTokenActivity(w3,contract_address, tid, typeOfToken)
 
