@@ -82,16 +82,32 @@ async def getSingleTokenActivity(w3, ca, tid, c_type):
     ))
     
     
+    nextBLK = minted["blockNumber"]+1
     
     
+    allValidTxh = [w3.eth.get_block(n)["transactions"][0].hex()
+                   for n in range(nextBLK, numOfBLK+1)
+                   if w3.eth.get_transaction(w3.eth.get_block(n)["transactions"][0].hex())["to"] == ca]
     
     
-    
-    
-    
-    
-    
-    
-    
+    for txh in allValidTxh:
+        transfer_transaction = w3.eth.getTransaction(txh)
+        history = contract.decode_function_input(transfer_transaction.input)
+        
+        
+        tx_timestamp = datetime.fromtimestamp(w3.eth.get_block(transfer_transaction['blockNumber']).timestamp)
+        
+        age = await cal_timediff(tx_timestamp)
+        
+        
+        if "transferTokenOwnership" in str(history[0]) and history[1]['_tokenId'] == int(tid):
+            activity_data.append(tokenActivity(
+                "Transfer",
+                transfer_transaction["from"],
+                history[1]['_to'],
+                age
+            ))
+            
+            
     
     return activity_data
