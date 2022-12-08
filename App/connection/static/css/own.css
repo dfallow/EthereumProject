@@ -5,7 +5,7 @@
 
 body {
   font-family: 'Rubik', sans-serif;
-  color: #dee2e6;
+  color: #FFFFFF;
   background-color:  rgb(32, 34, 37);
   min-height: 100vh;
 }
@@ -51,7 +51,8 @@ address-icon{
     overflow: hidden;
     display: flex;
     gap: 30px;
-    padding-bottom: 2%;
+    margin-bottom: 0%;
+    /* padding-bottom: 1px; */
 }
   
   /* Style the links inside the navigation bar */
@@ -64,7 +65,7 @@ address-icon{
   }
 
   #focus{
-    color: #dee2e6;
+    color: #FFFFFF;
     text-decoration: underline;
   }
   
@@ -72,12 +73,14 @@ address-icon{
   .topnav a:hover,  
   .topnav a:focus  {
     text-decoration: underline;
-    color: #dee2e6;
+    color: #FFFFFF;
   }
 
-  hr {
-    margin-bottom: 10px;
-  }
+.no-items{
+  margin: 250px;
+  text-align: center;
+  border-radius: 15px;
+}
 
 .machine-session, .patient-session, .prescrption-session, .data-session{
     padding-left: 3%;
@@ -98,29 +101,45 @@ address-icon{
   gap: 36px;
   width: 100%;
   margin: auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.nft_container {
+.nft-container {
   position: relative;
   text-align: center;
-  padding: 10px;
+  /* padding: 10px; */
   float: left;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(46, 46, 46);
+  border-radius: 15px;
+}
+
+.nft-img {
+  overflow: hidden;
+  width: 100%;
+  border-radius: 15px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.nft-title{
+  display: flex;
+  text-align: left;
+  padding: 8px 15px 14px;
+  font-size: 25px;
 }
 
 .nft_name {
-  color: #dee2e6;
-  position: absolute;
-  font-size: 15px;
+  color: #FFFFFF;
 }
 
-img {
-    border-radius: 15px;
-}
 
 h3 {
   margin-bottom: 9px;
 }
+
 .btn {
   background-color: #339af0;
 }
@@ -157,4 +176,155 @@ h3 {
     text-align: center;
     padding: 10px;
     display: block;
+}
+
+
+/* for own activity */
+.items_activity {
+  width: 100%;
+}
+
+.table-container {
+  margin: auto;
+  /* width: 90%; */
+}
+
+.table-header {
+  display: flex;
+  width: 100%;
+  background: none;
+  padding: 30px 0;
+  font-weight: bold;
+  border-bottom:2px solid rgb(59, 59, 59);
+}
+
+.table-row {
+  color: #eeeeee;
+  display: flex;
+  width: 100%;
+  padding: 50px 0;
+  font-weight: bolder;
+  align-items: center;
+}
+
+/* .table-row:last-child {
+  border-radius: 0 0 12px 12px;
+} */
+
+/* .table-row:nth-of-type(odd) {
+  background: #dcdada;
+} */
+
+/* .table-data, */
+.header__item {
+  flex: 1 1 20%;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.table-data {
+  color: #FFFFFF;
+  text-align: center;
+  position: relative;
+  display: inline-block;
+  flex: 1 1 20%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100px;
+}
+
+.table-data-token{
+  display: flex;
+  padding-left: 10px;
+  gap: 20px;
+  align-items: center;
+  display: inline-flex
+}
+
+.token-title{
+
+  /* display: inline-block; */
+}
+
+.table-data-hover {
+  display: none;
+  position: absolute;
+  top: -70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #111;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.table-data:hover .table-data-hover {
+  display: block;
+}
+
+form {
+  z-index: 1;
+}
+
+.header__item {
+  /* text-transform: uppercase; */
+}
+
+.filter__link {
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  padding-left: 24px;
+  padding-right: 24px;
+  color: #eeeeee;
+}
+
+.filter__link::after {
+  content: '';
+  position: absolute;
+  right: -18px;
+  color: white;
+  font-size: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.filter__link.desc::after {
+  content: '(desc)';
+}
+
+.filter__link.asc::after {
+  content: '(asc)';
+}
+
+
+.details-overview, .transaction-info {
+  color: #f2f2f2;
+  padding-left: 3%;
+  padding-bottom: 3%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.to-details-link {
+  color: #575757;
+  text-decoration: none;
+}
+
+.to-details-link:hover{
+  text-decoration: underline;
+}
+
+.event-log{
+  color: #f2f2f2;
+  padding-left: 3%;
+  padding-bottom: 3%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.event-log .from_to {
+  margin-top: 10px;
+  padding-left: 5%;
 }

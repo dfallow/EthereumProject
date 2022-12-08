@@ -5,6 +5,7 @@ import handleActivity
 import handleActivityDetails
 import handleOwnNFT
 import handleSingleTokenActivity
+import handleSingleUserActivity
 import handleMetaData
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
@@ -73,11 +74,17 @@ def fakeLogin():
 
 async def ownNFTs():
   
-  user_acc = currentUserAddress
-  w3.eth.default_account = user_acc
-  
-  user_avatar = userAvatar
-  
+  try:
+    user_acc = currentUserAddress
+    w3.eth.default_account = user_acc
+    user_avatar = userAvatar
+  except:
+    return redirect('/login')
+  else:
+    user_acc = currentUserAddress
+    w3.eth.default_account = user_acc
+    user_avatar = userAvatar
+    
   identity = userIdentity
   
   md, pd, pred, dd = await handleOwnNFT.getOwnNFTs(w3)
@@ -161,10 +168,13 @@ async def ownActivity():
   
   nob = numOfToken
   
+  userActivity = await handleSingleUserActivity.getSingleUserActivity(w3)
+  
   return render_template('OwnActivity.html', 
                          avatar=user_avatar,
                          user=w3.eth.default_account,
-                         nob=nob)
+                         nob=nob,
+                         Activity=userActivity)
   
 
 
