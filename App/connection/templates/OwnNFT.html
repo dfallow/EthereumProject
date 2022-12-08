@@ -25,9 +25,10 @@
 
     <div class="topnav">
         <a id="focus" class="collected"href="{{url_for("ownNFTs")}}">
-            <h3>Collected {{machine|length + patient|length + prescription|length + data|length}}</h3>
+            <h3>Collected {{nob}}</h3>
         </a>
-        <a class="activity" href="activity"><h3>Activity</h3></a>
+        <a class="activity" href="{{url_for("ownNFTs", 
+        tokenNum=nob)}}"><h3>Activity</h3></a>
     </div>
 
     <hr>

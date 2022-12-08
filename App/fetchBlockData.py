@@ -81,6 +81,7 @@ async def ownNFTs():
   identity = userIdentity
   
   md, pd, pred, dd = await handleOwnNFT.getOwnNFTs(w3)
+  nob = len(md)+len(pd)+len(pred)+len(dd)
   
   # essential for access details page
   contractAddress = request.args.get("ca")
@@ -101,6 +102,12 @@ async def ownNFTs():
   prescriptionContractAddress = request.args.get("preca")
   global metaDataUrl
   metaDataUrl = request.args.get("md_url")
+  global numOfToken
+  numOfToken = request.args.get("tokenNum")
+  
+  if numOfToken:
+    print("number", numOfToken)
+    return redirect('/ownnft/activity')
   
   if contractAddress:
     return redirect(f'/{contractAddress}/{tokenId}')
@@ -110,7 +117,8 @@ async def ownNFTs():
                          prescription=pred, 
                          data=dd,
                          avatar=user_avatar,
-                         user=w3.eth.default_account)
+                         user=w3.eth.default_account,
+                         nob=nob)
 
 async def ownNFTDetails(contract_address, tid):
   
@@ -143,6 +151,20 @@ async def ownNFTDetails(contract_address, tid):
                          metaDataUrl=metadataurl,
                          metadata=metadata,
                          Activity=itemHistory)
+  
+  
+async def ownActivity():
+  
+  user_acc = currentUserAddress
+  w3.eth.default_account = user_acc  
+  user_avatar = userAvatar
+  
+  nob = numOfToken
+  
+  return render_template('OwnActivity.html', 
+                         avatar=user_avatar,
+                         user=w3.eth.default_account,
+                         nob=nob)
   
 
 
