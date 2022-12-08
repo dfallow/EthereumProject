@@ -76,7 +76,7 @@ address-icon{
     color: #FFFFFF;
   }
 
-.no-items{
+.no-items, .no-activity{
   margin: 250px;
   text-align: center;
   border-radius: 15px;

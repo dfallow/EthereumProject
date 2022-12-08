@@ -56,28 +56,38 @@
 
           <div class="table-content">
 
-            {% for activity in Activity[::-1] %}
-            
+            {% if Activity|length == 0 %}
+
+              <div class="no-activity">
+                <h1>No Activity to display</h1>
+              </div>
+
+            {% else %}
+                {% for activity in Activity[::-1] %}
+                
                 <div class="table-row">
                   <div class="table-data">{{activity.event[0]}}</div>
                   <div class="table-data">
-                    <!-- <img style="border-radius: 5px;"src={{activity.icon}} width="50" height="50">
-                    {{activity.ca[:6]}} #{{activity.tid}} -->
                     <div class="table-data-token">
                       <img style="border-radius: 5px;"src={{activity.icon}} width="50" height="50">
                       <h4 class="token-title">{{activity.ca[:6]}} #{{activity.tid}}</h4>
                     </div>
+                    </div>
+                    {% if activity._from == "NullAddress" or  activity._from == "" %}
+                        <div class="table-data">{{activity._from}}</div>
+                    {% else %}
+                      <div class="table-data">{{activity._from[:6]}}</div>
+                    {% endif %}
+                    <!-- to address -->
+                    <div class="table-data">{{activity._to[:6]}}</div>
+                    <div class="table-data">{{activity.age}} ago</div>
                   </div>
-                  {% if activity._from == "NullAddress" or  activity._from == "" %}
-                      <div class="table-data">{{activity._from}}</div>
-                  {% else %}
-                    <div class="table-data">{{activity._from[:6]}}</div>
-                  {% endif %}
-                  <!-- to address -->
-                  <div class="table-data">{{activity._to[:6]}}</div>
-                  <div class="table-data">{{activity.age}} ago</div>
-                </div>
-            {% endfor %}
+              {% endfor %}
+
+            {% endif %}
+
+
+            
 
 
         </div>
