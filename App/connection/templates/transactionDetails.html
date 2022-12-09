@@ -79,12 +79,34 @@
                 <hr style="width:100%; margin:auto;" />
             </div>
 
+
+            <div class="erc-721">
+
+                <div class="display-row">
+                    <h3>ERC-721 Tokens: </h3>
+                    {% if details.e_from == "NullAddress" %} 
+                    <h3 id="info">From {{details.e_from}} To {{details.e_to[:10]}}...</h3>
+                    {% else %}
+                    <h3 id="info">From {{details.e_from[:10]}}... To {{details.e_to[:10]}}...</h3>
+                    {% endif %}
+                </div>
+
+
+                <div class="display-row">
+                    <h3 style="color:transparent;">Transaction Action: </h3>
+                    <h3 id="info">For ERC-721 Token ID [{{tid}}]</h3>
+                </div>
+
+                <hr style="width:100%; margin:auto;" />
+            </div>
+
+
+
             <div class="gas-price">
                 <div class="display-row">
                     <h3>Gas Price: </h3>
                     <h3 id="info">{{"{:.8f}".format(details.gasPrice)}} Ether</h3>
                 </div>
-                <hr style="width:100%; margin:auto;" />
             </div>
 
         </div>

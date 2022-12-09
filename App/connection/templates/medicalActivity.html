@@ -51,7 +51,7 @@
                       <!-- txh -->
                       
                       <div class="table-data">
-                        <a class="to-details-link" href="{{url_for("medicalActivity", tx=activity.txn_hash, cType=activity.contract)}}">
+                        <a class="to-details-link" href="{{url_for("medicalActivity", tx=activity.txn_hash, cType=activity.contract, tid=activity.tid)}}">
                           {{activity.txn_hash[:6]}}
                         </a>
                       </div>

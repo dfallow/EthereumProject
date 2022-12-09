@@ -21,6 +21,7 @@ class allActivityData:
         age: str,
         _from: str,
         _to: str,
+        tid: int,
     ):
         self.txn_hash = txn_hash
         self.event = event
@@ -29,6 +30,7 @@ class allActivityData:
         self.age = age
         self._from = _from
         self._to = _to
+        self.tid = tid
         
 async def cal_timediff(tx_timestamp):
     
@@ -134,6 +136,8 @@ async def getInfo(w3, checkType, nob):
     data = []
 
     allValidTxh = await getAllValidTxh(w3, checkType, nob)
+    
+    caToTokenId = {}
 
     for txh in allValidTxh:
         transaction = w3.eth.getTransaction(txh)
@@ -185,9 +189,20 @@ async def getInfo(w3, checkType, nob):
             event = pretaEvent[str(history[0])]
         elif cType == "dta":
             event = dtaEvent[str(history[0])]
-
-        # print("REAL EVENT NAME ", event)
-
+            
+        
+        if event != "transferTokenOwnership":
+            if ca not in caToTokenId:
+                caToTokenId[ca] = 1
+            else:
+                caToTokenId[ca] = caToTokenId[ca]+1
+            
+            tokenId = caToTokenId[ca]
+        
+        else:
+            tokenId = history[1]['_tokenId']
+            
+        
         txn_hash = transaction["hash"].hex()
 
         blk = transaction["blockNumber"]
@@ -225,7 +240,8 @@ async def getInfo(w3, checkType, nob):
                 blk,
                 age,
                 _from,
-                _to
+                _to,
+                tokenId
             )
         )
 

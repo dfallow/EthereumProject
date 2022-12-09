@@ -18,6 +18,8 @@ async def medicalActivity():
   txn_hash = request.args.get("tx")
   global cType 
   cType = request.args.get("cType")
+  global tidForTransactionDetails
+  tidForTransactionDetails = request.args.get("tid")
   
   if txn_hash is not "" and txn_hash is not None:
     print(txn_hash)
@@ -28,10 +30,11 @@ async def medicalActivity():
 
 async def txDetails(txn_hash):
   typeOfContract = cType
+  tokenId = tidForTransactionDetails
   transactionDetails = await handleActivityDetails.getTransactionDetails(w3, typeOfContract, txn_hash)
   
   
-  return render_template("transactionDetails.html", details=transactionDetails)
+  return render_template("transactionDetails.html", details=transactionDetails, tid=tokenId)
 
 def fakeLogin():
   
