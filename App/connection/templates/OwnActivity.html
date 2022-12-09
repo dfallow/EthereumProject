@@ -80,7 +80,18 @@
                     {% endif %}
                     <!-- to address -->
                     <div class="table-data">{{activity._to[:6]}}</div>
-                    <div class="table-data">{{activity.age}} ago</div>
+
+                    <!-- <a class="to-details-link" href="{{url_for("medicalActivity", tx=activity.txn_hash, cType=activity.contract, tid=activity.tid)}}">
+                      {{activity.txn_hash[:6]}}
+                    </a> -->
+                    <div class="table-data">
+                      <a class="to-details-link" href="{{url_for("ownActivity", 
+                        tx=activity.txn_hash, 
+                        cType=activity.cType, 
+                        tid=activity.tid)}}">
+                        {{activity.age}} ago
+                      </a>
+                    </div>
                   </div>
               {% endfor %}
 

@@ -207,14 +207,6 @@ h3 {
   align-items: center;
 }
 
-/* .table-row:last-child {
-  border-radius: 0 0 12px 12px;
-} */
-
-/* .table-row:nth-of-type(odd) {
-  background: #dcdada;
-} */
-
 /* .table-data, */
 .header__item {
   flex: 1 1 20%;
@@ -308,7 +300,7 @@ form {
 }
 
 .to-details-link {
-  color: #575757;
+  color: #7cc2ea;
   text-decoration: none;
 }
 

@@ -169,6 +169,15 @@ async def ownActivity():
   w3.eth.default_account = user_acc  
   user_avatar = userAvatar
   
+  txn_hash = request.args.get("tx")
+  global cType 
+  cType = request.args.get("cType")
+  global tidForTransactionDetails
+  tidForTransactionDetails = request.args.get("tid")
+  
+  if txn_hash is not "" and txn_hash is not None:
+    return redirect(f'/tx/{txn_hash}')
+  
   nob = numOfToken
   
   userActivity = await handleSingleUserActivity.getSingleUserActivity(w3)

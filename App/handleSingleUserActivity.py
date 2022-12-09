@@ -16,6 +16,8 @@ class userActivity:
         _to: str,
         age: str,
         icon: str,
+        cType: str,
+        txn_hash: str
     ):
         self.event = event,
         self.ca = ca
@@ -24,6 +26,8 @@ class userActivity:
         self._to = _to
         self.age = age
         self.icon = icon
+        self.cType = cType
+        self.txn_hash = txn_hash
         
 async def cal_timediff(tx_timestamp):
     
@@ -190,7 +194,9 @@ async def getSingleUserActivity(w3):
                     "NullAddress",
                     transaction["from"],
                     age,
-                    tokenImg
+                    tokenImg,
+                    cType,
+                    txh
                 ))
             else:
                 tid = history[1]['_tokenId']
@@ -201,7 +207,9 @@ async def getSingleUserActivity(w3):
                     transaction["from"],
                     history[1]['_to'],
                     age,
-                    tokenImg
+                    tokenImg,
+                    cType,
+                    txh
                 ))
         elif event == "Transfer" and history[1]['_to'] == w3.eth.default_account:
             tid = history[1]['_tokenId']
@@ -212,7 +220,9 @@ async def getSingleUserActivity(w3):
                     transaction["from"],
                     history[1]['_to'],
                     age,
-                    tokenImg
+                    tokenImg,
+                    cType,
+                    txh
                 ))
     
     return activityData
