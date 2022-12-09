@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f6f6f6;
+    color: #3e444a
+}
+
+.page-title, .details {
+    color: #3e444a;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 2%;
+}
+  
+.page-title .title {
+    font-size: 25px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.details .container{
+    border: 1px solid #e7eaf3;
+    border-radius: 0.5rem;
+    width: 100%;
+    min-height: 650px;
+    background-color: #FFF;
+    font-size: 12px;
+    font-weight: lighter;
+    color: #1e2022;
+}
+
+.details-overview,
+ .transaction-action,
+  .contract-info,
+   .gas-price{
+    padding-top: 2%;
+}
+
+.details-overview *,
+.transaction-action *,
+.contract-info *,
+.gas-price *{
+    margin-bottom: 2%;
+}
+
+.display-row {
+    display: flex;
+    margin: 0;
+    align-items: stretch;
+}
+
+.display-row #info{
+    position:absolute;
+    left: 35%
+}
+
+.details-overview, 
+.transaction-action,
+.contract-info,
+.gas-price {
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+
+
+/* .details-overview, .transaction-info {
+    color: #f2f2f2;
+    padding-left: 3%;
+    padding-bottom: 3%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.event-log{
+    color: #f2f2f2;
+    padding-left: 3%;
+    padding-bottom: 3%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.event-log .from_to {
+    margin-top: 10px;
+    padding-left: 5%;
+} */

@@ -26,9 +26,9 @@ async def medicalActivity():
   
   return render_template("medicalActivity.html", Activity=allActivity)
 
-def txDetails(txn_hash):
+async def txDetails(txn_hash):
   typeOfContract = cType
-  transactionDetails = handleActivityDetails.getTransactionDetails(w3, typeOfContract, txn_hash)
+  transactionDetails = await handleActivityDetails.getTransactionDetails(w3, typeOfContract, txn_hash)
   
   
   return render_template("transactionDetails.html", details=transactionDetails)
