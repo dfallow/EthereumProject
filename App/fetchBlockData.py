@@ -181,7 +181,8 @@ async def ownNFTDetails(contract_address, tid):
                          prescriptionContractAddress=prescriptioncontractaddress,
                          metaDataUrl=metadataurl,
                          metadata=metadata,
-                         Activity=itemHistory)
+                         Activity=itemHistory,
+                         user_address=w3.eth.default_account)
   
 async def ownActivity():
   # get the login user info
