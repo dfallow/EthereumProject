@@ -22,6 +22,7 @@ class allActivityData:
         _from: str,
         _to: str,
         tid: int,
+        ca: str,
     ):
         self.txn_hash = txn_hash
         self.event = event
@@ -31,6 +32,7 @@ class allActivityData:
         self._from = _from
         self._to = _to
         self.tid = tid
+        self.ca = ca
         
 async def cal_timediff(tx_timestamp):
     
@@ -241,7 +243,8 @@ async def getInfo(w3, checkType, nob):
                 age,
                 _from,
                 _to,
-                tokenId
+                tokenId,
+                ca
             )
         )
 

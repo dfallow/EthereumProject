@@ -106,6 +106,7 @@ address-icon{
 }
 
 .nft-container {
+  overflow: hidden;
   position: relative;
   text-align: center;
   /* padding: 10px; */
@@ -122,6 +123,14 @@ address-icon{
   border-radius: 15px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+
+.nft-img img{
+  transition: transform .5s ease;
+}
+
+.nft-img img:hover{
+  transform: scale(1.3);
 }
 
 .nft-title{
@@ -152,8 +161,6 @@ h3 {
   display: flex;
   justify-content: center;
 }
-.detail-img {
-}
 
 .login-title {
     padding-top: 10%;
@@ -176,6 +183,20 @@ h3 {
     text-align: center;
     padding: 10px;
     display: block;
+    border: none;
+}
+
+.account img{
+  transition: 0.5s;
+}
+
+.account img:hover{
+  width: 300px;
+  height: 300px;
+  box-shadow: 0 0 5px #e4e4e4,
+                0 0 25px #e4e4e4,
+                0 0 50px #e4e4e4,
+                0 0 50px #e4e4e4;
 }
 
 
@@ -235,11 +256,6 @@ h3 {
   display: inline-flex
 }
 
-.token-title{
-
-  /* display: inline-block; */
-}
-
 .table-data-hover {
   display: none;
   position: absolute;
@@ -257,10 +273,6 @@ h3 {
 
 form {
   z-index: 1;
-}
-
-.header__item {
-  /* text-transform: uppercase; */
 }
 
 .filter__link {
@@ -300,11 +312,12 @@ form {
 }
 
 .to-details-link {
-  color: #7cc2ea;
+  color: #6aa7ca;
   text-decoration: none;
 }
 
 .to-details-link:hover{
+  color: #5d92b0;
   text-decoration: underline;
 }
 

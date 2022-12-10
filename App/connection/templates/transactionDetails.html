@@ -73,7 +73,13 @@
 
                 <div class="display-row">
                     <h3>Interacted with (To): </h3>
-                    <h3 id="info">Contract {{details._to}}</h3>
+                    
+                    <h3 id="info">
+                        <a class="to-details-link" href="{{url_for("txDetails", 
+                            txn_hash=details.txn_hash, caForContractAddressDetails=details._to)}}">
+                            Contract {{details._to}}
+                        </a>
+                    </h3>
                 </div>
                 
                 <hr style="width:100%; margin:auto;" />
@@ -99,7 +105,6 @@
 
                 <hr style="width:100%; margin:auto;" />
             </div>
-
 
 
             <div class="gas-price">

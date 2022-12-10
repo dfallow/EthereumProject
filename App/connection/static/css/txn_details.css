@@ -68,3 +68,13 @@ body {
     margin-left: 3%;
     margin-right: 3%;
 }
+
+.to-details-link {
+    color: #7cc2ea;
+    text-decoration: none;
+}
+  
+.to-details-link:hover{
+    color: #5d92b0;
+    text-decoration: underline;
+}
