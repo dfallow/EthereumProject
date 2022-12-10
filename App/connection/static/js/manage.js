@@ -53,7 +53,7 @@ async function uploadMultipleFiles() {
         let request = new XMLHttpRequest();
         request.open("POST", `/ProcessFilesInfo/${JSON.stringify(allData)}`);
         request.send();
-        //window.history.back();
+        window.history.back();
       }
     };
   }
