@@ -1,5 +1,7 @@
 
-# EthereumProject
+# Secure Data Storage System On Ethereum
+For detailed information about the project, please refer to [project wiki](https://github.com/dfallow/EthereumProject/wiki).
+
 
 ## Project setup
 
