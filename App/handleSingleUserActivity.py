@@ -7,32 +7,27 @@ import contractDetailsPatientToken as pta  # patient token abi
 import contractDetailsPrescriptionToken as preta  # prescription token abi
 import contractDetailsDataToken as dta  # data token abi
 
-# loop through the blocks
-# get all valid ca which means "to"
-# check input (abi bytecode) to determine which contract
-# then check event log to see what's the action
-
-class allActivityData:
+class userActivity:
     def __init__(
-        self, txn_hash: str,
-        event: str,
-        contract: str,
-        blkNum: int,
-        age: str,
+        self, event: str, 
+        ca: str,
+        tid: int,
         _from: str,
         _to: str,
-        tid: int,
-        ca: str,
+        age: str,
+        icon: str,
+        cType: str,
+        txn_hash: str
     ):
-        self.txn_hash = txn_hash
-        self.event = event
-        self.contract = contract
-        self.blkNum = blkNum
-        self.age = age
+        self.event = event,
+        self.ca = ca
+        self.tid = tid
         self._from = _from
         self._to = _to
-        self.tid = tid
-        self.ca = ca
+        self.age = age
+        self.icon = icon
+        self.cType = cType
+        self.txn_hash = txn_hash
         
 async def cal_timediff(tx_timestamp):
     
@@ -85,7 +80,6 @@ async def checkContractAddressValidation(w3, ca, bc_type):
 
     return True if checkNumOfToken[bc_type] > 0 else False
 
-
 async def checkTypeOfBytecode(bc):
     the_type = ""
 
@@ -99,7 +93,6 @@ async def checkTypeOfBytecode(bc):
         the_type = "dta"
 
     return the_type
-
 
 async def contractAddressToTypeOfSmartContract(w3, nob):
     hm = {}
@@ -126,26 +119,28 @@ async def contractAddressToTypeOfSmartContract(w3, nob):
 
     return hm
 
-
 async def getAllValidTxh(w3, checkType, nob):
     return [w3.eth.get_block(n)["transactions"][0].hex()
             for n in range(1, nob+1)
             if w3.eth.get_transaction(w3.eth.get_block(n)["transactions"][0].hex())["to"] in checkType]
 
-
-async def getInfo(w3, checkType, nob):
-
-    data = []
-
-    allValidTxh = await getAllValidTxh(w3, checkType, nob)
+async def getSingleUserActivity(w3):
+    
+    activityData = []
+    
+    numOfBLK = w3.eth.block_number
+    
+    caToType = await contractAddressToTypeOfSmartContract(w3, numOfBLK)
+    
+    allValidTxh = await getAllValidTxh(w3, caToType, numOfBLK)
     
     caToTokenId = {}
-
+    
     for txh in allValidTxh:
         transaction = w3.eth.getTransaction(txh)
         ca = transaction["to"]
         # print("CONTRACT ADDRESS ", ca)
-        cType = checkType[transaction["to"]]
+        cType = caToType[transaction["to"]]
         # print("THE TYPE OF CONTRACT ", cType)
 
         matchContract = {
@@ -154,114 +149,81 @@ async def getInfo(w3, checkType, nob):
             'preta': w3.eth.contract(address=ca, abi=preta.abi),
             'dta':  w3.eth.contract(address=ca, abi=dta.abi)
         }
+        
+        matchIcon = {
+            'mta': "https://ipfs.io/ipfs/QmTLptGFCZymukEJkjLwoZZfyXS34CYE4dffscW9ZZbm1j",
+            'pta': "https://ipfs.io/ipfs/Qmbhc2oV2m31EaSegooRBX9iF2XcfKjJLh6dfUkwQXsdpP",
+            'preta': "https://ipfs.io/ipfs/QmWUGLPniCt7AXLS8B68MCTY4BBaE6cnMtwUeXwjX2azLY",
+            'dta':  "https://ipfs.io/ipfs/QmUxPgmvw99jekV1uLrCjEBQcTQg3VQb9bgg5T4QMdBgGC",
+        }
 
         # matching the correct type of contract and its abi
         contract = matchContract[cType]
-
         history = contract.decode_function_input(transaction.input)
-
-        # print(cType, str(history[0]), str(history[1]))
-
-        event = ""
-        _from = ""
-        _to = ""
-
-        mtaEvent = {
-            '<Function mint(string)>': "Mint",
-            '<Function transferTokenOwnership(address,uint256)>': 'transferTokenOwnership',
-        }
-
-        ptaEvent = {
-            '<Function addNewPatient(address,address,address)>': 'addNewPatient'
-        }
-
-        pretaEvent = {
-            '<Function mintPrescriptionToken(string,uint256)>': 'mintPrescriptionToken'
-        }
-
-        dtaEvent = {
-            "<Function mintDataToken(string,uint256,uint256)>": 'mintDataToken',
-        }
-
-        if cType == "mta":
-            event = mtaEvent[str(history[0])]
-        elif cType == "pta":
-            event = ptaEvent[str(history[0])]
-        elif cType == "preta":
-            event = pretaEvent[str(history[0])]
-        elif cType == "dta":
-            event = dtaEvent[str(history[0])]
-            
         
-        if event != "transferTokenOwnership":
+        tokenImg = matchIcon[cType]
+        
+        blk = transaction["blockNumber"]
+        tx_timestamp = datetime.fromtimestamp(w3.eth.get_block(blk).timestamp)
+        age = await cal_timediff(tx_timestamp)
+        
+        Event = {
+            '<Function mint(string)>': "Minted",
+            '<Function transferTokenOwnership(address,uint256)>': 'Transfer',
+            '<Function addNewPatient(address,address,address)>': 'Minted',
+            '<Function mintPrescriptionToken(string,uint256)>': 'Minted',
+            '<Function mintDataToken(string,uint256,uint256)>': 'Minted',
+        }
+        
+        event = Event[str(history[0])]
+        
+        
+        if event == "Minted":
             if ca not in caToTokenId:
                 caToTokenId[ca] = 1
             else:
                 caToTokenId[ca] = caToTokenId[ca]+1
             
-            tokenId = caToTokenId[ca]
-        
-        else:
-            tokenId = history[1]['_tokenId']
-            
-        
-        txn_hash = transaction["hash"].hex()
-
-        blk = transaction["blockNumber"]
-        
-        tx_timestamp = datetime.fromtimestamp(w3.eth.get_block(blk).timestamp)
-        
-        age = await cal_timediff(tx_timestamp)
-
-        _fromAdd = {
-            'Mint': "NullAddress",
-            'addNewPatient': "NullAddress",
-            'mintPrescriptionToken': "NullAddress",
-            'mintDataToken': "NullAddress",
-            'transferTokenOwnership': transaction["from"]
-        }
-
-        _toAdd = {
-            'Mint': transaction["from"],
-            'addNewPatient': transaction["from"],
-            'mintPrescriptionToken': transaction["from"],
-            'mintDataToken': transaction["from"],
-            'transferTokenOwnership': history[1]['_to'] if event == "transferTokenOwnership" else ""
-        }
-
-        _from = _fromAdd[event]
-        _to = _toAdd[event]
-
-        # print("FROM AND TO", _from, _to)
-
-        data.append(
-            allActivityData(
-                txn_hash,
-                event,
-                cType,
-                blk,
-                age,
-                _from,
-                _to,
-                tokenId,
-                ca
-            )
-        )
-
-    return data
-
-
-async def getMedicalActivity(w3):
-
-    # initialise a list to return it to html
-    allMedicalActivity = []
-
-    numOfBLK = w3.eth.block_number
-
-    # get to know the type of the smart contract using by this contract address -> hash table
-    caToType = await contractAddressToTypeOfSmartContract(w3, numOfBLK)
-
-    # check all the blocks event with a valid contract address
-    allMedicalActivity += await getInfo(w3, caToType, numOfBLK)
-
-    return allMedicalActivity
+        if transaction["from"] == w3.eth.default_account:
+            if event == "Minted":    
+                tid = caToTokenId[ca]
+                activityData.append(userActivity(
+                    event,
+                    ca,
+                    tid,
+                    "NullAddress",
+                    transaction["from"],
+                    age,
+                    tokenImg,
+                    cType,
+                    txh
+                ))
+            else:
+                tid = history[1]['_tokenId']
+                activityData.append(userActivity(
+                    event,
+                    ca,
+                    tid,
+                    transaction["from"],
+                    history[1]['_to'],
+                    age,
+                    tokenImg,
+                    cType,
+                    txh
+                ))
+        elif event == "Transfer" and history[1]['_to'] == w3.eth.default_account:
+            tid = history[1]['_tokenId']
+            activityData.append(userActivity(
+                    event,
+                    ca,
+                    tid,
+                    transaction["from"],
+                    history[1]['_to'],
+                    age,
+                    tokenImg,
+                    cType,
+                    txh
+                ))
+    
+    return activityData
+    

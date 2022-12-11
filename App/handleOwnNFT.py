@@ -203,10 +203,6 @@ async def ownPerscription(w3, prescriptionContractAddress):
                     precaId=pre+1,
                     file_ipfs=md_url,
                     owner=owner,
-                    # machineId=prescriptionMetaData["machineTokenId"] if prescriptionMetaData is not None else "try later",
-                    # patient=prescriptionMetaData["patient"]if prescriptionMetaData is not None else "try later",
-                    # doctor=prescriptionMetaData["doctor"]if prescriptionMetaData is not None else "try later",
-                    # file_ipfs=prescriptionMetaData["image"]if prescriptionMetaData is not None else "try later",
                     icon="https://ipfs.io/ipfs/QmWUGLPniCt7AXLS8B68MCTY4BBaE6cnMtwUeXwjX2azLY"
                 ))
 

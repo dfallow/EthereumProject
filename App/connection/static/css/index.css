@@ -1,4 +1,34 @@
 .button-container {
   display: flex;
   gap: 48px;
+  margin-top: 30px;
+}
+
+.button-container button {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 250px;
+  height: 200px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  display: inline-block;
+  text-align: center;
+  margin: 5px;
+  font-weight: bold;
+  text-decoration: none;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -o-border-radius: 7px;
+  border-radius: 7px;
+  cursor: pointer;
+  outline: none;
+  background-color:#343a40;
+  color: #f6f6f6;
+  box-shadow: 0 .5em rgb(30, 29, 29); 
+}
+
+.button-container button:active{
+	box-shadow: none;
+	position: relative;
+	top: .1em;
 }

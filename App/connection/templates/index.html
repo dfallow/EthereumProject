@@ -11,6 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
@@ -21,30 +22,42 @@
     />
   </head>
   <body>
+
+    <div class="app-title">
+      <h1>Secure Data Storage System
+        <span style = "display: block; padding:2%">On Ethereum</span>
+      </h1>
+    </div>
+    
     <div class="container">
-      <h1 class="title">Blockchain app</h1>
+      
       <div class="button-container">
         <a href="{{ url_for('registerMachine') }}"
-          ><button class="btn register-button">Register a machine</button></a
+          ><button class="btn register-button">Register a machine (For Manufacturer)</button></a
         >
         <a href="{{ url_for('deployPatientData') }}"
-          ><button class="btn patient-button">Register a patient</button></a
+          ><button class="btn patient-button">Patient registration</button></a
         >
+        <a href="{{ url_for('medicalActivity') }}">
+          <button class="btn activity-button">Explore The Blockchain</button>
+        </a>
+      </div>
+
+      <div class="button-container">
         <a href="{{ url_for('issuePrescription') }}">
-          <button class="btn prescription-button">Issue a prescription</button>
+          <button class="btn prescription-button">Issue Prescriptions</button>
         </a>
         <a href="{{ url_for('manageData') }}">
           <button class="btn manage-button">Store machine data</button>
-        </a>
-        <a href="{{ url_for('medicalActivity') }}">
-          <button class="btn activity-button">View transactions</button>
         </a>
         <a href="{{ url_for('fakeLogin') }}">
           <button class="btn ownNFT-button">Check Your NFTs</button>
         </a>
       </div>
-      <h1 class="contract-text"></h1>
     </div>
     <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+
+    <footer style=" position: absolute; bottom: 0; left: 0; width: 100%; text-align: center;">©COPYRIGHT 2022 Ethereum Project</footer>
   </body>
 </html>

@@ -1,5 +1,6 @@
 from web3 import Web3
 from urllib.request import urlopen
+from datetime import datetime
 
 import contractDetailsMachineToken as mta  # machine token abi
 import contractDetailsPatientToken as pta  # patient token abi
@@ -15,8 +16,10 @@ class txnDetails:
         _to: str,
         e_from: str,
         e_to: str,
-        gasPrice: int,
+        gasPrice: float,
         eventLog: str,
+        age_short: str,
+        age_long: str,
     ):
         self.txn_hash = txn_hash
         self.blkNum = blkNum
@@ -25,10 +28,42 @@ class txnDetails:
         self.e_from = e_from
         self.e_to = e_to
         self.gasPrice = gasPrice
-        self.eventLog = eventLog,
+        self.eventLog = eventLog
+        self.age_short = age_short
+        self.age_long = age_long
+        
+        
+async def cal_timediff(tx_timestamp):
+    
+    current_timestamp = datetime.fromtimestamp(datetime.timestamp(datetime.now()))
+    time_diff = current_timestamp - tx_timestamp
+            
+    # days
+    if time_diff.days > 0:
+        if time_diff.days > 1:
+            age = str(time_diff.days) + " days"
+        else:
+            age = str(time_diff.days) + " day"
+    # hours
+    elif time_diff.seconds/(60*60) >= 1:
+        if time_diff.seconds/(60*60) > 1:
+            age = str(int(time_diff.seconds/(60*60))) + " hours"
+        else:
+            age = str(int(time_diff.seconds/(60*60))) + " hour"
+    # minutes
+    elif time_diff.seconds/60 >= 1 and time_diff.seconds/60 <= 59:
+        if time_diff.seconds/60 > 1:
+            age = str(int(time_diff.seconds/60)) + " minutes"
+        else:
+            age = str(int(time_diff.seconds/60)) + " minute" 
+    # seconds
+    else:
+        age = str(time_diff.seconds) + " seconds"
+    
+    return age
 
 
-def getTransactionDetails(w3, cType, txn_hash):
+async def getTransactionDetails(w3, cType, txn_hash):
 
     details = []
 
@@ -42,9 +77,13 @@ def getTransactionDetails(w3, cType, txn_hash):
 
     blk = txn["blockNumber"]
     print(blk)
+    
+    tx_timestamp = datetime.fromtimestamp(w3.eth.get_block(blk).timestamp)
+        
+    age = await cal_timediff(tx_timestamp)
 
     gasPrice = txn["gasPrice"] if txn["gasPrice"] is not None else 0
-    print(gasPrice)
+    gasPrice = float(w3.fromWei(gasPrice, 'ether'))
 
     matchContract = {
         'mta': w3.eth.contract(address=ca, abi=mta.abi),
@@ -90,6 +129,8 @@ def getTransactionDetails(w3, cType, txn_hash):
         e_to,
         gasPrice,
         eventLog,
+        age,
+        str(tx_timestamp)
     )
 
     return details

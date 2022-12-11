@@ -11,7 +11,7 @@ import deployMachineData
 import deployPrescription
 import deployPatient
 import transferOwnership
-from fetchBlockData import medicalActivity, txDetails, ownNFTs, ownNFTDetails, fakeLogin
+from fetchBlockData import medicalActivity, txDetails, ownNFTs, ownNFTDetails, fakeLogin, ownActivity, caDetails
 
 from createGraphs import execute
 
@@ -24,7 +24,9 @@ app = Flask(__name__)
 app.add_url_rule('/login', methods=["GET", "POST"], view_func=fakeLogin)
 app.add_url_rule('/medicalActivity', methods=["GET", "POST"], view_func=medicalActivity)
 app.add_url_rule('/tx/<string:txn_hash>', methods=["GET", "POST"], view_func=txDetails)
+app.add_url_rule('/ca/<string:contract_address>', methods=["GET", "POST"], view_func=caDetails)
 app.add_url_rule('/ownnft', methods=["GET", "POST"], view_func=ownNFTs)
+app.add_url_rule('/ownnft/activity', methods=["GET", "POST"], view_func=ownActivity)
 app.add_url_rule('/<string:contract_address>/<string:tid>',  methods=["GET", "POST"], view_func=ownNFTDetails)
 
 

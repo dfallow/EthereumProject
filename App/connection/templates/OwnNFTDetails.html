@@ -11,58 +11,210 @@
       href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link
+    <!-- <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
-    />
+    /> -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"rel="stylesheet"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/own.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/activity.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nft_details.css') }}"/>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/activity.css') }}"/> -->
     <title>Token Details</title>
   </head>
 
   <body>
-    <div class="page-title">
-      <h3>Token Details</h3>
-      <img
-        class="detail-img"
-        src="{{icon}}"
-        width="300"
-        height="300"
-        ,
-        style="text-align: center"
-      />
-    </div>
 
-    <div class="machine-session">
-      <h3>Contract Address {{contractAddress}}</h3>
+    <div class="info-container">
 
-      {% if typeOfToken == "machine" %}
-      <h3>Token ID {{tokenId}}</h3>
-      <h3>Contract Owner {{contractOwner}}</h3>
-      <h3>Token Owner {{tokenOwner}}</h3>
-      {% endif %} {% if typeOfToken == "patient" %}
-      <h3>Patient Address {{tokenId}}</h3>
-      <h3>Prescription Token {{prescriptionContractAddress}}</h3>
-      <h3>Data Token {{dataContractAddress}}</h3>
-      {% endif %} {% if typeOfToken == "prescription" %}
-      <h3>Token ID {{tokenId}}</h3>
-      <h3>Owner(Doctor) {{contractOwner}}</h3>
-      <a href="{{metaDataUrl}}">
-        <h3>Link to MetaData</h3>
-      </a>
-      {% endif %} {% if typeOfToken == "data" %}
-      <h3>Token ID {{tokenId}}</h3>
-      <h3>Owner(Patient) {{contractOwner}}</h3>
-      <a href="{{metaDataUrl}}">
-        <h3>Link to MetaData</h3>
-      </a>
-      <div class="button-container">
-        <a href="{{ url_for('displayData', metaDataUrl=metaDataUrl[21:]) }}">
-          <button class="btn" id="generate-button">Generate graphs</button>
-        </a>
+      <div class="nft-container">
+        <div class="nft-img">
+          <img src="{{icon}}" width="680" height="680"/>
+        </div>
       </div>
-      {% endif %}
+
+      <div class="nft-details">
+
+        {% if typeOfToken == "patient" %} 
+          <h3 id="contract-address-title">{{contractAddress[:6]}} PAT.{{tokenId[:6]}}</h3>
+          <h3>Registered by <span style="color: #339af0;">{{user_address}}</span></h3>
+        {% elif typeOfToken == "prescription" %}
+          <h3 id="contract-address-title">{{contractAddress[:6]}} #{{tokenId}}</h3>
+          <h3>Owned by <span style="color: #339af0;">{{contractOwner}}</span></h3>
+        {% elif typeOfToken == "machine"%}
+          <h3 id="contract-address-title">{{contractAddress[:6]}} #{{tokenId}}</h3>
+          <h3>Owned by <span style="color: #339af0;">{{tokenOwner}}</span></h3>
+        {% elif typeOfToken == "data"%}
+        <h3 id="contract-address-title">{{contractAddress[:6]}} #{{tokenId}}</h3>
+        <h3>Owned by <span style="color: #339af0;">{{contractOwner}}</span></h3>
+        {% endif %}
+
+        <div class="details-container">
+
+          <div class="details-title">
+            <h3>Details</h3>
+          </div>
+
+          <div class="details-data">
+
+              {% if typeOfToken == "machine" %}
+
+                <div class="data">
+                  <h3 style="float: left;">Contract Address </h3>
+                  <h3 style="float: right; color: #339af0;">{{contractAddress}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Token ID</h3>
+                  <h3 style="float: right;">{{tokenId}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Contract Owner</h3>
+                  <h3 style="float: right;">{{contractOwner}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Token Standard</h3>
+                  <h3 style="float: right;">ERC-721</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Chain</h3>
+                  <h3 style="float: right;">Ethereum</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Last Updated</h3>
+                  <h3 style="float: right;">{{Activity[-1].age}} ago</h3>
+                </div>
+
+              {% endif %} 
+              
+              {% if typeOfToken == "patient" %}
+
+                <div class="data">
+                  <h3 style="float: left;">Contract Address </h3>
+                  <h3 style="float: right; color: #339af0;">{{contractAddress}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Patient Address</h3>
+                  <h3 style="float: right;">{{tokenId}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Prescription Token</h3>
+                  <h3 style="float: right;">{{prescriptionContractAddress}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Data Token</h3>
+                  <h3 style="float: right;">{{dataContractAddress}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Token Standard</h3>
+                  <h3 style="float: right;">ERC-721</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Chain</h3>
+                  <h3 style="float: right;">Ethereum</h3>
+                </div>
+                
+              {% endif %} 
+
+              {% if typeOfToken == "prescription" %}
+
+                <div class="data">
+                  <h3 style="float: left;">Contract Address </h3>
+                  <h3 style="float: right; color: #339af0;">{{contractAddress}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Token ID</h3>
+                  <h3 style="float: right;">{{tokenId}}</h3>
+                </div>
+
+
+                <div class="data">
+                  <h3 style="float: left;">Contract Owner</h3>
+                  <h3 style="float: right;">{{contractOwner}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">MetaData</h3>
+                  <a href="{{metaDataUrl}}">
+                    <h3 style="float: right;">View MetaData</h3>
+                  </a>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Token Standard</h3>
+                  <h3 style="float: right;">ERC-721</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Chain</h3>
+                  <h3 style="float: right;">Ethereum</h3>
+                </div>
+                  
+              {% endif %}
+
+
+              {% if typeOfToken == "data" %}
+                <div class="data">
+                  <h3 style="float: left;">Contract Address </h3>
+                  <h3 style="float: right; color: #339af0;">{{contractAddress}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Token ID</h3>
+                  <h3 style="float: right;">{{tokenId}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Contract Owner</h3>
+                  <h3 style="float: right;">{{contractOwner}}</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">MetaData</h3>
+                  <a href="{{metaDataUrl}}">
+                    <h3 style="float: right;">View MetaData</h3>
+                  </a>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Token Standard</h3>
+                  <h3 style="float: right;">ERC-721</h3>
+                </div>
+
+                <div class="data">
+                  <h3 style="float: left;">Chain</h3>
+                  <h3 style="float: right;">Ethereum</h3>
+                </div>
+
+                <div class="button-container">
+                  <a href="{{ url_for('displayData', metaDataUrl=metaDataUrl[21:]) }}">
+                    <button class="btn" id="generate-button">View Medical Data</button>
+                  </a>
+                </div>
+              {% endif %}
+
+
+
+
+
+          </div>
+
+        </div>
+
+        
+        
+      </div>
+
+      
+
     </div>
 
     {% if typeOfToken != "patient" %}
@@ -71,6 +223,10 @@
     <div class="items_activity">
 
         <div class="table-container">
+
+          <div class="item-activity-title">
+            <h3>Item Activity</h3>
+          </div>
 
             <div class="table">
               <div class="table-header">
@@ -94,9 +250,9 @@
                 {% for activity in Activity[::-1] %}
                 
                     <div class="table-row">
-                      <!-- event  -->
+                      
                       <div class="table-data">{{activity.event}}</div>
-                      <!-- from address-->
+                      
                       {% if activity._from == "NullAddress" or  activity._from == "" %}
                           <div class="table-data">{{activity._from}}</div>
                       {% else %}
@@ -104,11 +260,11 @@
                           <span class="table-data-hover">{{activity._from}}</span>
                         </div>
                       {% endif %}
-                      <!-- to address -->
+                      
                       <div class="table-data">{{activity._to[:6]}}
                         <span class="table-data-hover">{{activity._to}}</span>
                       </div>
-                      <!-- Age -->
+                      
                       <div class="table-data">{{activity.age}} ago</div>
                     </div>
                 {% endfor %}
@@ -121,7 +277,6 @@
     </div>
 
     {% endif %}
-
 
   </body>
 </html>

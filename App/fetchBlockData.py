@@ -5,6 +5,7 @@ import handleActivity
 import handleActivityDetails
 import handleOwnNFT
 import handleSingleTokenActivity
+import handleSingleUserActivity
 import handleMetaData
 
 w3 = Web3(Web3.HTTPProvider("HTTP://127.0.0.1:7545"))
@@ -17,6 +18,8 @@ async def medicalActivity():
   txn_hash = request.args.get("tx")
   global cType 
   cType = request.args.get("cType")
+  global tidForTransactionDetails
+  tidForTransactionDetails = request.args.get("tid")
   
   if txn_hash is not "" and txn_hash is not None:
     print(txn_hash)
@@ -25,12 +28,37 @@ async def medicalActivity():
   
   return render_template("medicalActivity.html", Activity=allActivity)
 
-def txDetails(txn_hash):
+async def txDetails(txn_hash):
+  # get these info whe user click the txn_hash in all activity page
   typeOfContract = cType
-  transactionDetails = handleActivityDetails.getTransactionDetails(w3, typeOfContract, txn_hash)
+  tokenId = tidForTransactionDetails
+  transactionDetails = await handleActivityDetails.getTransactionDetails(w3, typeOfContract, txn_hash)
+  
+  caForContractAddressDetails = request.args.get("caForContractAddressDetails")
+  if caForContractAddressDetails is not None: 
+    return redirect(f'/ca/{caForContractAddressDetails}')
   
   
-  return render_template("transactionDetails.html", details=transactionDetails)
+  return render_template("transactionDetails.html", details=transactionDetails, tid=tokenId)
+
+async def caDetails(contract_address):
+  
+  allActivity = await handleActivity.getMedicalActivity(w3)
+  allActivity = list(filter(lambda x: x.ca == contract_address, allActivity))
+  
+  txn_hash = request.args.get("tx")
+  global cType 
+  cType = request.args.get("cType")
+  global tidForTransactionDetails
+  tidForTransactionDetails = request.args.get("tid")
+  
+  # only navigate to transaction details page if user click the single activity
+  if txn_hash is not "" and txn_hash is not None:
+    return redirect(f'/tx/{txn_hash}')
+  
+  return render_template("contractAddressDetails.html", 
+                         contractAddress=contract_address,
+                         Activity=allActivity)
 
 def fakeLogin():
   
@@ -73,14 +101,19 @@ def fakeLogin():
 
 async def ownNFTs():
   
-  user_acc = currentUserAddress
-  w3.eth.default_account = user_acc
-  
-  user_avatar = userAvatar
-  
-  identity = userIdentity
+  try:
+    user_acc = currentUserAddress
+    w3.eth.default_account = user_acc
+    user_avatar = userAvatar
+  except:
+    return redirect('/login')
+  else:
+    user_acc = currentUserAddress
+    w3.eth.default_account = user_acc
+    user_avatar = userAvatar
   
   md, pd, pred, dd = await handleOwnNFT.getOwnNFTs(w3)
+  nob = len(md)+len(pd)+len(pred)+len(dd)
   
   # essential for access details page
   contractAddress = request.args.get("ca")
@@ -101,6 +134,12 @@ async def ownNFTs():
   prescriptionContractAddress = request.args.get("preca")
   global metaDataUrl
   metaDataUrl = request.args.get("md_url")
+  global numOfToken
+  numOfToken = request.args.get("tokenNum")
+  
+  if numOfToken:
+    print("number", numOfToken)
+    return redirect('/ownnft/activity')
   
   if contractAddress:
     return redirect(f'/{contractAddress}/{tokenId}')
@@ -110,10 +149,13 @@ async def ownNFTs():
                          prescription=pred, 
                          data=dd,
                          avatar=user_avatar,
-                         user=w3.eth.default_account)
+                         user=w3.eth.default_account,
+                         nob=nob)
 
 async def ownNFTDetails(contract_address, tid):
   
+  # get all this information from html,
+  # when the user click the single nft
   typeoftoken = "" if typeOfToken is None else typeOfToken
   Icon = "" if icon is None else icon
   contractowner = "" if contractOwner is None else contractOwner
@@ -124,9 +166,6 @@ async def ownNFTDetails(contract_address, tid):
   metadata = [] # for the graph
   itemHistory = [] 
   
-  metadata = []
-  
-  # if typeOfToken in [""]
   
   if typeOfToken is not None and typeOfToken in ["machine", "prescription", "data"]:
     itemHistory = await handleSingleTokenActivity.getSingleTokenActivity(w3,contract_address, tid, typeOfToken)
@@ -142,12 +181,35 @@ async def ownNFTDetails(contract_address, tid):
                          prescriptionContractAddress=prescriptioncontractaddress,
                          metaDataUrl=metadataurl,
                          metadata=metadata,
-                         Activity=itemHistory)
+                         Activity=itemHistory,
+                         user_address=w3.eth.default_account)
   
-
-
-# if __name__ == "__main__":
-#   app2.run(debug=True)
-#   app2.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 4444)))
+async def ownActivity():
+  # get the login user info
+  user_acc = currentUserAddress
+  w3.eth.default_account = user_acc  
+  user_avatar = userAvatar
   
-#  python3.10 -m flask --app app2 --debug run --host 0.0.0.0 --port 4444
+  # using the txn hash to view transaction details
+  txn_hash = request.args.get("tx")
+  global cType 
+  cType = request.args.get("cType")
+  global tidForTransactionDetails
+  tidForTransactionDetails = request.args.get("tid")
+  
+  # only navigate to transaction details page if user click the single activity
+  if txn_hash is not "" and txn_hash is not None:
+    return redirect(f'/tx/{txn_hash}')
+  
+  # num of token the current address (user) owns
+  nob = numOfToken
+  
+  # find all activity related to the current address (user)
+  userActivity = await handleSingleUserActivity.getSingleUserActivity(w3)
+  
+  return render_template('OwnActivity.html', 
+                         avatar=user_avatar,
+                         user=w3.eth.default_account,
+                         nob=nob,
+                         Activity=userActivity)
+  

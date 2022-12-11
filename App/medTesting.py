@@ -24,18 +24,15 @@ minted = contract.events.Minted().createFilter(fromBlock="0x0").get_all_entries(
 
 allValidTxh = [w3.eth.get_block(n)["transactions"][0].hex()
                    for n in range(1, numOfBLK+1)
-                   if w3.eth.get_transaction(w3.eth.get_block(n)["transactions"][0].hex())["to"] == ca]
+                   if w3.eth.get_transaction(w3.eth.get_block(n)["transactions"][0].hex())["to"] is not None]
     
 
-for txh in allValidTxh:
-        transfer_transaction = w3.eth.getTransaction(txh)
-        
-        print()
-        history = contract.decode_function_input(transfer_transaction.input)
-        
-        
-        if "transferTokenOwnership" in str(history[0]) and history[1]['_tokenId'] == 2:
-            print(transfer_transaction["from"])
+transfer = w3.eth.getTransaction(allValidTxh[0])['to']
+print(transfer)
+# for txh in allValidTxh:
+#         transfer_transaction = w3.eth.getTransaction(txh)
+#         history = contract.decode_function_input(transfer_transaction.input)
+#         print()
 
 
 

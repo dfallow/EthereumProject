@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='css/ca_details.css') }}"
+        />
+    </head>
+<body>
+
+    <div class="page-title">
+        <h3 class="title">Contract <span>{{contractAddress}}</span></h3>
+        <h3 class="subtitle">Contract Creator <span>{{Activity[0]._to}}</span></h3>
+        <hr style="width:100%;" />
+    </div>
+
+    <div class="details">
+
+        <h3>A total of {{Activity|length}} transactions found</h3>
+
+        <div class="container">
+
+            <div class="table">
+                <div class="table-header">
+                  <div class="header__item">
+                    <a id="wins" class="filter__link filter__link--number">Txn Hash</a>
+                  </div>
+                  <div class="header__item">
+                    <a id="losses" class="filter__link filter__link--number">Event</a>
+                  </div>
+                  <div class="header__item">
+                    <a id="losses" class="filter__link filter__link--number">Block</a>
+                  </div>
+                  <div class="header__item">
+                    <a id="losses" class="filter__link filter__link--number">Age</a>
+                  </div>
+                  <div class="header__item">
+                    <a id="total" class="filter__link filter__link--number">From</a>
+                  </div>
+                  <div class="header__item">
+                    <a id="total" class="filter__link filter__link--number">From</a>
+                  </div>
+                </div>
+            </div>
+
+
+            <div class="table-content">
+
+                {% for activity in Activity[::-1] %}
+                    <div class="table-row">
+                        <div class="table-data">
+                            <a class="to-details-link" href="{{url_for("caDetails",
+                            contract_address=activity.ca,
+                            tx=activity.txn_hash, 
+                            cType=activity.contract, 
+                            tid=activity.tid)}}">
+                            {{activity.txn_hash[:10]}}...
+                            </a>
+                        </div>
+                        <div class="table-data">{{activity.event}}</div>
+                        <div class="table-data">{{activity.blkNum}}</div>
+                        <div class="table-data">{{activity.age}} ago</div>
+                        {% if activity._from == "NullAddress" or  activity._from == "" %}
+                            <div class="table-data">{{activity._from}}</div>
+                        {% else %}
+                            <div class="table-data">{{activity._from[:10]}}...</div>
+                        {% endif %}
+                        <!-- to address -->
+                        <div class="table-data">{{activity._to[:10]}}...</div>
+                    </div>
+                {% endfor %}
+    
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+   
+</body>
+</html>

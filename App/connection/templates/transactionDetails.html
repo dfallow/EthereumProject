@@ -8,34 +8,113 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             rel="stylesheet"
-            href="{{ url_for('static', filename='css/activity.css') }}"
+            href="{{ url_for('static', filename='css/txn_details.css') }}"
         />
     </head>
 <body>
 
     <div class="page-title">
         <h3 class="title">Transaction Details</h3>
+        <hr style="width:100%;" />
     </div>
 
-    <div class="details-overview">
-        <h3>Transaction Hash: {{details.txn_hash}}</h3>
-        <h3>Block: {{details.blkNum}}</h3> 
-    </div>
 
-    <div class="event-log">
-        <h3>Transaction Receipt Event Logs:</h3>
-        <h3>{{details.eventLog[0]}}</h3>
+    <div class="details">
 
-        <div class="from_to">
-            <h3>From: {{details.e_from}}</h3>
-            <h3>To: {{details.e_to}}</h3>
+        <div class="container">
+
+            <div class="details-overview">
+                <div class="display-row">
+                    <h3>Transaction Hash: </h3>
+                    <h3 id="info">{{details.txn_hash}}</h3>
+                </div>
+
+                <div class="display-row">
+                    <h3>Block: </h3>
+                    <h3 id="info">{{details.blkNum}}</h3>
+                </div>
+
+                <div class="display-row">
+                    <h3>Timestamp: </h3>
+                    <h3 id="info">{{details.age_short}} ago ({{details.age_long}} +UTC)</h3>     
+                </div>
+                
+                <hr style="width:100%; margin:auto;" />
+            </div>
+
+            <div class="transaction-action">
+
+                <div class="display-row">
+                    <h3>Transaction Action: </h3>
+                    <h3 id="info">{{details.eventLog[9:-1]}}</h3>
+                </div>
+
+                <div class="display-row">
+                    <h3 style="color:transparent;">Transaction Action: </h3>
+                    <h3 id="info">From: {{details.e_from}}</h3>
+                </div>
+
+                <div class="display-row">
+                    <h3 style="color:transparent;">Transaction Action: </h3>
+                    <h3 id="info">To: {{details.e_to}}</h3>
+                </div>
+
+                <hr style="width:100%; margin:auto;" />
+
+            </div>
+
+            
+            <div class="contract-info">
+
+                <div class="display-row">
+                    <h3>From: </h3>
+                    <h3 id="info">{{details._from}}</h3>
+                </div>
+
+                <div class="display-row">
+                    <h3>Interacted with (To): </h3>
+                    
+                    <h3 id="info">
+                        <a class="to-details-link" href="{{url_for("txDetails", 
+                            txn_hash=details.txn_hash, caForContractAddressDetails=details._to)}}">
+                            Contract {{details._to}}
+                        </a>
+                    </h3>
+                </div>
+                
+                <hr style="width:100%; margin:auto;" />
+            </div>
+
+
+            <div class="erc-721">
+
+                <div class="display-row">
+                    <h3>ERC-721 Tokens: </h3>
+                    {% if details.e_from == "NullAddress" %} 
+                    <h3 id="info">From {{details.e_from}} To {{details.e_to[:10]}}...</h3>
+                    {% else %}
+                    <h3 id="info">From {{details.e_from[:10]}}... To {{details.e_to[:10]}}...</h3>
+                    {% endif %}
+                </div>
+
+
+                <div class="display-row">
+                    <h3 style="color:transparent;">Transaction Action: </h3>
+                    <h3 id="info">For ERC-721 Token ID [{{tid}}]</h3>
+                </div>
+
+                <hr style="width:100%; margin:auto;" />
+            </div>
+
+
+            <div class="gas-price">
+                <div class="display-row">
+                    <h3>Gas Price: </h3>
+                    <h3 id="info">{{"{:.8f}".format(details.gasPrice)}} Ether</h3>
+                </div>
+            </div>
+
         </div>
-    </div>
-
-    <div class="transaction-info">
-        <h3>From: {{details._from}}</h3>
-        <h3>Interacted with (To): Contract {{details._to}}</h3>
-        <h3>Gas Price: {{details.gasPrice}}</h3>
     </div>
    
 </body>
